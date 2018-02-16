@@ -1,5 +1,6 @@
 import scala.math._
 
+// A class to represent 2D points
 class Point(var x : Double,var y : Double){
   def x_coord():Double = {x}
   def y_coord():Double = {y}
