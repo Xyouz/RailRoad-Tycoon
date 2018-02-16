@@ -17,6 +17,10 @@ class Train(val leaving: Town, val destination: Town, val speed : Float){
 object Pmpm {
 def main()= {
        	   val y = new Town("Bordeaux", 132, List(("bananes", 12), ("mures", 32)) )
+	   val z = new Town("Agen", 78, List(("pruneaux", 85), ("poulet", 15)))
 	   println(y)
+	   println(z)
+	   val t1 = new Train(y, z, 9.2)
+	   println(t1.passengers)
 	   }
 }
