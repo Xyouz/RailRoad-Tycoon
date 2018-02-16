@@ -15,9 +15,6 @@ class Train(val leaving: Town, val destination: Town, val speed : Float){
 
 
 object Pmpm {
-
-
-
 def main()= {
        	   val y = new Town("Bordeaux", 132, List(("bananes", 12), ("mures", 32)) )
 	   println(y)
