@@ -17,6 +17,7 @@ class Point(var x : Double,var y : Double){
   }
 }
 
+// A class to represent road between two Towns
 class Road(val begin : Town,val end : Town,val route : Array[Point]){
   // changer la distance pour prendre en compte la forme
   val length = begin.position.distance(end.position)
