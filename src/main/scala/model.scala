@@ -75,9 +75,6 @@ object Program
 	 }
 }
 
-method Update_town (val coming: Train) {
-   
-
 
 class Game
 {
@@ -85,6 +82,3 @@ class Game
   val town2 = new Town( "Town2", 562, List(("diamond",55), ("dogs",8)), new Point(1,22))
   val town3 = new Town( "Town3", 654, List(("paintit",55), ("black",8)), new Point(12,2))
   val town4 = new Town( "Town4", 156, List(("your",55), ("woman",8)), new Point(5,6))
-  
-  
- 
