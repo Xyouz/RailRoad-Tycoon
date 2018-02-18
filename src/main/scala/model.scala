@@ -48,16 +48,19 @@ class Goods (val namegoods : String, val pricetag : Double ){}
 class Town(val name: String,
     val pop : Int,
     val listofgoods :List[(String, Int)],
+    val leaving_roads : List[(Town)],
+    val coming_roads : List[(Town)],
     var pos : Point) {
       def position() : Point={pos}
+      def Update_town (val coming: Train) {}
     }
 
 
-class Train(val leaving: Town, val destination: Town, val speed : Double){
-    var passengers = leaving.pop
-    var goodies = leaving.listofgoods
-    var loaded: Int = 0
-    def loading(): Unit = {loaded = (0.1*passengers).toInt}
+class Train(val speed : Double){
+    val passengers : Int
+    val goodies : List[Goods]
+    /*var loaded: Int = 0
+    def loading(): Unit = {loaded = (0.1*passengers).toInt}*/
 }
 
 object Program
@@ -71,3 +74,17 @@ object Program
     p._1.print()
 	 }
 }
+
+method Update_town (val coming: Train) {
+   
+
+
+class Game
+{
+  val town1 = new Town( "Town1", 258, List(("lunettes",55), ("chats",8)), new Point(1,2))
+  val town2 = new Town( "Town2", 562, List(("diamond",55), ("dogs",8)), new Point(1,22))
+  val town3 = new Town( "Town3", 654, List(("paintit",55), ("black",8)), new Point(12,2))
+  val town4 = new Town( "Town4", 156, List(("your",55), ("woman",8)), new Point(5,6))
+  
+  
+ 
