@@ -1,3 +1,4 @@
+
 package model
 
 import scala.math._
@@ -55,7 +56,8 @@ class Town(val name: String,
     var pos : Point) {
       def position() : Point={pos}
       def population() : Town={pop}
-      def Update_town (val coming: Train) {Town.pop = Town.pop + Train.passengers, Town.listofgoods = Town.listofgoods ++ Train.goodies}
+      def Update_town (val coming:Train) {Town.pop = Town.pop + Train.passengers, Town.listofgoods = Town.listofgoods++Train.goodies}
+      def onMouseClicked : 
     }
 
 
