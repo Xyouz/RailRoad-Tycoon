@@ -47,12 +47,13 @@ class Goods (val namegoods : String, val pricetag : Double ){}
 
 class Town(val name: String,
     val pop : Int,
-    val listofgoods :List[(String, Int)],
+    val listofgoods :List[Goods],
     val leaving_roads : List[(Town)],
     val coming_roads : List[(Town)],
     var pos : Point) {
       def position() : Point={pos}
-      def Update_town (val coming: Train) {}
+      def population() : Town={pop}
+      def Update_town (val coming: Train) {Town.pop = Town.pop + Train.passengers, Town.listofgoods = Town.listofgoods ++ Train.goodies}
     }
 
 
