@@ -57,7 +57,6 @@ class Town(val name: String,
       def position() : Point={pos}
       def population() : Town={pop}
       def Update_town (val coming:Train) {Town.pop = Town.pop + Train.passengers, Town.listofgoods = Town.listofgoods++Train.goodies}
-      def onMouseClicked : 
     }
 
 
