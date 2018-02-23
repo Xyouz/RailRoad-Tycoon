@@ -1,3 +1,5 @@
+package model
+
 import scala.math._
 
 // A class to represent 2D points

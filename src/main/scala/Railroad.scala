@@ -1,3 +1,6 @@
+import gui._
+import model._
+
 object Program
 {
   def main(args: Array[String])= {
