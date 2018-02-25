@@ -49,20 +49,26 @@ class Goods (val namegoods : String, val pricetag : Double ){}
 
 
 class Town(val name: String,
-    val pop : Int,
+    var pop : Int,
     val listofgoods :List[Goods],
-    val leaving_roads : List[(Town)],
-    val coming_roads : List[(Town)],
-    var pos : Point) {
+    // val leaving_roads : List[(Town)],
+    // val coming_roads : List[(Town)],
+    var pos : Point)
+    {
+      def getName() : String = {name}
       def position() : Point={pos}
-      def population() : Town={pop}
-      def Update_town (val coming:Train) {Town.pop = Town.pop + Train.passengers, Town.listofgoods = Town.listofgoods++Train.goodies}
+      def population() : Int={pop}
+      def incrPop() = {pop = pop+50}
+      def Update_town (coming:Train) {
+        // Town.pop = Town.pop + Train.passengers
+        // Town.listofgoods = Town.listofgoods++Train.goodies
+      }
     }
 
 
 class Train(val speed : Double){
-    val passengers : Int
-    val goodies : List[Goods]
+    //val passengers : Int
+    //val goodies : List[Goods]
     /*var loaded: Int = 0
     def loading(): Unit = {loaded = (0.1*passengers).toInt}*/
 }
@@ -70,10 +76,22 @@ class Train(val speed : Double){
 
 
 
-class Game
+class Game()
 {
-  val town1 = new Town( "Town1", 258, List(("lunettes",55), ("chats",8)), new Point(1,2))
-  val town2 = new Town( "Town2", 562, List(("diamond",55), ("dogs",8)), new Point(1,22))
-  val town3 = new Town( "Town3", 654, List(("paintit",55), ("black",8)), new Point(12,2))
-  val town4 = new Town( "Town4", 156, List(("your",55), ("woman",8)), new Point(5,6))
+  var townList = Seq[Town]()
+  var roadList = Seq[Road]()
+
+  def init() =
+  {
+    townList :+  new Town( "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(1,2)) :+ new Town( "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(1,22)) :+ new Town( "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(12,2)) :+ new Town( "Town4", 156, List(new Goods("your",55), new Goods("woman",8)), new Point(5,6))
+    roadList :+ new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) :+ new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position()))
+  }
+
+  def update() =
+  {
+
+  }
+
+  def towns() = {townList}
+  def roads() = {roadList}
 }
