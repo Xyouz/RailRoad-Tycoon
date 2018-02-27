@@ -4,7 +4,7 @@ import model._
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
-import scalafx.scene.layout.{HBox,VBox}
+import scalafx.scene.layout.{HBox,VBox,BorderPane}
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.{Circle,Rectangle,Line}
 import scalafx.beans.property.DoubleProperty
@@ -56,7 +56,9 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       })
       updateTick.start()
 
-      content = edgeRoads ++ nodeTowns ++ Seq(new Button("Hell World"),new Button("Au revoir"){onAction = { ae => stage.close() }}/*,new Button("Monde de merde")*/)
-
+      content = edgeRoads ++ nodeTowns ++ Seq(new Button("Hell World"){layoutX <== stage.width-width; layoutY = 0},
+          new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
+          new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
+          new Label(s"${game.towns()(0).population()}"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+      }
   }
-}
