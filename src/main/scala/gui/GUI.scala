@@ -21,6 +21,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
                                   println(s"   ${town.population()}");
                                 town.incrPop();
                               radius = town.population() / 5}
+        fill <== when(hover) choose {Yellow} otherwise Orange
         }
     }
 
