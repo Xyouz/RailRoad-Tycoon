@@ -78,14 +78,14 @@ class Train(val speed : Double){
 
 class Game()
 {
-  var townList = Seq[Town]()
-  var roadList = Seq[Road]()
+  var townList = Seq[Town](new Town( "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
+      new Town( "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
+      new Town( "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
+      new Town( "Town4", 156, List(new Goods("your",55), new Goods("woman",8)), new Point(120,450)))
+  var roadList = Seq[Road](new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) ,
+      new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position())))
 
-  def init() =
-  {
-    townList :+  new Town( "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(1,2)) :+ new Town( "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(1,22)) :+ new Town( "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(12,2)) :+ new Town( "Town4", 156, List(new Goods("your",55), new Goods("woman",8)), new Point(5,6))
-    roadList :+ new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) :+ new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position()))
-  }
+
 
   def update() =
   {
