@@ -24,6 +24,8 @@ class Point(var x : Double,var y : Double){
 class Road(val begin : Town,val end : Town,val route : Array[Point]){
   // changer la distance pour prendre en compte la forme
   val length = begin.position.distance(end.position)
+  def getStart() = {begin}
+  def getEnd() = {end} 
   def position(done : Double) : (Point, Point) = {
     if (done >= length) {(end.position, (new Point(0,0)))}
     else if (done <= 0) {(begin.position, (new Point(0,0)))}
