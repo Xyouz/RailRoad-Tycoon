@@ -25,12 +25,24 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         }
     }
 
+    def roadToLine(Road : Road) : Line = {
+      new Line {
+        val road = Road
+        startX = road.getStart().position().x_coord()
+        startY = road.getStart().position().y_coord()
+        endX = road.getEnd().position().x_coord()
+        endY = road.getEnd().position().y_coord()
+      }
+    }
+
+
     title.value = "Roolraid Tycoan"
     width = 800
     height = 600
     scene = new Scene{
       fill = LightGreen
       val nodeTowns = game.towns().map(townToCircle(_))
-      content = nodeTowns
+      val edgeRoads = game.roads().map(roadToLine(_))
+      content = edgeRoads ++ nodeTowns
     }
   }
