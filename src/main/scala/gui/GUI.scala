@@ -17,9 +17,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         centerX = town.position().x_coord()
         centerY = town.position().y_coord()
         radius = town.population() / 5
-        onMouseClicked = { ae => println(s"$town.getName() :");
-                                  println(s"   $town.population()");
-                                town.incrPop()}
+        onMouseClicked = { ae => println(s"${town.getName()} :");
+                                  println(s"   ${town.population()}");
+                                town.incrPop();
+                              radius = town.population() / 5}
         }
     }
 
