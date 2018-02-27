@@ -4,14 +4,15 @@ import model._
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
+import scalafx.scene.layout.{HBox,VBox}
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.{Circle,Rectangle,Line}
 import scalafx.beans.property.DoubleProperty
 import scalafx.animation.AnimationTimer
-
+import scalafx.scene.control.{Button, Label}
 
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
-  {
+  { stage =>
     def townToCircle(Town : Town) : Circle = {
       new Circle {
         val town = Town
@@ -40,11 +41,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     title.value = "Roolraid Tycoan"
     width = 800
     height = 600
+    //content = new Button("Hell World")
     scene = new Scene{
       fill = LightGreen
+
       val nodeTowns = game.towns().map(townToCircle(_))
       val edgeRoads = game.roads().map(roadToLine(_))
-      content = edgeRoads ++ nodeTowns
+
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
         if ((t-lastTick)>=1000000000){  // Allow to choose the duration
@@ -53,5 +56,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       })
       updateTick.start()
 
-    }
+      content = edgeRoads ++ nodeTowns ++ Seq(new Button("Hell World"),new Button("Au revoir"){onAction = { ae => stage.close() }}/*,new Button("Monde de merde")*/)
+
   }
+}
