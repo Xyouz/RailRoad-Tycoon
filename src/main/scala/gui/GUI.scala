@@ -7,6 +7,7 @@ import scalafx.scene.Scene
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.{Circle,Rectangle,Line}
 import scalafx.beans.property.DoubleProperty
+import scalafx.animation.AnimationTimer
 
 
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
@@ -44,5 +45,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       val nodeTowns = game.towns().map(townToCircle(_))
       val edgeRoads = game.roads().map(roadToLine(_))
       content = edgeRoads ++ nodeTowns
+      var (lastTick : Long) = 0
+      val updateTick = AnimationTimer (t => {
+        if ((t-lastTick)>=1000000000){  // Allow to choose the duration
+          lastTick = t                  // between two updates
+          println(s"${t/1000000000}")}
+      })
+      updateTick.start()
+
     }
   }
