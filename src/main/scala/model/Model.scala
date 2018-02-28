@@ -2,6 +2,7 @@
 package model
 
 import scala.math._
+import scalafx.beans.property.{ DoubleProperty}
 
 // A class to represent 2D points
 class Point(var x : Double,var y : Double){
@@ -24,28 +25,44 @@ class Point(var x : Double,var y : Double){
 class Road(val begin : Town,val end : Town,val route : Array[Point]){
   // changer la distance pour prendre en compte la forme
   val length = begin.position.distance(end.position)
-  var trains = Seq[Train]()
+  var trainsAB = Seq[Train]()
+  var trainsBA = Seq[Train]()
   def getStart() = {begin}
   def getEnd() = {end}
-  def position(done : Double) : (Point, Point) = {
-    if (done >= length) {(end.position, (new Point(0,0)))}
-    else if (done <= 0) {(begin.position, (new Point(0,0)))}
-    else
+  // def position(done : Double) : (Point, Point) = {
+  //   if (done >= length) {(end.position, (new Point(0,0)))}
+  //   else if (done <= 0) {(begin.position, (new Point(0,0)))}
+  //   else
+  //   {
+  //     var dist : Double = 0
+  //     var index : Int = 0
+  //     while (index < route.size && dist <= done){
+  //       dist = dist + route(index).distance(route(index + 1))
+  //       index += 1
+  //     }
+  //     index -= 1
+  //     var remaining = done - dist + route(index).distance(route(index + 1))
+  //     val vec = (route(index+1)-route(index))
+  //     vec.normalize
+  //     (route(index)+vec.scale(remaining),vec)
+  //   }
+  // }
+  def update() =
     {
-      var dist : Double = 0
-      var index : Int = 0
-      while (index < route.size && dist <= done){
-        dist = dist + route(index).distance(route(index + 1))
-        index += 1
-      }
-      index -= 1
-      var remaining = done - dist + route(index).distance(route(index + 1))
-      val vec = (route(index+1)-route(index))
-      vec.normalize
-      (route(index)+vec.scale(remaining),vec)
+      trainsAB.map(_.update())
+      trainsBA.map(_.update())
     }
-  }
-  def update() = {trains.map(_.update())}
+  def launchTrain(train : Train, destination : Int) =
+    {
+      if (destination == end.getID())
+        {
+          trainsAB :+ train
+        }
+      else
+        {
+          trainsBA :+ train
+        }
+    }
 }
 
 
@@ -60,20 +77,29 @@ class Town(val id : Int,
     // val coming_roads : List[(Town)],
     var pos : Point)
     {
+      def getID() : = {id}
       def getName() : String = {name}
       def position() : Point={pos}
       def population() : Int={pop}
       def incrPop() = {pop = pop+50}
-      def Update_town (coming:Train) {
+      /*def Update_town(coming:Train) {
         // Town.pop = Town.pop + Train.passengers
         // Town.listofgoods = Town.listofgoods++Train.goodies
+      }*/
+      def update(){
+        pop += 20
       }
+      def welcomeTrain(train : Train) = {}
     }
 
 
 class Train(val speed : Double){
     var distanceOnRoad : Double = -1
-    def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed} }
+    var destination = -1
+    def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed};
+                      distanceOnRoad}
+    def resetDistance() = {distanceOnRoad = 0}
+    def getDestination() = {destination}
     //val passengers : Int
     //val goodies : List[Goods]
     /*var loaded: Int = 0
@@ -85,18 +111,37 @@ class Train(val speed : Double){
 
 class Game()
 {
-  var townList = Seq[Town](new Town(1, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
+  val townList = Seq[Town](new Town(1, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
       new Town(2, "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
       new Town(3, "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
       new Town(4, "Town4", 156, List(new Goods("your",55), new Goods("woman",8)), new Point(120,450)))
   var roadList = Seq[Road](new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) ,
       new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position())))
 
+  // Ne compile pas
+  val dispatchMatrix = 42  // Appliquer Djiekstra ou autre pour obtenir une matrice
+                           // qui puisse nous permettre de savoir où aller chaque case,
+                           // le numéro de la route et la destination suivante
+                           // type matrix of int*int
 
+  // townID : ville où le train se trouve actuellement 
+  def dispatchTrain(train : Train, townID) =
+    {
+        if (train.getDestination()== townID)
+        {
+          townList(townID).welcomeTrain(train)
+        }
+        else
+        {
+          train.resetDistance()
+          roadList.launchTrain(train,dispatchMatrix(townID)(train.getDestination()))
+        }
+    }
 
   def update() =
   {
     var trainsOnArrival = roadList.map(_.update())
+    townList.map(_.update())
   }
 
   def towns() = {townList}

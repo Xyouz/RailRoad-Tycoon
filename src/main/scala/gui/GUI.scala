@@ -52,7 +52,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       val updateTick = AnimationTimer (t => {
         if ((t-lastTick)>=1000000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
-          println(s"${t/1000000000}")}
+          println(s"${t/1000000000}")
+          game.update()}
       })
       updateTick.start()
 
