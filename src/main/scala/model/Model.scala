@@ -45,6 +45,7 @@ class Road(val begin : Town,val end : Town,val route : Array[Point]){
       (route(index)+vec.scale(remaining),vec)
     }
   }
+  def update() = {trains.map(_.update())}
 }
 
 
@@ -95,7 +96,7 @@ class Game()
 
   def update() =
   {
-
+    var trainsOnArrival = roadList.map(_.update())
   }
 
   def towns() = {townList}
