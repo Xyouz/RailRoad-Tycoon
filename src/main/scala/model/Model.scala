@@ -24,8 +24,9 @@ class Point(var x : Double,var y : Double){
 class Road(val begin : Town,val end : Town,val route : Array[Point]){
   // changer la distance pour prendre en compte la forme
   val length = begin.position.distance(end.position)
+  var trains = Seq[Train]()
   def getStart() = {begin}
-  def getEnd() = {end} 
+  def getEnd() = {end}
   def position(done : Double) : (Point, Point) = {
     if (done >= length) {(end.position, (new Point(0,0)))}
     else if (done <= 0) {(begin.position, (new Point(0,0)))}
@@ -50,7 +51,8 @@ class Road(val begin : Town,val end : Town,val route : Array[Point]){
 class Goods (val namegoods : String, val pricetag : Double ){}
 
 
-class Town(val name: String,
+class Town(val id : Int,
+    val name: String,
     var pop : Int,
     val listofgoods :List[Goods],
     // val leaving_roads : List[(Town)],
@@ -69,6 +71,8 @@ class Town(val name: String,
 
 
 class Train(val speed : Double){
+    var distanceOnRoad : Double = -1
+    def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed} }
     //val passengers : Int
     //val goodies : List[Goods]
     /*var loaded: Int = 0
@@ -80,10 +84,10 @@ class Train(val speed : Double){
 
 class Game()
 {
-  var townList = Seq[Town](new Town( "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
-      new Town( "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
-      new Town( "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
-      new Town( "Town4", 156, List(new Goods("your",55), new Goods("woman",8)), new Point(120,450)))
+  var townList = Seq[Town](new Town(1, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
+      new Town(2, "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
+      new Town(3, "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
+      new Town(4, "Town4", 156, List(new Goods("your",55), new Goods("woman",8)), new Point(120,450)))
   var roadList = Seq[Road](new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) ,
       new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position())))
 
