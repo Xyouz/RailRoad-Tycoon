@@ -77,7 +77,7 @@ class Town(val id : Int,
     // val coming_roads : List[(Town)],
     var pos : Point)
     {
-      def getID() : = {id}
+      def getID() : Int = {id}
       def getName() : String = {name}
       def position() : Point={pos}
       def population() : Int={pop}
@@ -95,7 +95,7 @@ class Town(val id : Int,
 
 class Train(val speed : Double){
     var distanceOnRoad : Double = -1
-    var destination = -1
+    var destination = -1 // L'ID de la destination
     def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed};
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
@@ -119,13 +119,15 @@ class Game()
       new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position())))
 
   // Ne compile pas
-  val dispatchMatrix = 42  // Appliquer Djiekstra ou autre pour obtenir une matrice
+  val nbOfTown = townList.length
+  val dispatchMatrix = Array.ofDim[(Int,Int)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
                            // qui puisse nous permettre de savoir où aller chaque case,
                            // le numéro de la route et la destination suivante
                            // type matrix of int*int
+                           // routeID,nextTownID
 
-  // townID : ville où le train se trouve actuellement 
-  def dispatchTrain(train : Train, townID) =
+  // townID : ville où le train se trouve actuellement
+  def dispatchTrain(train : Train, townID : Int) =
     {
         if (train.getDestination()== townID)
         {
@@ -134,7 +136,7 @@ class Game()
         else
         {
           train.resetDistance()
-          roadList.launchTrain(train,dispatchMatrix(townID)(train.getDestination()))
+          roadList(dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
         }
     }
 
