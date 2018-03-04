@@ -132,17 +132,18 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[(Road,Town,Double
     for (i <- 0 until nt) {matrix(i)(i) = (-1,-1,0)}
 
     //for (i <- 0 until nr) {var r = roads(i)} // to be continued
-    for (i <- 0 until nr){for (j <- 0 until roads(i).length) {matrix(i)(j) = (1,1,1)} } // 111 à vérifier
+    //for (i <- 0 until nr){for (j <- 0 until roads(i).length) {matrix(i)(j) = (1,1,1)} } // 111 à vérifier
 
     for (k <- 0 to nt){
       for (i <- 0 to nt){
         for (j <- 0 to nt){
-          if (matrix(i)(j) > matrix(i)(k) + matrix(k)(j)) {
-            matrix(i)(j) = matrix(i)(k) + matrix(k)(j)
+          if (matrix(i)(j)._3 > matrix(i)(k)._3 + matrix(k)(j)._3) {
+            matrix(i)(j) = matrix(i)(j).copy(_3 = matrix(i)(k)._3 + matrix(k)(j)._3)
           }
         }
       }
     }
+    matrix.map{ (x,y,z) => (roads(x),towns(y),z)};
   }
 
   val dispatchMatrix = Array.ofDim[(Road,Town,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
@@ -160,7 +161,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[(Road,Town,Double
         }
         else
         {
-          train.resetDistance()
+          train.resetDistance();
           roadList(dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
         }
     }
