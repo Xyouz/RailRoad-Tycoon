@@ -69,22 +69,28 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 
 def newTrainWindow(): Unit = {
-    new Alert(AlertType.Information) {
+
+  case class Result(train : Train, firstTown : Town)
+
+    // Create the custom dialog window.
+    def dialog = new Dialog[Result] {
       initOwner(stage)
-      title = "Information Dialog"
-      headerText = "Look, an Information Dialog."
-      contentText = "I have a great message for you!"
-    }.showAndWait()
+      title = "Création d'un nouveau train"
+      headerText = "Vous vous aprétez à inaugurer un nouveau train"
+      graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
+    }
+
+    val createButtonType = new ButtonType("Login", ButtonData.OKDone)
+    dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 }
 
-def displayTownInfo(): Unit = {
-    new Alert(AlertType.Information) {
-      initOwner(stage)
-      title = "Information Dialog"
-      headerText = "Look, an Information Dialog."
-      contentText = "I have a great message for you!"
-    }.showAndWait()
-}
+    val speed = new TextField(){
+      prompText = "Speed"
+    }
+
+    val trainName = new Text
+
+
 
       content = edgeRoads ++ nodeTowns ++ Seq(new Button("New Train"){
         onAction = handle {newTrainWindow()};
