@@ -22,7 +22,7 @@ class Point(var x : Double,var y : Double){
 }
 
 // A class to represent road between two Towns
-class Road(val begin : Town,val end : Town,val route : Array[Point]){
+class Road(val begin : Town,val end : Town){//,val route : Array[Point]){
   // changer la distance pour prendre en compte la forme
   val length = begin.position.distance(end.position)
   var trainsAB = Seq[Train]()
@@ -120,18 +120,18 @@ class Game()
 
   val nbOfTown = townList.length
 
-def shortestPath(towns : Seq[Town], roads : = roadList : Seq[Road]) : Array[(Int,Int,Double)] =
+def shortestPath(towns : Seq[Town], roads : = roadList : Seq[Road]) : Array[(Road,Town,Double)] =
   {
     val nt = towns.length
     val nr = roads.length
-    val matrix = Array.fill[(Int,Int,Double)](n,n)((-2,-2,Double.MaxValue))
+    val matrix = Array.ofDim[(Road,Town,Double)](n,n)
 
     for (i <- O until nt) {matrix(i)(i) = (-1,-1,0)}
 
     for (i <- 0 until nr) {var r = roads(i)} // to be continued
   }
 
-  val dispatchMatrix = Array.ofDim[(Int,Int,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
+  val dispatchMatrix = Array.ofDim[(Road,Town,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
                            // qui puisse nous permettre de savoir où aller chaque case,
                            // le numéro de la route et la destination suivante
                            // type matrix of int*int
