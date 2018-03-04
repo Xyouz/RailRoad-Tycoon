@@ -82,14 +82,38 @@ def newTrainWindow(): Unit = {
 
     val createButtonType = new ButtonType("Login", ButtonData.OKDone)
     dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
-}
 
-    val speed = new TextField(){
-      prompText = "Speed"
+
+    val speed = new Slider(0,10,5)
+
+    val trainName = new TextField()
+    {
+      promptText = "Name"
     }
 
-    val trainName = new Text
+    val grid = new GridPane()
+    {
+      hgap = 10
+      vgap = 10
+      padding = Insets(20,100,10,10)
 
+      add(new Label("Name:"), 0, 0)
+      add(trainName, 1, 0)
+      add(new Label("Speed:"), 0, 1)
+      add(speed, 1, 1)
+    }
+
+
+    dialog.dialogPane().content = grid
+
+    Platform.runLater(username.rquestFocus())
+
+    dialog.resultConverter = dialogButton =>
+      if (dialogButton == createButtonType) Result(Train(speed.value.toDouble,trainName.text(),new Town()))
+      else null
+
+    val result = dialog.showAndWait()
+  }
 
 
       content = edgeRoads ++ nodeTowns ++ Seq(new Button("New Train"){
