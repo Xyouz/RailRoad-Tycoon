@@ -4,6 +4,8 @@ package model
 import scala.math._
 import scalafx.beans.property.{ DoubleProperty}
 
+
+
 // A class to represent 2D points
 class Point(var x : Double,var y : Double){
   def x_coord():Double = {x}
@@ -115,20 +117,32 @@ class Game()
       new Town(2, "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
       new Town(3, "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
       new Town(4, "Town4", 156, List(new Goods("your",55), new Goods("uranus",8)), new Point(120,450)))
-  var roadList = Seq[Road](new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) ,
-      new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position())))
+  var roadList = Seq[Road](new Road(townList(1),townList(2)) ,
+      new Road(townList(2),townList(3)))
 
   val nbOfTown = townList.length
 
-def shortestPath(towns : Seq[Town], roads : = roadList : Seq[Road]) : Array[(Road,Town,Double)] =
+def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[(Road,Town,Double)] =
   {
     val nt = towns.length
     val nr = roads.length
-    val matrix = Array.ofDim[(Road,Town,Double)](n,n)
+    val inf = Int.MaxValue
+    val matrix = Array.fill[(Int, Int, Double)](nt,nt)((-2,-2,inf))
 
-    for (i <- O until nt) {matrix(i)(i) = (-1,-1,0)}
+    for (i <- 0 until nt) {matrix(i)(i) = (-1,-1,0)}
 
-    for (i <- 0 until nr) {var r = roads(i)} // to be continued
+    //for (i <- 0 until nr) {var r = roads(i)} // to be continued
+    for (i <- 0 until nr){for (j <- 0 until roads(i).length) {matrix(i)(j) = (1,1,1)} } // 111 à vérifier
+
+    for (k <- 0 to nt){
+      for (i <- 0 to nt){
+        for (j <- 0 to nt){
+          if (matrix(i)(j) > matrix(i)(k) + matrix(k)(j)) {
+            matrix(i)(j) = matrix(i)(k) + matrix(k)(j)
+          }
+        }
+      }
+    }
   }
 
   val dispatchMatrix = Array.ofDim[(Road,Town,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
