@@ -73,7 +73,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
           case class Result(cochonou : Unit)
           // Create the custom dialog window.
-          def dialog = new Dialog[Result]() {
+          val dialog = new Dialog[Result]() {
             initOwner(stage)
             title = "Création d'un nouveau train"
             headerText = "Vous vous aprétez à inaugurer un nouveau train"
