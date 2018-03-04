@@ -85,6 +85,7 @@ class Town(val id : Int,
     // val coming_roads : List[(Town)],
     var pos : Point)
     {
+      var railwayStation = List[Train]()
       def getID() : Int = {id}
       def getName() : String = {name}
       def position() : Point={pos}
@@ -94,6 +95,7 @@ class Town(val id : Int,
         pop += 20
       }
       def welcomeTrain(train : Train) = {}
+      def hasTrains() : Boolean = {railwayStation.isEmpty}
     }
 
 
