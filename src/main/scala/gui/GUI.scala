@@ -4,7 +4,7 @@ import model._
 import scalafx.Includes._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
-import scalafx.scene.layout.{HBox,VBox,BorderPane,Priority,GridPane}
+import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.{Circle,Rectangle,Line}
 import scalafx.beans.property.DoubleProperty
@@ -12,6 +12,7 @@ import scalafx.animation.AnimationTimer
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 import scalafx.scene.control.ButtonBar.ButtonData
+import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
@@ -70,14 +71,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 def newTrainWindow(): Unit = {
 
-  case class Result(train : Train, firstTown : Town)
-
+    case class Result(cochonou : Unit)
     // Create the custom dialog window.
-    def dialog = new Dialog[Result] {
+    def dialog = new Dialog[Result]() {
       initOwner(stage)
       title = "Création d'un nouveau train"
       headerText = "Vous vous aprétez à inaugurer un nouveau train"
-      graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
+      //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
     }
 
     val createButtonType = new ButtonType("Login", ButtonData.OKDone)
@@ -91,6 +91,8 @@ def newTrainWindow(): Unit = {
       promptText = "Name"
     }
 
+    val townToStart = new ComboBox(game.towns())
+
     val grid = new GridPane()
     {
       hgap = 10
@@ -101,18 +103,24 @@ def newTrainWindow(): Unit = {
       add(trainName, 1, 0)
       add(new Label("Speed:"), 0, 1)
       add(speed, 1, 1)
+      add(new Label("Launch town:"),0,2)
+      add(townToStart, 1, 2)
     }
 
 
     dialog.dialogPane().content = grid
 
-    Platform.runLater(username.rquestFocus())
+    Platform.runLater(trainName.requestFocus())
 
-    dialog.resultConverter = dialogButton =>
-      if (dialogButton == createButtonType) Result(Train(speed.value.toDouble,trainName.text(),new Town()))
-      else null
+    dialog.resultConverter = {dialogButton =>
+      if (dialogButton == createButtonType) {Result(townToStart.value.value.welcomeTrain(new Train(speed.value.toDouble,trainName.text())))}
+      else Result(())
+    }
 
-    val result = dialog.showAndWait()
+    val res = dialog.showAndWait()
+    res match {
+      case _ => ()
+    }
   }
 
 
