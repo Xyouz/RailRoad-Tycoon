@@ -123,14 +123,24 @@ class Game()
 
   val nbOfTown = townList.length
 
-def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[(Road,Town,Double)] =
+def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
   {
     val nt = towns.length
     val nr = roads.length
     val inf = Int.MaxValue
     val matrix = Array.fill[(Int, Int, Double)](nt,nt)((-2,-2,inf))
 
-    for (i <- 0 until nt) {matrix(i)(i) = (-1,-1,0)}
+    def maps(mat1 : Array[ Array[(Int, Int, Double)]]) : Array[Array[(Road, Town, Double)]] = {
+      val mat2 = Array.ofDim[(Road,Town, Double)](nt,nt)
+      for (i <- 0 until nt) {
+        for (j <- 0 until nt) {
+          mat2(i)(j) = (roads(mat1(i)(j)._1), towns(mat1(i)(j)._2), mat1(i)(j)._3 )
+        }
+      }
+      mat2
+    }
+
+    for (i <- 0 until nt) {matrix(i)(i) = (0,i,0)}
 
     //for (i <- 0 until nr) {var r = roads(i)} // to be continued
     //for (i <- 0 until nr){for (j <- 0 until roads(i).length) {matrix(i)(j) = (1,1,1)} } // 111 à vérifier
@@ -144,8 +154,9 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[(Road,Town,Double
         }
       }
     }
-    matrix.map{ (x,y,z) => (roads(x),towns(y),z)};
-  }
+    maps(matrix)
+    //matrix.map( t:(Int,Int,Double) => (roads(t._1), towns(t._2), t._3) )
+    }
 
   val dispatchMatrix = Array.ofDim[(Road,Town,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
                            // qui puisse nous permettre de savoir où aller chaque case,
@@ -163,7 +174,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[(Road,Town,Double
         else
         {
           train.resetDistance();
-          roadList(dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
+          //roadList(dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
         }
     }
 
