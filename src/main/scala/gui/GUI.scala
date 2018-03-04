@@ -71,12 +71,28 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       val edgeRoads = game.roads().map(roadToLine(_))
       var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
 
+      def drawScene() =
+        {
+      val nodeTowns = game.towns().map(townToCircle(_))
+      val edgeRoads = game.roads().map(roadToLine(_))
+      var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
+
+      content = edgeRoads ++ townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
+          onAction = handle {newTrainWindow()};
+          layoutX <== stage.width-width; layoutY = 0},
+          new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
+          new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
+          new Label(s"${game.towns()(0).population()}"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+
+      }
+
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
         if ((t-lastTick)>=1000000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           println(s"${t/1000000000}")
-          game.update()}
+          game.update()
+          drawScene()}
       })
       updateTick.start()
 
@@ -144,11 +160,11 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
 
 
-      content = edgeRoads ++ townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
-        onAction = handle {newTrainWindow()};
-        layoutX <== stage.width-width; layoutY = 0},
-          new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
-          new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
-          new Label(s"${game.towns()(0).population()}"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+      // content = edgeRoads ++ townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
+      //   onAction = handle {newTrainWindow()};
+      //   layoutX <== stage.width-width; layoutY = 0},
+      //     new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
+      //     new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
+      //     new Label(s"${game.towns()(0).population()}"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
       }
   }
