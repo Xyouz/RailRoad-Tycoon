@@ -111,7 +111,6 @@ class Train(val speed : Double, val name : String){
 
 
 
-
 class Game()
 {
   val townList = Seq[Town](new Town(1, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
