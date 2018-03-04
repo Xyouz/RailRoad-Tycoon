@@ -118,9 +118,20 @@ class Game()
   var roadList = Seq[Road](new Road(townList(1),townList(2),Array(townList(1).position(),townList(2).position())) ,
       new Road(townList(2),townList(3),Array(townList(2).position(),townList(3).position())))
 
-  // Ne compile pas
   val nbOfTown = townList.length
-  val dispatchMatrix = Array.ofDim[(Int,Int)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
+
+def shortestPath(towns : Seq[Town], roads : = roadList : Seq[Road]) : Array[(Int,Int,Double)] =
+  {
+    val nt = towns.length
+    val nr = roads.length
+    val matrix = Array.fill[(Int,Int,Double)](n,n)((-2,-2,Double.MaxValue))
+
+    for (i <- O until nt) {matrix(i)(i) = (-1,-1,0)}
+
+    for (i <- 0 until nr) {var r = roads(i)} // to be continued
+  }
+
+  val dispatchMatrix = Array.ofDim[(Int,Int,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
                            // qui puisse nous permettre de savoir où aller chaque case,
                            // le numéro de la route et la destination suivante
                            // type matrix of int*int
