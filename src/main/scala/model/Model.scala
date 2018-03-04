@@ -124,7 +124,7 @@ def shortestPath(towns : Seq[Town], roads : = roadList : Seq[Road]) : Array[(Int
   {
     val nt = towns.length
     val nr = roads.length
-    val matrix = Array.fill[(Int,Int,Double)](n,n)((-2,-2,Double.MaxValue))
+    val matrix = Array.ofDim[(Road,Town,Double)](n,n)
 
     for (i <- O until nt) {matrix(i)(i) = (-1,-1,0)}
 
