@@ -24,36 +24,30 @@ class Point(var x : Double,var y : Double){
 }
 
 // A class to represent road between two Towns
-class Road(val begin : Town,val end : Town){//,val route : Array[Point]){
-  // changer la distance pour prendre en compte la forme
+class Road(val begin : Town,val end : Town){
   val length = begin.position.distance(end.position)
   var trainsAB = Seq[Train]()
   var trainsBA = Seq[Train]()
   def getStart() = {begin}
   def getEnd() = {end}
-  // def position(done : Double) : (Point, Point) = {
-  //   if (done >= length) {(end.position, (new Point(0,0)))}
-  //   else if (done <= 0) {(begin.position, (new Point(0,0)))}
-  //   else
-  //   {
-  //     var dist : Double = 0
-  //     var index : Int = 0
-  //     while (index < route.size && dist <= done){
-  //       dist = dist + route(index).distance(route(index + 1))
-  //       index += 1
-  //     }
-  //     index -= 1
-  //     var remaining = done - dist + route(index).distance(route(index + 1))
-  //     val vec = (route(index+1)-route(index))
-  //     vec.normalize
-  //     (route(index)+vec.scale(remaining),vec)
-  //   }
-  // }
   def update() =
     {
       trainsAB.map(_.update())
       trainsBA.map(_.update())
-    }
+      for (i <- 0 until trainsAB.length)
+      {
+        if (trainsAB(i).getDestination()== getEnd())
+        {
+          trainsAB(getEnd()).welcomeTrain(trainsAB(i))
+        }
+        else
+        {
+          train.resetDistance();
+          (dispatchMatrix(getEnd())(trainsAB(i).getDestination())._1).launchTrain(trainsAB(i),dispatchMatrix(getEnd())(trainsAB(i).getDestination())._2)
+        }
+      }
+  }
+  
   def launchTrain(train : Train, destination : Town) =
     {
       if (destination == end)
@@ -67,10 +61,12 @@ class Road(val begin : Town,val end : Town){//,val route : Array[Point]){
     }
 }
 
-
+//a class to specify the goods that are available : it returns their name and their price.
 class Goods (val namegoods : String, val pricetag : Double ){}
 
 
+
+// a class to implement the towns of the graphs with information on the name, the population, their wealth and methods to update them when a train come over
 class Town(val id : Int,
     val name: String,
     var pop : Int,
@@ -84,10 +80,6 @@ class Town(val id : Int,
       def position() : Point={pos}
       def population() : Int={pop}
       def incrPop() = {pop = pop+50}
-      /*def Update_town(coming:Train) {
-        // Town.pop = Town.pop + Train.passengers
-        // Town.listofgoods = Town.listofgoods++Train.goodies
-      }*/
       def update(){
         pop += 20
       }
@@ -95,6 +87,8 @@ class Town(val id : Int,
     }
 
 
+
+//a class to represent the train, for a train, we need to know its speed, its destination, and we need a way to update its information
 class Train(val speed : Double, val name : String){
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
@@ -103,14 +97,10 @@ class Train(val speed : Double, val name : String){
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}
     def getName() = {name}
-    //val passengers : Int
-    //val goodies : List[Goods]
-    /*var loaded: Int = 0
-    def loading(): Unit = {loaded = (0.1*passengers).toInt}*/
 }
 
 
-
+// Eventually a class to launch a game.
 class Game()
 {
   val townList = Seq[Town](new Town(1, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
@@ -122,6 +112,7 @@ class Game()
 
   val nbOfTown = townList.length
 
+//we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
 def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
   {
     val nt = towns.length
@@ -129,6 +120,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
     val inf = Int.MaxValue
     val matrix = Array.fill[(Int, Int, Double)](nt,nt)((-2,-2,inf))
 
+     // a function that maps the first two integers of the tuples with the road and the town that respectively correspond to those numbers.
     def maps(mat1 : Array[ Array[(Int, Int, Double)]]) : Array[Array[(Road, Town, Double)]] = {
       val mat2 = Array.ofDim[(Road,Town, Double)](nt,nt)
       for (i <- 0 until nt) {
@@ -141,7 +133,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
     for (i <- 0 until nt) {matrix(i)(i) = (0,i,0)}
 
-    //Algorithm of Floyd-warshall
+    //Algorithm of Floyd-warshall itself
 
     for (k <- 0 to nt){
       for (i <- 0 to nt){
@@ -153,17 +145,11 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
       }
     }
     maps(matrix)
-    //matrix.map( t:(Int,Int,Double) => (roads(t._1), towns(t._2), t._3) )
     }
 
   val dispatchMatrix = shortestPath(townList, roadList)
-                           // Appliquer Dijkstra ou autre pour obtenir une matrice
-                           // qui puisse nous permettre de savoir où aller chaque case,
-                           // le numéro de la route et la destination suivante
-                           // type matrix of int*int
-                           // routeID,nextTownID
 
-  // townID : ville où le train se trouve actuellement
+  // townID : current town where the train is.
   def dispatchTrain(train : Train, townID : Int) =
     {
         if (train.getDestination()== townID)
