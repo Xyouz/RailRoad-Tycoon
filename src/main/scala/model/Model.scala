@@ -5,7 +5,6 @@ import scala.math._
 import scalafx.beans.property.{ DoubleProperty}
 
 
-
 // A class to represent 2D points
 class Point(var x : Double,var y : Double){
   def x_coord():Double = {x}
