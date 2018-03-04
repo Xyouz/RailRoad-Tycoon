@@ -174,7 +174,6 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
         else
         {
           train.resetDistance();
-
           //roadList(dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
         }
     }
