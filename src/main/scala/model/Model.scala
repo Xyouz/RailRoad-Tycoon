@@ -35,17 +35,27 @@ class Road(val begin : Town,val end : Town){
     {
       trainsAB.map(_.update())
       trainsBA.map(_.update())
+      var arrived = Seq[Train]()
       for (i <- 0 until trainsAB.length)
       {
-        if (trainsAB(i).getDestination()== getEnd())
+        var dist = trainsAB(i).update()
+        if (dist >= length)
         {
-          trainsAB(getEnd()).welcomeTrain(trainsAB(i))
+          arrived :+ (trainsAB(i), end.getID())
+          trainsAB = trainsAB.filter(_ != trainsAB(i))
         }
-        else
+      }
+
+        for (i <- 0 until trainsBA.length)
         {
-          train.resetDistance();
-          (dispatchMatrix(getEnd())(trainsAB(i).getDestination())._1).launchTrain(trainsAB(i),dispatchMatrix(getEnd())(trainsAB(i).getDestination())._2)
-        }
+          var dist = trainsBA(i).update()
+          if (dist >= length)
+          {
+            arrived :+ (trainsBA(i), begin.getID())
+            trainsBA = trainsBA.filter(_ != trainsBA(i))
+          }
+
+
       }
   }
 
