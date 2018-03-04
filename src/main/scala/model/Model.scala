@@ -92,10 +92,16 @@ class Town(val id : Int,
       def population() : Int={pop}
       def incrPop() = {pop = pop+50}
       def update(){
-        pop += 20
+      //  pop += 20
       }
       def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation}
       def hasTrains() : Boolean = {railwayStation.isEmpty}
+      def goodbyeTrain(train : Train) : Boolean =
+        {
+        val n = railwayStation.length
+        railwayStation.filter(_==train)
+        (n != railwayStation)
+      }
     }
 
 
@@ -123,6 +129,10 @@ class Game()
       new Road(townList(2),townList(3)))
 
   val nbOfTown = townList.length
+
+  var trainsOnTransit = List[(Train, Int)]() // List oof trains and their destination
+
+  def trainToBeDispatched(train : Train, dest : Int) = { trainsOnTransit = (train, dest) :: trainsOnTransit }
 
 //we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
 def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
@@ -178,6 +188,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
   def update() =
   {
     var trainsOnArrival = roadList.map(_.update())
+    trainsOnTransit.map(t => dispatchTrain(t._1,t._2))
     townList.map(_.update())
   }
 

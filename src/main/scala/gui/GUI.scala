@@ -17,21 +17,82 @@ import scalafx.geometry.{Insets, Pos}
 
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
+
+    def sendTrain(startTown: Town): Unit = {
+
+        case class Result(cochonou : Unit)
+        // Create the custom dialog window.
+        val dialog = new Dialog[Result]() {
+          initOwner(stage)
+          title = "Expédition d'un train"
+          headerText = "TCHOU!TCHOU! C'est l'heure du départ!"
+          //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
+        }
+
+        val createButtonType = new ButtonType("C'est parti!", ButtonData.OKDone)
+        dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
+
+
+        val train = new ComboBox(startTown.railwayStation)
+
+
+        val townToGo = new ComboBox(game.towns())
+
+        val grid = new GridPane()
+        {
+          hgap = 10
+          vgap = 10
+          padding = Insets(20,100,10,10)
+
+          add(new Label("Train:"), 0, 0)
+          add(train, 1, 0)
+          add(new Label("Destination:"), 0, 1)
+          add(townToGo, 1, 1)
+          }
+
+        val createButton = dialog.dialogPane().lookupButton(createButtonType)
+        //createButton.disable = true
+
+
+
+        dialog.dialogPane().content = grid
+
+        Platform.runLater(train.requestFocus())
+
+        def leaveTrain() = {val choosenTrain = train.value.value
+        val choosenGoal = townToGo.value.value
+        if (choosenGoal.goodbyeTrain(choosenTrain))
+        { game.trainToBeDispatched(choosenTrain, choosenGoal.getID())}
+      }
+
+        dialog.resultConverter = {dialogButton =>
+          if (dialogButton == createButtonType)
+          {Result(leaveTrain()) }
+          else Result(())
+        }
+
+        val res = dialog.showAndWait()
+        res match {
+          case _ => ()
+        }
+    }
+
     def townToCircle(Town : Town) : Circle = {
       new Circle {
         val town = Town
         centerX = town.position().x_coord()
         centerY = town.position().y_coord()
         radius = town.population() / 5
-        onMouseClicked = { ae =>  town.incrPop();
-                                  radius = town.population() / 5;
-                                   {new Alert(AlertType.Information) {
-                                    initOwner(stage)
-                                    title = town.name
-                                    headerText = s"Voici quelques informations à propos de ${town.name} : "
-                                    contentText = s"Population actuelle : ${town.pop}"
-                                  }.showAndWait()
-                            }}
+        // onMouseClicked = { ae =>  town.incrPop();
+        //                           radius = town.population() / 5;
+        //                            {new Alert(AlertType.Information) {
+        //                             initOwner(stage)
+        //                             title = town.name
+        //                             headerText = s"Voici quelques informations à propos de ${town.name} : "
+        //                             contentText = s"Population actuelle : ${town.pop}"
+        //                           }.showAndWait()
+        //                     }}
+          onMouseClicked = handle {sendTrain(town)}
         fill <== when(hover) choose {Yellow} otherwise Orange
         }
 
@@ -43,7 +104,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         val town = Town
         centerX = town.position().x_coord()
         centerY = town.position().y_coord()
-        radius = town.population() / 5 + 20
+        radius = town.population() / 5 + 10
         fill <== when(hover) choose {Yellow} otherwise Red
         }
       }
@@ -106,7 +167,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             initOwner(stage)
             title = "Création d'un nouveau train"
             headerText = "Vous vous aprétez à inaugurer un nouveau train"
-            //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
+            graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
           }
 
           val createButtonType = new ButtonType("Créer", ButtonData.OKDone)
@@ -160,11 +221,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
 
 
-      // content = edgeRoads ++ townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
-      //   onAction = handle {newTrainWindow()};
-      //   layoutX <== stage.width-width; layoutY = 0},
-      //     new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
-      //     new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
-      //     new Label(s"${game.towns()(0).population()}"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+
+
+
       }
   }
