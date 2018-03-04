@@ -141,8 +141,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
     for (i <- 0 until nt) {matrix(i)(i) = (0,i,0)}
 
-    //for (i <- 0 until nr) {var r = roads(i)} // to be continued
-    //for (i <- 0 until nr){for (j <- 0 until roads(i).length) {matrix(i)(j) = (1,1,1)} } // 111 à vérifier
+    //Algorithm of Floyd-warshall
 
     for (k <- 0 to nt){
       for (i <- 0 to nt){
