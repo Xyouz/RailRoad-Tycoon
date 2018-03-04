@@ -136,7 +136,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
       val mat2 = Array.ofDim[(Road,Town, Double)](nt,nt)
       for (i <- 0 until nt) {
         for (j <- 0 until nt) {
-          mat2(i)(j) = (roads(mat1(i)(j)._1), towns(mat1(i)(j)._2), mat1(i)(j)._3 )
+          mat2(i)(j) = (roads(max(0,mat1(i)(j)._1)), towns(max(0,mat1(i)(j)._2)), mat1(i)(j)._3 )
         }
       }
       mat2
@@ -146,9 +146,9 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
     //Algorithm of Floyd-warshall itself
 
-    for (k <- 0 to nt){
-      for (i <- 0 to nt){
-        for (j <- 0 to nt){
+    for (k <- 0 until nt){
+      for (i <- 0 until nt){
+        for (j <- 0 until nt){
           if (matrix(i)(j)._3 > matrix(i)(k)._3 + matrix(k)(j)._3) {
             matrix(i)(j) = matrix(i)(j).copy(_3 = matrix(i)(k)._3 + matrix(k)(j)._3)
           }

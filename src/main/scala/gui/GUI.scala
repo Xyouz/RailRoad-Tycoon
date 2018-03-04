@@ -69,64 +69,59 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 
 
-def newTrainWindow(): Unit = {
+      def newTrainWindow(): Unit = {
 
-    case class Result(cochonou : Unit)
-    // Create the custom dialog window.
-    def dialog = new Dialog[Result]() {
-      initOwner(stage)
-      title = "Création d'un nouveau train"
-      headerText = "Vous vous aprétez à inaugurer un nouveau train"
-      //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
-    }
+          case class Result(cochonou : Unit)
+          // Create the custom dialog window.
+          def dialog = new Dialog[Result]() {
+            initOwner(stage)
+            title = "Création d'un nouveau train"
+            headerText = "Vous vous aprétez à inaugurer un nouveau train"
+            //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
+          }
 
-    val createButtonType = new ButtonType("Créer", ButtonData.OKDone)
-    dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
+          val createButtonType = new ButtonType("Login", ButtonData.OKDone)
+          dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
 
-    val speed = new Slider(0,10,5)
+          val speed = new Slider(0,10,5)
 
-    val trainName = new TextField()
-    {
-      promptText = "Name"
-    }
+          val trainName = new TextField()
+          {
+            promptText = "Name"
+          }
 
-    val townToStart = new ComboBox(game.towns())
+          val townToStart = new ComboBox(game.towns())
 
-    val grid = new GridPane()
-    {
-      hgap = 10
-      vgap = 10
-      //padding = Insets(20,100,10,10)
+          val grid = new GridPane()
+          {
+            hgap = 10
+            vgap = 10
+            padding = Insets(20,100,10,10)
 
-      add(new Label("Name:"), 0, 0)
-      add(trainName, 1, 0)
-      add(new Label("Speed:"), 0, 1)
-      add(speed, 1, 1)
-      add(new Label("Launch town:"),0,2)
-      add(townToStart, 1, 2)
-    }
+            add(new Label("Name:"), 0, 0)
+            add(trainName, 1, 0)
+            add(new Label("Speed:"), 0, 1)
+            add(speed, 1, 1)
+            add(new Label("Launch town:"),0,2)
+            add(townToStart, 1, 2)
+          }
 
-    // val createButton = dialog.dialogPane().lookupButton(createButtonType)
-    // createButton.disable = true
-    //
-    // trainName.text.onChange { (_, _, newValue) =>
-    //   createButton.disable = newValue.trim().isEmpty}
 
-    dialog.dialogPane().content = grid
+          dialog.dialogPane().content = grid
 
-    Platform.runLater(trainName.requestFocus())
+          Platform.runLater(trainName.requestFocus())
 
-    dialog.resultConverter = {dialogButton =>
-      if (dialogButton == createButtonType) {Result(townToStart.value.value.welcomeTrain(new Train(speed.value.toDouble,trainName.text())))}
-      else Result(())
-    }
+          dialog.resultConverter = {dialogButton =>
+            if (dialogButton == createButtonType) {Result(townToStart.value.value.welcomeTrain(new Train(speed.value.toDouble,trainName.text())))}
+            else Result(())
+          }
 
-    val res = dialog.showAndWait()
-    res match {
-      case _ => ()
-    }
-  }
+          val res = dialog.showAndWait()
+          res match {
+            case _ => ()
+          }
+      }
 
 
       content = edgeRoads ++ nodeTowns ++ Seq(new Button("New Train"){

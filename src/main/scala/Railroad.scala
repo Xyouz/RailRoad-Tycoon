@@ -10,4 +10,3 @@ object Program extends JFXApp
     val game = new Game()
     stage = new MainGame(game)
 }
- 
