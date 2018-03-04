@@ -47,6 +47,7 @@ class Road(val begin : Town,val end : Town){
         }
       }
   }
+  
   def launchTrain(train : Train, destination : Town) =
     {
       if (destination == end)
