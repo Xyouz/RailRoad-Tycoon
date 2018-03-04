@@ -7,7 +7,7 @@ import scalafx.scene.Scene
 import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.{Circle,Rectangle,Line}
-import scalafx.beans.property.DoubleProperty
+import scalafx.beans.property.{DoubleProperty, StringProperty}
 import scalafx.animation.AnimationTimer
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
@@ -28,7 +28,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
                                    {new Alert(AlertType.Information) {
                                     initOwner(stage)
                                     title = town.name
-                                    headerText = s"Voici quelques informations à propos de ${town.name}"
+                                    headerText = s"Voici quelques informations à propos de ${town.name} : "
                                     contentText = s"Population actuelle : ${town.pop}"
                                   }.showAndWait()
                             }}
@@ -37,6 +37,17 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
     }
 
+    def showTrainCircle(Town : Town) : Circle =
+      {
+        new Circle{
+        val town = Town
+        centerX = town.position().x_coord()
+        centerY = town.position().y_coord()
+        radius = town.population() / 5 + 20
+        fill <== when(hover) choose {Yellow} otherwise Red
+        }
+      }
+
     def roadToLine(Road : Road) : Line = {
       new Line {
         val road = Road
@@ -44,6 +55,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         startY = road.getStart().position().y_coord()
         endX = road.getEnd().position().x_coord()
         endY = road.getEnd().position().y_coord()
+        strokeWidth = 5
       }
     }
 
@@ -57,6 +69,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       val nodeTowns = game.towns().map(townToCircle(_))
       val edgeRoads = game.roads().map(roadToLine(_))
+      var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
 
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
@@ -80,11 +93,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
           }
 
-          val createButtonType = new ButtonType("Login", ButtonData.OKDone)
+          val createButtonType = new ButtonType("Créer", ButtonData.OKDone)
           dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
 
           val speed = new Slider(0,10,5)
+
+          //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
 
           val trainName = new TextField()
           {
@@ -103,9 +118,14 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             add(trainName, 1, 0)
             add(new Label("Speed:"), 0, 1)
             add(speed, 1, 1)
+            //add(echoSpeed,1,2)
             add(new Label("Launch town:"),0,2)
             add(townToStart, 1, 2)
           }
+
+          val createButton = dialog.dialogPane().lookupButton(createButtonType)
+          //createButton.disable = true
+
 
 
           dialog.dialogPane().content = grid
@@ -124,7 +144,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
 
 
-      content = edgeRoads ++ nodeTowns ++ Seq(new Button("New Train"){
+      content = edgeRoads ++ townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
         onAction = handle {newTrainWindow()};
         layoutX <== stage.width-width; layoutY = 0},
           new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},

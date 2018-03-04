@@ -94,7 +94,7 @@ class Town(val id : Int,
       def update(){
         pop += 20
       }
-      def welcomeTrain(train : Train) = {}
+      def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation}
       def hasTrains() : Boolean = {railwayStation.isEmpty}
     }
 
