@@ -95,13 +95,14 @@ class Town(val id : Int,
     }
 
 
-class Train(val speed : Double){
+class Train(val speed : Double, val name : String){
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
     def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed};
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}
+    def getName() = {name}
     //val passengers : Int
     //val goodies : List[Goods]
     /*var loaded: Int = 0
