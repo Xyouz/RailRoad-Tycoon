@@ -54,9 +54,9 @@ class Road(val begin : Town,val end : Town){//,val route : Array[Point]){
       trainsAB.map(_.update())
       trainsBA.map(_.update())
     }
-  def launchTrain(train : Train, destination : Int) =
+  def launchTrain(train : Train, destination : Town) =
     {
-      if (destination == end.getID())
+      if (destination == end)
         {
           trainsAB :+ train
         }
@@ -141,8 +141,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
     for (i <- 0 until nt) {matrix(i)(i) = (0,i,0)}
 
-    //for (i <- 0 until nr) {var r = roads(i)} // to be continued
-    //for (i <- 0 until nr){for (j <- 0 until roads(i).length) {matrix(i)(j) = (1,1,1)} } // 111 à vérifier
+    //Algorithm of Floyd-warshall
 
     for (k <- 0 to nt){
       for (i <- 0 to nt){
@@ -157,7 +156,8 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
     //matrix.map( t:(Int,Int,Double) => (roads(t._1), towns(t._2), t._3) )
     }
 
-  val dispatchMatrix = Array.ofDim[(Road,Town,Double)](nbOfTown, nbOfTown)  // Appliquer Djiekstra ou autre pour obtenir une matrice
+  val dispatchMatrix = shortestPath(townList, roadList)
+                           // Appliquer Dijkstra ou autre pour obtenir une matrice
                            // qui puisse nous permettre de savoir où aller chaque case,
                            // le numéro de la route et la destination suivante
                            // type matrix of int*int
@@ -173,8 +173,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
         else
         {
           train.resetDistance();
-
-          //roadList(dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
+          (dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
         }
     }
 
