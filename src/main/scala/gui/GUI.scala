@@ -80,7 +80,7 @@ def newTrainWindow(): Unit = {
       //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
     }
 
-    val createButtonType = new ButtonType("Login", ButtonData.OKDone)
+    val createButtonType = new ButtonType("Créer", ButtonData.OKDone)
     dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
 
@@ -97,7 +97,7 @@ def newTrainWindow(): Unit = {
     {
       hgap = 10
       vgap = 10
-      padding = Insets(20,100,10,10)
+      //padding = Insets(20,100,10,10)
 
       add(new Label("Name:"), 0, 0)
       add(trainName, 1, 0)
@@ -107,6 +107,11 @@ def newTrainWindow(): Unit = {
       add(townToStart, 1, 2)
     }
 
+    // val createButton = dialog.dialogPane().lookupButton(createButtonType)
+    // createButton.disable = true
+    //
+    // trainName.text.onChange { (_, _, newValue) =>
+    //   createButton.disable = newValue.trim().isEmpty}
 
     dialog.dialogPane().content = grid
 
