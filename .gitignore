@@ -3,3 +3,6 @@
 *.properties
 project
 target
+*.aux
+*.pdf
+*.synctex.gz
