@@ -32,30 +32,27 @@ class Road(val begin : Town,val end : Town){
   def getEnd() = {end}
   def update() =
     {
-      trainsAB.map(_.update())
-      trainsBA.map(_.update())
-      var arrived = Seq[Train]()
+      var arrived = Seq[(Train,Int)]()
       for (i <- 0 until trainsAB.length)
       {
         var dist = trainsAB(i).update()
         if (dist >= length)
         {
-          arrived :+ (trainsAB(i), end.getID())
+          arrived = arrived :+ ((trainsAB(i), end.getID()))
           trainsAB = trainsAB.filter(_ != trainsAB(i))
         }
       }
 
-        for (i <- 0 until trainsBA.length)
+      for (i <- 0 until trainsBA.length)
         {
           var dist = trainsBA(i).update()
           if (dist >= length)
           {
-            arrived :+ (trainsBA(i), begin.getID())
+            arrived = arrived :+ ((trainsBA(i), begin.getID()))
             trainsBA = trainsBA.filter(_ != trainsBA(i))
           }
-
-
       }
+      arrived
   }
 
   def launchTrain(train : Train, destination : Town) =
@@ -85,15 +82,23 @@ class Town(val id : Int,
     // val coming_roads : List[(Town)],
     var pos : Point)
     {
+      var railwayStation = List[Train]()
       def getID() : Int = {id}
       def getName() : String = {name}
       def position() : Point={pos}
       def population() : Int={pop}
       def incrPop() = {pop = pop+50}
       def update(){
-        pop += 20
+      //  pop += 20
       }
-      def welcomeTrain(train : Train) = {}
+      def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation}
+      def hasTrains() : Boolean = {railwayStation.isEmpty}
+      def goodbyeTrain(train : Train) : Boolean =
+        {
+        val n = railwayStation.length
+        railwayStation = railwayStation.filter(_!=train)
+        (n != railwayStation.length)
+      }
     }
 
 
@@ -106,6 +111,7 @@ class Train(val speed : Double, val name : String){
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}
+    def setDestination(town : Town) = {destination = town.getID()}
     def getName() = {name}
 }
 
@@ -121,6 +127,7 @@ class Game()
       new Road(townList(2),townList(3)))
 
   val nbOfTown = townList.length
+
 
 //we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
 def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
@@ -159,6 +166,10 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
   val dispatchMatrix = shortestPath(townList, roadList)
 
+  var trainsOnTransit = List[(Train, Int)]() // List oof trains and their destination
+
+  def trainToBeDispatched(train : Train, localState : Int) = { trainsOnTransit = (train, localState) :: trainsOnTransit }
+
   // townID : current town where the train is.
   def dispatchTrain(train : Train, townID : Int) =
     {
@@ -169,13 +180,24 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
         else
         {
           train.resetDistance();
-          (dispatchMatrix(townID)(train.getDestination())._1).launchTrain(train,dispatchMatrix(townID)(train.getDestination())._2)
+          var info = dispatchMatrix(townID)(train.getDestination())
+          (info._1).launchTrain(train,info._2)
         }
     }
 
   def update() =
   {
-    var trainsOnArrival = roadList.map(_.update())
+    def mappingFun(t : (Train, Int)) =
+      {
+        dispatchTrain(t._1, t._2)
+      }
+
+    for (road <- roadList)
+    {
+      trainsOnTransit = trainsOnTransit ++ road.update()
+    }
+    trainsOnTransit.map(mappingFun(_))
+    trainsOnTransit = List[(Train,Int)]()
     townList.map(_.update())
   }
 
