@@ -44,11 +44,17 @@
 	Here are the methods we implement in $MainGame$:
 	\begin{itemize}
 		\item \underline{sendTrain}:
+		
 		\item \underline{leaveTrain}:
-		\item \underline{townToCircle} :
+		
+		\item \underline{townToCircle} : This method associate the towns (the vertices) with circle. A town is the center of a circle, and its radius is related to the population of the city.
+		
 		\item \underline{showTrainCircle}:
-		\item \underline{roadToLine}:
+		
+		\item \underline{roadToLine}: $roadToLine$ turns  the roads (the edges) into lines on the screen.
+		
 		\item \underline{newTrainWindow}:
+		
 	\end{itemize}
 	
 	\subsection{Model}
@@ -75,7 +81,7 @@
 		
 	\end{itemize}
 	\subsection{Railroad}
-	
+	For now, this function is used only to launch game. It will be useful if we later need further improvements e.g. save a game or adding levels of difficulty.
 	\section{How to start a new game}
 	
 	We use $ScalaFX$ for the graphic interface. We sent you a file "RailroadTycoon", you must open it, when you are in it, you have to type $sbt$ and press enter. Then you must type $run$ if you want to launch a new game.
