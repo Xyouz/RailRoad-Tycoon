@@ -76,7 +76,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           def dialog = new Dialog[Result]() {
             initOwner(stage)
             title = "Création d'un nouveau train"
-            headerText = "Vous vous aprétez à inaugurer un nouveau train"
+            headerText = "Vous vous apprétez à inaugurer un nouveau train"
             //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
           }
 
