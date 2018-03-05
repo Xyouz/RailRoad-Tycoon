@@ -99,8 +99,8 @@ class Town(val id : Int,
       def goodbyeTrain(train : Train) : Boolean =
         {
         val n = railwayStation.length
-        railwayStation.filter(_==train)
-        (n != railwayStation)
+        railwayStation = railwayStation.filter(_==train)
+        (n != railwayStation.length)
       }
     }
 
@@ -187,8 +187,12 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
   def update() =
   {
+    def mappingFun(t : (Train, Int)) =
+      {
+        dispatchTrain(t._1, t._2)
+      }
     var trainsOnArrival = roadList.map(_.update())
-    trainsOnTransit.map(t => dispatchTrain(t._1,t._2))
+    trainsOnTransit.map(mappingFun(_))
     townList.map(_.update())
   }
 
