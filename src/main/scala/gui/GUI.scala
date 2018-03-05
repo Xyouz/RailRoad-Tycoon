@@ -118,6 +118,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         endX = road.getEnd().position().x_coord()
         endY = road.getEnd().position().y_coord()
         strokeWidth = 5
+        onMouseClicked = {ae => println(road.trainsAB);
+                                println(road.trainsBA)}
       }
     }
 
@@ -153,6 +155,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         if ((t-lastTick)>=1000000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           println(s"${t/1000000000}")
+          println(game.trainsOnTransit)
           game.update()
           drawScene()}
       })
@@ -167,7 +170,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           val dialog = new Dialog[Result]() {
             initOwner(stage)
             title = "Création d'un nouveau train"
-            headerText = "Vous vous aprétez à inaugurer un nouveau train"
+            headerText = "Vous vous apprétez à inaugurer un nouveau train"
             graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
           }
 
