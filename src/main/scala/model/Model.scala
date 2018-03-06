@@ -33,23 +33,23 @@ class Road(val begin : Town,val end : Town){
   def update() =
     {
       var arrived = Seq[(Train,Int)]()
-      for (i <- 0 until trainsAB.length)
+      for (train <- trainsAB)
       {
-        var dist = trainsAB(i).update()
+        var dist = train.update()
         if (dist >= length)
         {
-          arrived = arrived :+ ((trainsAB(i), end.getID()))
-          trainsAB = trainsAB.filter(_ != trainsAB(i))
+          arrived = arrived :+ ((train, end.getID()))
+          trainsAB = trainsAB.filter(_ != train)
         }
       }
 
-      for (i <- 0 until trainsBA.length)
+      for (train <- trainsBA)
         {
-          var dist = trainsBA(i).update()
+          var dist = train.update()
           if (dist >= length)
           {
-            arrived = arrived :+ ((trainsBA(i), begin.getID()))
-            trainsBA = trainsBA.filter(_ != trainsBA(i))
+            arrived = arrived :+ ((train, begin.getID()))
+            trainsBA = trainsBA.filter(_ != train)
           }
       }
       arrived
@@ -59,11 +59,11 @@ class Road(val begin : Town,val end : Town){
     {
       if (destination == end)
         {
-          trainsAB :+ train
+          trainsAB = trainsAB :+ train
         }
       else
         {
-          trainsBA :+ train
+          trainsBA = trainsBA :+ train
         }
     }
 }
@@ -109,7 +109,8 @@ class Train(val speed : Double, val name : String){
     override def toString() = {name}
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
-    def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed};
+    def update() = { {distanceOnRoad += 200 * speed};
+                      println(distanceOnRoad)
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}
@@ -121,13 +122,12 @@ class Train(val speed : Double, val name : String){
 // Eventually a class to launch a game.
 class Game()
 {
-  val townList = Seq[Town](new Town(1, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
-      new Town(2, "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
-      new Town(3, "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
-      new Town(4, "Town4", 156, List(new Goods("your",55), new Goods("uranus",8)), new Point(120,450)))
+  val townList = Seq[Town](new Town(0, "Town1", 258, List(new Goods("lunettes",55), new Goods("chats",8)), new Point(300,150)) ,
+      new Town(1, "Town2", 562, List(new Goods("diamond",55), new Goods("dogs",8)), new Point(100,200)) ,
+      new Town(2, "Town3", 654, List(new Goods("paintit",55), new Goods("black",8)), new Point(500,400)) ,
+      new Town(3, "Town4", 156, List(new Goods("your",55), new Goods("uranus",8)), new Point(120,450)))
   var roadList = Seq[Road](new Road(townList(1),townList(2)) ,
       new Road(townList(2),townList(3)))
-
   val nbOfTown = townList.length
 
 
@@ -168,7 +168,8 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
   val dispatchMatrix = shortestPath(townList, roadList)
 
-  var trainsOnTransit = List[(Train, Int)]() // List oof trains and their destination
+   // List of trains and the ID of the town they are currently in
+  var trainsOnTransit = List[(Train, Int)]()
 
   def trainToBeDispatched(train : Train, localState : Int) = { trainsOnTransit = (train, localState) :: trainsOnTransit }
 
