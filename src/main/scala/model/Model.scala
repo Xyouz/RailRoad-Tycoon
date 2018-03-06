@@ -9,6 +9,7 @@ import scalafx.beans.property.{ DoubleProperty}
 class Point(var x : Double,var y : Double){
   def x_coord():Double = {x}
   def y_coord():Double = {y}
+  override def toString() = s"x : $x ; y : $y"
   def print():Unit = {println(s"x : $x ; y : $y\n")}
   def +(that: Point) = {new Point(x + that.x, y + that.y)}  // `this` might be useful
   def -(that: Point) = {new Point(x - that.x, y - that.y)}
@@ -37,7 +38,7 @@ class Road(val begin : Town,val end : Town){
     {
       var distToBegin = t.distanceOnRoad
       if (!b) {distToBegin = length - distToBegin}
-      begin.position + townsVec.normalize().scale(distToBegin)
+      begin.position + townsVec.scale(distToBegin/length)
     }
   def getTrainsPos() = {(trainsAB.map(_posTrain(_,true)))++(trainsBA.map(_posTrain(_,false)))}
   def update() =
@@ -122,7 +123,7 @@ class Train(val speed : Double, val name : String){
     override def toString() = {name}
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
-    def update() = { {distanceOnRoad +=  10 * speed};
+    def update() = { {distanceOnRoad += speed};
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}

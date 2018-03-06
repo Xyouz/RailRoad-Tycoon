@@ -103,7 +103,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         //                           }.showAndWait()
         //                     }}
           onMouseClicked = handle {sendTrain(town)}
-        fill <== when(hover) choose {Yellow} otherwise Orange
+        fill = Orange
         }
 
     }
@@ -115,7 +115,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         centerX = town.position().x_coord()
         centerY = town.position().y_coord()
         radius = town.population() / 5 + 10
-        fill <== when(hover) choose {Yellow} otherwise Red
+        fill =  Red
         }
       }
 
@@ -136,6 +136,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
     }
 
+    def pointToSmallCircle(point : Point) : Circle =
+      {
+        new Circle{
+        radius = 10
+        centerX = point.x_coord()
+        centerY = point.y_coord()
+        fill = DarkCyan} }
 
     title.value = "Roolraid Tycoan"
     width = 1000
@@ -156,18 +163,12 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       var trains = Seq[Circle]()
 
-      def pointToSmallCircle(point : Point) : Circle = {new Circle{radius = 10;
-          centerX = point.x_coord;
-          centerY = point.y_coord;
-          fill = DarkCyan} }
-
       for (roads <- game.roads())
       {
         trains = roads.getTrainsPos().map(pointToSmallCircle(_)) ++trains
-
       }
 
-      content = edgeRoads ++ //trains ++
+      content = edgeRoads ++ trains ++
           townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
           onAction = handle {newTrainWindow()};
           layoutX <== stage.width-width; layoutY = 0},
@@ -179,7 +180,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
-        if ((t-lastTick)>=500000000){  // Allow to choose the duration
+        if ((t-lastTick)>=200000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           game.update()
           drawScene()}
@@ -203,7 +204,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
 
-          val speed = new Slider(0,10,5)
+          val speed = new Slider(1,10,5)
 
           //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
 
