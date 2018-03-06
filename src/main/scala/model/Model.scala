@@ -32,6 +32,7 @@ class Road(val begin : Town,val end : Town){
   var trainsBA = Seq[Train]()
   def getStart() = {begin}
   def getEnd() = {end}
+  def numberOfTrains() = {trainsAB.length + trainsBA.length}
   def _posTrain(t : Train, b : Boolean) =
     {
       var distToBegin = t.distanceOnRoad
@@ -97,6 +98,7 @@ class Town(val id : Int,
       def getName() : String = {name}
       def position() : Point={pos}
       def population() : Int={pop}
+      def deltaPopulation(delta : Int) = {pop += delta}
       def incrPop() = {pop = pop+50}
       def update(){
       //  pop += 20
@@ -120,7 +122,7 @@ class Train(val speed : Double, val name : String){
     override def toString() = {name}
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
-    def update() = { {distanceOnRoad +=  speed};
+    def update() = { {distanceOnRoad +=  10 * speed};
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}
@@ -142,6 +144,8 @@ class Game()
       new Road(townList(2),townList(3)))
   val nbOfTown = townList.length
 
+  var money = 0.0
+  def deltaMoney(delta : Double) = {money = money + delta}
 
 //we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
 def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
