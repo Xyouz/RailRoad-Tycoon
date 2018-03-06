@@ -24,7 +24,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         // Create the custom dialog window.
         val dialog = new Dialog[Result]() {
           initOwner(stage)
-          title = "Expédition d'un train"
+          title = s"Expédition d'un train depuis ${startTown}"
           headerText = "TCHOU!TCHOU! C'est l'heure du départ!"
           //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
         }
@@ -126,7 +126,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         startY = road.getStart().position().y_coord()
         endX = road.getEnd().position().x_coord()
         endY = road.getEnd().position().y_coord()
-        strokeWidth = 5
+        strokeWidth = 8
         onMouseClicked = {ae => new Alert(AlertType.Information) {
                                     initOwner(stage)
                                     title = "Route"
@@ -138,8 +138,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 
     title.value = "Roolraid Tycoan"
-    width = 800
-    height = 600
+    width = 1000
+    height = 700
     //content = new Button("Hell World")
     scene = new Scene{
       fill = LightGreen
