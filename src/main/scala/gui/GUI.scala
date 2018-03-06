@@ -68,7 +68,9 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         val choosenGoal = townToGo.value.value
         val load = loadings.value.toInt
         if (startTown.goodbyeTrain(choosenTrain))
-        { choosenTrain.setLoading(load)
+        { game.deltaMoney(load*100.0)
+          choosenTrain.setLoading(load)
+          startTown.deltaPopulation(-load)
           choosenTrain.setDestination(choosenGoal)
           game.trainToBeDispatched(choosenTrain, startTown.getID())}
       }
@@ -125,8 +127,12 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         endX = road.getEnd().position().x_coord()
         endY = road.getEnd().position().y_coord()
         strokeWidth = 5
-        onMouseClicked = {ae => println(road.trainsAB);
-                                println(road.trainsBA)}
+        onMouseClicked = {ae => new Alert(AlertType.Information) {
+                                    initOwner(stage)
+                                    title = "Route"
+                                    headerText = s"Voici quelques informations à propos de la route reliant ${road.begin} à ${road.end}: "
+                                    contentText = s"Actuellement ${road.numberOfTrains()} trains circulent sur cette voie"
+                                  }.showAndWait()}
       }
     }
 
@@ -166,14 +172,14 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           onAction = handle {newTrainWindow()};
           layoutX <== stage.width-width; layoutY = 0},
           new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
-          new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
-          new Label(s"${game.towns()(0).population()}"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+          //new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
+          new Label(s"Pognon : ${game.money}€"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
 
       }
 
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
-        if ((t-lastTick)>=100000000){  // Allow to choose the duration
+        if ((t-lastTick)>=500000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           game.update()
           drawScene()}
