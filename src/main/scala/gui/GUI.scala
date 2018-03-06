@@ -38,6 +38,9 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
         val townToGo = new ComboBox(game.towns())
 
+        var maxpassengers = ((startTown.pop)/2).toInt
+        val loadings = new Slider(0,maxpassengers,0)
+
         val grid = new GridPane()
         {
           hgap = 10
@@ -48,6 +51,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           add(train, 1, 0)
           add(new Label("Destination:"), 0, 1)
           add(townToGo, 1, 1)
+          add(new Label("Number of passengers:"), 0, 2)
+          add(loadings, 1, 2)
           }
 
         val createButton = dialog.dialogPane().lookupButton(createButtonType)
