@@ -6,3 +6,5 @@ target
 *.aux
 *.pdf
 *.synctex.gz
+*.fls
+*.fdb_latexmk
