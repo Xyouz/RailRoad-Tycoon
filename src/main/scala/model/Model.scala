@@ -82,6 +82,7 @@ class Town(val id : Int,
     // val coming_roads : List[(Town)],
     var pos : Point)
     {
+      override def toString() = {name}
       var railwayStation = List[Train]()
       def getID() : Int = {id}
       def getName() : String = {name}
@@ -105,6 +106,7 @@ class Town(val id : Int,
 
 //a class to represent the train, for a train, we need to know its speed, its destination, and we need a way to update its information
 class Train(val speed : Double, val name : String){
+    override def toString() = {name}
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
     def update() = { if (distanceOnRoad >= 0) {distanceOnRoad += speed};
