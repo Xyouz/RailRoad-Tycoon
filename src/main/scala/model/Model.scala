@@ -102,7 +102,8 @@ class Town(val id : Int,
       //  pop += 20
       }
       def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation
-                                          pop += train.loading}
+                                          pop += train.loading;
+                                          train.loading = 0}
       def hasTrains() : Boolean = {railwayStation.isEmpty}
       def goodbyeTrain(train : Train) : Boolean =
         {
@@ -126,6 +127,7 @@ class Train(val speed : Double, val name : String){
     def setDestination(town : Town) = {destination = town.getID()}
     def getName() = {name}
     var loading =  0 // number of passengers in the train.
+    def setLoading( l : Int ) = { loading = l}
 }
 
 
