@@ -66,8 +66,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
         def leaveTrain() = {val choosenTrain = train.value.value
         val choosenGoal = townToGo.value.value
+        val load = loadings.value.toInt
         if (startTown.goodbyeTrain(choosenTrain))
-        { choosenTrain.setDestination(choosenGoal)
+        { choosenTrain.setLoading(load)
+          choosenTrain.setDestination(choosenGoal)
           game.trainToBeDispatched(choosenTrain, startTown.getID())}
       }
 
