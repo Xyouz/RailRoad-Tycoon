@@ -109,7 +109,7 @@ class Train(val speed : Double, val name : String){
     override def toString() = {name}
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
-    def update() = { {distanceOnRoad += 200 * speed};
+    def update() = { {distanceOnRoad += 80 * speed};
                       println(distanceOnRoad)
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
@@ -152,22 +152,34 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
 
     for (i <- 0 until nt) {matrix(i)(i) = (0,i,0)}
 
+    for (i <- 0 until nr)
+    {
+      var j = roads(i).getEnd.getID()
+      var k = roads(i).getStart.getID()
+      var l = roads(i).length
+      matrix(j)(k) = (i,k,l)
+      matrix(k)(j) = (i,j,l)
+    }
+
+    
     //Algorithm of Floyd-warshall itself
 
     for (k <- 0 until nt){
       for (i <- 0 until nt){
         for (j <- 0 until nt){
           if (matrix(i)(j)._3 > matrix(i)(k)._3 + matrix(k)(j)._3) {
-            matrix(i)(j) = matrix(i)(j).copy(_3 = matrix(i)(k)._3 + matrix(k)(j)._3)
+            var d = matrix(i)(k)._3 + matrix(k)(j)._3
+            var r = matrix(i)(k)._1
+            matrix(i)(j) = (r,k,d)
           }
         }
       }
     }
+
     maps(matrix)
     }
 
   val dispatchMatrix = shortestPath(townList, roadList)
-
    // List of trains and the ID of the town they are currently in
   var trainsOnTransit = List[(Train, Int)]()
 
@@ -184,6 +196,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
         {
           train.resetDistance();
           var info = dispatchMatrix(townID)(train.getDestination())
+          println(s"${train.toString()} redispatché vers ${info._2}")
           (info._1).launchTrain(train,info._2)
         }
     }
