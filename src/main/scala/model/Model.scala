@@ -92,7 +92,8 @@ class Town(val id : Int,
       def update(){
       //  pop += 20
       }
-      def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation}
+      def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation
+                                          pop += train.loading._2}
       def hasTrains() : Boolean = {railwayStation.isEmpty}
       def goodbyeTrain(train : Train) : Boolean =
         {
@@ -116,6 +117,7 @@ class Train(val speed : Double, val name : String){
     def getDestination() = {destination}
     def setDestination(town : Town) = {destination = town.getID()}
     def getName() = {name}
+    var loading = (List[Goods], Int: passengers)
 }
 
 
@@ -161,7 +163,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
       matrix(k)(j) = (i,j,l)
     }
 
-    
+
     //Algorithm of Floyd-warshall itself
 
     for (k <- 0 until nt){
