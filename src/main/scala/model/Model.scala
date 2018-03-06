@@ -13,23 +13,32 @@ class Point(var x : Double,var y : Double){
   def +(that: Point) = {new Point(x + that.x, y + that.y)}  // `this` might be useful
   def -(that: Point) = {new Point(x - that.x, y - that.y)}
   def scale(scalar : Double) = {new Point(scalar * x, scalar * y)}
+  def norm() = {this.distance(new Point(0,0))}
   def distance(p: Point): Double = {
     sqrt(pow(x-p.x_coord(),2) + pow(y-p.y_coord(),2))
   }
-  def normalize{
-    val norm = this.distance(new Point(0,0))
-    if (norm != 0) { x = x / norm ; y = y / norm }
+  def normalize()={
+    if (norm() != 0) { this.scale(1/norm()) }
+    this
   }
 }
 
 
 // A class to represent road between two Towns
 class Road(val begin : Town,val end : Town){
-  val length = begin.position.distance(end.position)
+  val townsVec = end.position - begin.position
+  val length = townsVec.norm()
   var trainsAB = Seq[Train]()
   var trainsBA = Seq[Train]()
   def getStart() = {begin}
   def getEnd() = {end}
+  def _posTrain(t : Train, b : Boolean) =
+    {
+      var distToBegin = t.distanceOnRoad
+      if (!b) {distToBegin = length - distToBegin}
+      begin.position + townsVec.normalize().scale(distToBegin)
+    }
+  def getTrainsPos() = {(trainsAB.map(_posTrain(_,true)))++(trainsBA.map(_posTrain(_,false)))}
   def update() =
     {
       var arrived = Seq[(Train,Int)]()
@@ -109,8 +118,7 @@ class Train(val speed : Double, val name : String){
     override def toString() = {name}
     var distanceOnRoad : Double = -1
     var destination = -1 // L'ID de la destination
-    def update() = { {distanceOnRoad += 80 * speed};
-                      println(distanceOnRoad)
+    def update() = { {distanceOnRoad +=  speed};
                       distanceOnRoad}
     def resetDistance() = {distanceOnRoad = 0}
     def getDestination() = {destination}
@@ -161,7 +169,7 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
       matrix(k)(j) = (i,j,l)
     }
 
-    
+
     //Algorithm of Floyd-warshall itself
 
     for (k <- 0 until nt){

@@ -6,7 +6,7 @@ import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
 import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
-import scalafx.scene.shape.{Circle,Rectangle,Line}
+import scalafx.scene.shape.{Circle,Rectangle,Line,Polygon}
 import scalafx.beans.property.{DoubleProperty, StringProperty}
 import scalafx.animation.AnimationTimer
 import scalafx.scene.control.Alert.AlertType
@@ -141,7 +141,21 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       val edgeRoads = game.roads().map(roadToLine(_))
       var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
 
-      content = edgeRoads ++ townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
+      var trains = Seq[Circle]()
+
+      def pointToSmallCircle(point : Point) : Circle = {new Circle{radius = 10;
+          centerX = point.x_coord;
+          centerY = point.y_coord;
+          fill = DarkCyan} }
+
+      for (roads <- game.roads())
+      {
+        trains = roads.getTrainsPos().map(pointToSmallCircle(_)) ++trains
+
+      }
+
+      content = edgeRoads ++ //trains ++
+          townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
           onAction = handle {newTrainWindow()};
           layoutX <== stage.width-width; layoutY = 0},
           new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
@@ -152,10 +166,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
-        if ((t-lastTick)>=1000000000){  // Allow to choose the duration
+        if ((t-lastTick)>=100000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
-          println(s"${t/1000000000}")
-          println(game.trainsOnTransit)
           game.update()
           drawScene()}
       })
