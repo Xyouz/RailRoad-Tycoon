@@ -174,13 +174,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           layoutX <== stage.width-width; layoutY = 0},
           new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
           //new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
-          new Label(s"Pognon : ${game.money}€"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+          new Label(s"Argent : ${game.money}€"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
 
       }
 
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
-        if ((t-lastTick)>=200000000){  // Allow to choose the duration
+        if ((t-lastTick)>=100000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           game.update()
           drawScene()}
