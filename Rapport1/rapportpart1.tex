@@ -43,17 +43,17 @@
 	This program contains what is necessary to create a proper graphic interface. We define here only one class : $MainGame$ that handles all the drawings and links the towns and roads with circles and lines on the screen.
 	Here are the methods we implement in $MainGame$:
 	\begin{itemize}
-		\item \underline{sendTrain}:
+		\item \underline{sendTrain}: It allows the player to launch a train. They can choose the train, which is declared when they click on $"new$ $Train"$, the destination and the number of passengers it carries out, they choose a number through a $slider$. We decided that at most half of the population of a town can leave a city.  
 		
-		\item \underline{leaveTrain}:
+		\item \underline{leaveTrain}: It enables the trains to leave the town, and to go on the road.
 		
-		\item \underline{townToCircle} : This method associate the towns (the vertices) with circle. A town is the center of a circle, and its radius is related to the population of the city.
+		\item \underline{townToCircle} : This method associate the towns (the vertices) with circle. A town is the center of a circle, and its radius is related to the population of the city. 
 		
-		\item \underline{showTrainCircle}:
+		\item \underline{showTrainCircle}: When a train is created in a city A, this method just adds a red circle around A. The goal here is only to see if there is a train available in a town.
 		
 		\item \underline{roadToLine}: $roadToLine$ turns  the roads (the edges) into lines on the screen.
 		
-		\item \underline{newTrainWindow}:
+		\item \underline{newTrainWindow}: $newTrainWindow$ allows the player to create a new train, giving a name, the speed through a $slider$, and the town where it will be launched.
 		
 	\end{itemize}
 	
@@ -85,6 +85,12 @@
 	\section{How to start a new game}
 	
 	We use $ScalaFX$ for the graphic interface. We sent you a file "RailroadTycoon", you must open it, when you are in it, you have to type $sbt$ and press enter. Then you must type $run$ if you want to launch a new game.
-	
+	If you want to have more information on a town or a road, a you can just click on the object.
+	To create a new train, you will have to click on $New Train$. Eventually, if you want to quit a game, you must click on $"au$ $revoir"$.
 		
+	\section{Improvements}
+	We were not able to deal with the goods, we preferred to focus on coping with the passengers for the first part.\\
+	To create a new town, for now we must put them into the program $Model$, and it is not very user-friendly... It would be better if the player just click on the graphic interface where they want a new city. The population and the wealth would be asked in a new window for example.\\
+	To update the changes, we re-create all game, which take time...
+	
 \end{document}
