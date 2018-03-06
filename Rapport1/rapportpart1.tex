@@ -47,7 +47,7 @@
 		
 		\item \underline{leaveTrain}: It enables the trains to leave the town, and to go on the road.
 		
-		\item \underline{townToCircle} : This method associates the towns (the vertices) with circles. A town is the center of a circle, and its radius is related to the population of the city. 
+		\item \underline{townToCircle} : This method associates the towns (the vertices) with circles. A town is the center of a circle, and its radius is related to the population of the city, so, if the population increases, the circle gets bigger.
 		
 		\item \underline{showTrainCircle}: When a train is created in a city A, this method just adds a red circle around A. The goal here is only to see if there is a train available in a town.
 		
@@ -69,7 +69,7 @@
 		
 		\item \underline{Town} : This class implement a new city. The player must specify an ID, which is an integer (assuming they do not give the same ID to two different towns), a name, its initial population, the goods it owns, and its position on the plan (we use the class $Point$). It also contains methods to access this information, to update it, and $welcomeTrain$ do all the necessary alterations when a train arrive into the town.
 		
-		\item \underline{Train} : Here, we implement a new train, with its speed and its name. We also define methods related to the destination and the trips.
+		\item \underline{Train} : Here, we implement a new train, with its speed and its name. We also define methods related to the destination, the loading and the trips.
 		
 		\item \underline{Game} : Now, we are able to launch a game. First, we define a list of towns and a list of roads (the player choose both of them). Then, if a train must travel from A to B, we have to find the shortest path between A and B. To find all of them we decided to use Floyd-Warshall's algorithm. \\
 		We defined a method $maps$ that basically apply a function to a matrix that modify the types of its component. To be more specific, the matrix we consider is a matrix of tuples: this method just alter the types of the components of each tuple. We did that because we could not use such easily the Map function that is already implemented in Scala. \\
@@ -84,7 +84,7 @@
 	For now, this function is used only to launch game. It will be useful if we later need further improvements e.g. save a game or adding levels of difficulty.
 	\section{How to start a new game}
 	
-	We use $ScalaFX$ for the graphic interface. We sent you a file "RailroadTycoon", you must open it, when you are in it, you have to type $sbt$ and press enter. Then you must type $run$ if you want to launch a new game.\\
+	We use $ScalaFX$ for the graphic interface. We sent you a file $"RailroadTycoon"$, you must open it, when you are in it, you have to type $sbt$ and press enter. Then you must type $run$ if you want to launch a new game.\\
 	If you want to have more information on a town or a road, a you can just click on the object.
 	To create a new train, you will have to click on $New Train$. Eventually, if you want to quit a game, you must click on $"au$ $revoir"$.
 		
@@ -92,6 +92,8 @@
 	We were not able to deal with the goods, we preferred to focus on coping with the passengers for the first part.\\
 	To create a new town, for now we must put them into the program $Model$, and it is not very user-friendly... It would be better if the player just click on the graphic interface where they want a new city. The population and the wealth would be asked in a new window for example.\\
 	To update the changes, we re-create all game, which takes time...\\
-	Eventually, the program does not check out if the player try to do something impossible e.g. launching a train from a town where there is no train to launch. If it happens it bugs.  
+	Eventually, the program does not check out if the player try to do something impossible e.g. launching a train from a town where there is no train to launch. If it happens it bugs.  \\
+	  \\
+	 However, we made one improvement on the graphic interface : since the radius of a circle is proportional to the population of its town, the size of the circle varies with the number of inhabitants.
 	
 \end{document}
