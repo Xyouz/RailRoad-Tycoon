@@ -18,6 +18,7 @@ import scalafx.geometry.{Insets, Pos}
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
+    // Used to create a window to send trains out of a city
     def sendTrain(startTown: Town): Unit = {
 
         case class Result(cochonou : Unit)
@@ -64,6 +65,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
         Platform.runLater(train.requestFocus())
 
+        // this function is to be used only to bypass scala limitation when
+        // returning a Result
         def leaveTrain() = {val choosenTrain = train.value.value
         val choosenGoal = townToGo.value.value
         val load = loadings.value.toInt
@@ -93,16 +96,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         centerX = town.position().x_coord()
         centerY = town.position().y_coord()
         radius = town.population() / 5
-        // onMouseClicked = { ae =>  town.incrPop();
-        //                           radius = town.population() / 5;
-        //                            {new Alert(AlertType.Information) {
-        //                             initOwner(stage)
-        //                             title = town.name
-        //                             headerText = s"Voici quelques informations à propos de ${town.name} : "
-        //                             contentText = s"Population actuelle : ${town.pop}"
-        //                           }.showAndWait()
-        //                     }}
-          onMouseClicked = handle {sendTrain(town)}
+        onMouseClicked = handle {sendTrain(town)}
         fill = Orange
         }
 
@@ -155,6 +149,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       val edgeRoads = game.roads().map(roadToLine(_))
       var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
 
+      // update what is drawn on the screen
       def drawScene() =
         {
       val nodeTowns = game.towns().map(townToCircle(_))
@@ -175,9 +170,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
           //new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
           new Label(s"Argent : ${game.money}€"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
-
       }
 
+
+      // tick every 1/10 of a second
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
         if ((t-lastTick)>=100000000){  // Allow to choose the duration
@@ -188,7 +184,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       updateTick.start()
 
 
-
+      // use to create an interactive window in order to create new trains
       def newTrainWindow(): Unit = {
 
           case class Result(cochonou : Unit)
