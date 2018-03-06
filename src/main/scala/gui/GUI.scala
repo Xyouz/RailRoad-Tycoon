@@ -245,10 +245,5 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             case _ => ()
           }
       }
-
-
-
-
-
       }
   }
