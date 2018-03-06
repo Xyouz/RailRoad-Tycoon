@@ -1,0 +1,90 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage {pstricks-add}
+\usepackage {mathrsfs}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{ucs}
+\usepackage{stmaryrd}
+\pagestyle{fancy}
+
+\newcommand{\question}[1]{\noindent \textbf{#1}~}
+
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{Projet Programmation 2} 
+\fancyhead[R]{Marius Dufraisse, Manon Blanc}
+
+
+\renewcommand{\footrulewidth}{1pt}
+\fancyfoot[C]{\textbf{Page \thepage}} 
+\fancyfoot[L]{L3 Informatique}
+
+\title{Project : Part 1}
+\author{Marius Dufraisse, Manon Blanc}
+\date{ }
+
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+	\section{Introduction}
+	
+	The main goal in this first part is to implement a very basic Tycoon Game. Basically, a Tycoon Game is an interactive game where the player is a tycoon and have to handle a train company that pass through different towns. The functions we implemented must begin a game in a new window, the player should be able to find all the information they need on a city or a route between two towns, like the population, the wealth of the city and the number of trains and their carriage. 
+	
+	\section{Modules}
+	
+	We have three functions that handle the posting of the towns and the roads on the screen ($gui.scala$), the management of the updates of the cities and the road ($Model.scala$) and one that just start a new game ($Railroad.scala$). Let's describe them a bit more:
+	
+	\subsection{GUI}
+	This program contains what is necessary to create a proper graphic interface. We define here only one class : $MainGame$ that handles all the drawings and links the towns and roads with circles and lines on the screen.
+	Here are the methods we implement in $MainGame$:
+	\begin{itemize}
+		\item \underline{sendTrain}:
+		
+		\item \underline{leaveTrain}:
+		
+		\item \underline{townToCircle} : This method associate the towns (the vertices) with circle. A town is the center of a circle, and its radius is related to the population of the city.
+		
+		\item \underline{showTrainCircle}:
+		
+		\item \underline{roadToLine}: $roadToLine$ turns  the roads (the edges) into lines on the screen.
+		
+		\item \underline{newTrainWindow}:
+		
+	\end{itemize}
+	
+	\subsection{Model}
+	We defined several new classes.
+	\begin{itemize}
+		\item \underline{Point} : Since the interface of the game is just a plan, this class allow us to deal with the placement of the towns (assuming that they are points in the plan) and gives us very basic methods giving the coordinates, a mean to add the coordinates of two points, the length between two points, a scalar product and a way to normalize the vectors. Through it may not seem essential, this class turns out to be really useful for the interface and simplify the following classes.
+		
+		\item \underline{Road} : Granted that it is vital to know what is on the road, this class updates the trains on each road. To be more specific, knowing the beginning A and the end B of a road, given the speed of each train that are between A and B (the graph is not oriented), the player can know which trains arrived at their destination, which ones are still on the road AB, and which ones are not AB anymore.\\
+		There is also a method to launch a new train on AB.
+		
+		\item \underline{Goods} : This class allows us to implement and add new goods, with their name and their price.
+		
+		\item \underline{Town} : This class implement a new city. The player must specify an ID, which is an integer (assuming they do not give the same ID to two different towns), a name, its initial population, the goods it owns, and its position on the plan (we use the class $Point$). It also contains methods to access this information, to update it, and $welcomeTrain$ do all the necessary alterations when a train arrive into the town.
+		
+		\item \underline{Train} : Here, we implement a new train, with its speed and its name. We also define methods related to the destination and the trips.
+		
+		\item \underline{Game} : Now, we are able to launch a game. First, we define a list of towns and a list of roads (the player choose both of them). Then, if a train must travel from A to B, we have to find the shortest path between A and B. To find all of them we decided to use Floyd-Warshall's algorithm. 
+		We decided to define a method $maps$ that basically apply a function to a matrix that modify the types of its component. To be more specific, the matrix we consider is a matrix of tuples: this method just alter the types of the components of each tuple. We did that because we could not use such easily the Map function that is already implemented in Scala. 
+		Then we apply the algorithm of Floyd-Warshall itself, and the method $shortestPath$ is comprehensively defined.
+		Eventually, we define two methods that dispatch the trains on the roads and that update the game at each ticks respectively. 
+		
+		
+		
+		
+	\end{itemize}
+	\subsection{Railroad}
+	For now, this function is used only to launch game. It will be useful if we later need further improvements e.g. save a game or adding levels of difficulty.
+	\section{How to start a new game}
+	
+	We use $ScalaFX$ for the graphic interface. We sent you a file "RailroadTycoon", you must open it, when you are in it, you have to type $sbt$ and press enter. Then you must type $run$ if you want to launch a new game.
+	
+		
+\end{document}
