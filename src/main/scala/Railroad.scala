@@ -5,8 +5,7 @@ import scalafx.Includes._
 import scalafx.application.JFXApp
 
 
-object Program extends JFXApp
-{
-    val game = new Game()
-    stage = new MainGame(game)
+object Program extends JFXApp {
+  val game = new Game()
+  stage = new MainGame(game)
 }
