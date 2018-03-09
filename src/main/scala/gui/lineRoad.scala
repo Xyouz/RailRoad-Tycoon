@@ -23,4 +23,6 @@ class LineRoad(val master : JFXApp.PrimaryStage, val road : Road) extends Line {
         contentText = s"Actuellement ${road.numberOfTrains()} trains circulent sur cette voie"
       }.showAndWait()
   }
+
+  def update() = {}
 }

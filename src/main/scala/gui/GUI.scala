@@ -8,7 +8,9 @@ import model._
 import circTown._
 import lineRoad._
 import circShowTrains._
+import dotTrain._
 import scalafx.Includes._
+import updatable._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
 import scalafx.scene.layout._
@@ -37,13 +39,9 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new LineRoad(stage, road)
     }
 
-    def pointToSmallCircle(point : Point) : Circle =
-      {
-        new Circle{
-        radius = 10
-        centerX = point.x_coord()
-        centerY = point.y_coord()
-        fill = DarkCyan} }
+    def trainToDot(train : Train) : CircTrain = {
+        new CircTrain(train)
+    }
 
     title.value = "Roolraid Tycoan"
     width = 1000
@@ -54,29 +52,33 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       val nodeTowns = game.towns().map(townToCircle(_))
       val edgeRoads = game.roads().map(roadToLine(_))
-      var townsWithTrains = (game.towns().filter(t => (t.hasTrains()))).map(showTrainCircle(_))
+      val townsWithTrains = game.towns().map(showTrainCircle(_))
 
-      // update what is drawn on the screen
-      def drawScene() =
-        {
-      val nodeTowns = game.towns().map(townToCircle(_))
-      val edgeRoads = game.roads().map(roadToLine(_))
-      var townsWithTrains = (game.towns().filter(t => (t.hasTrains()))).map(showTrainCircle(_))
+      var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++
+        Seq(new UpdatableButton(){
+              text = "New Train"
+              onAction = handle {newTrainWindow()}
+              layoutX <== stage.width-width
+              layoutY = 0
+            },
+            new UpdatableButton(){
+              text = "Au revoir"
+              onAction = { ae => stage.close() }
+              layoutX <== stage.width-width
+              layoutY = 25
+            },
+            new UpdatableLabel(){
+              text = s"Argent : ${game.money}€"
+              layoutX <== stage.width-width -25
+              layoutY <== stage.height - 75
+              override def update() = {text = s"Argent : ${game.money}€"}
+            })
 
-      var trains = Seq[Circle]()
+      root = toBeDrawn
 
-      for (roads <- game.roads())
-      {
-        trains = roads.getTrainsPos().map(pointToSmallCircle(_)) ++trains
-      }
-
-      content = edgeRoads ++ trains ++
-          townsWithTrains ++ nodeTowns ++ Seq(new Button("New Train"){
-          onAction = handle {newTrainWindow()};
-          layoutX <== stage.width-width; layoutY = 0},
-          new Button("Au revoir"){onAction = { ae => stage.close() };layoutX <== stage.width-width; layoutY = 25},
-          //new Button("Monde de merde"){layoutX <== stage.width-width; layoutY = 50},
-          new Label(s"Argent : ${game.money}€"){layoutX <== stage.width-width -25; layoutY <== stage.height - 75})
+      // update what ownis drawn on the screen
+      def drawScene() = {
+        toBeDrawn.map(_.update())
       }
 
 

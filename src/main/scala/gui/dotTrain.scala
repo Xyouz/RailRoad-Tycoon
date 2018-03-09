@@ -14,8 +14,7 @@ class CircTrain(val train : Train) extends Circle {
   fill = DarkCyan
   update()
   
-  def update()
-  {
+  def update() {
     var p = train.position
     centerX = p.x_coord()
     centerY = p.y_coord()
