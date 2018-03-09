@@ -1,6 +1,11 @@
 package gui
 
+import town._
+import road._
+import point._
+import train._
 import model._
+import circTown._
 import scalafx.Includes._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
@@ -19,87 +24,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
     // Used to create a window to send trains out of a city
-    def sendTrain(startTown: Town): Unit = {
-
-        case class Result(cochonou : Unit)
-        // Create the custom dialog window.
-        val dialog = new Dialog[Result]() {
-          initOwner(stage)
-          title = s"Expédition d'un train depuis ${startTown}"
-          headerText = "TCHOU!TCHOU! C'est l'heure du départ!"
-          //graphic = new ImageView(this.getClass.getResource("locomotive.png").toString)
-        }
-
-        val createButtonType = new ButtonType("C'est parti!", ButtonData.OKDone)
-        dialog.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
 
-        val train = new ComboBox(startTown.railwayStation)
-
-
-        val townToGo = new ComboBox(game.towns())
-
-        var maxpassengers = ((startTown.pop)/2).toInt
-        val loadings = new Slider(0,maxpassengers,0)
-
-        val grid = new GridPane()
-        {
-          hgap = 10
-          vgap = 10
-          padding = Insets(20,100,10,10)
-
-          add(new Label("Train:"), 0, 0)
-          add(train, 1, 0)
-          add(new Label("Destination:"), 0, 1)
-          add(townToGo, 1, 1)
-          add(new Label("Number of passengers:"), 0, 2)
-          add(loadings, 1, 2)
-          }
-
-        val createButton = dialog.dialogPane().lookupButton(createButtonType)
-        //createButton.disable = true
-
-
-
-        dialog.dialogPane().content = grid
-
-        Platform.runLater(train.requestFocus())
-
-        // this function is to be used only to bypass scala limitation when
-        // returning a Result
-        def leaveTrain() = {val choosenTrain = train.value.value
-        val choosenGoal = townToGo.value.value
-        val load = loadings.value.toInt
-        if (startTown.goodbyeTrain(choosenTrain))
-        { game.deltaMoney(load*100.0)
-          choosenTrain.setLoading(load)
-          startTown.deltaPopulation(-load)
-          choosenTrain.setDestination(choosenGoal)
-          game.trainToBeDispatched(choosenTrain, startTown.getID())}
-      }
-
-        dialog.resultConverter = {dialogButton =>
-          if (dialogButton == createButtonType)
-          {Result(leaveTrain()) }
-          else Result(())
-        }
-
-        val res = dialog.showAndWait()
-        res match {
-          case _ => ()
-        }
-    }
-
-    def townToCircle(Town : Town) : Circle = {
-      new Circle {
-        val town = Town
-        centerX = town.position().x_coord()
-        centerY = town.position().y_coord()
-        radius = town.population() / 5
-        onMouseClicked = handle {sendTrain(town)}
-        fill = Orange
-        }
-
+    def townToCircle(town : Town) : CircTown = {
+      new CircTown(stage, game, town)
     }
 
     def showTrainCircle(Town : Town) : Circle =

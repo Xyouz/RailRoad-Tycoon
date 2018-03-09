@@ -1,6 +1,6 @@
 package train
 
-import model.town
+import town._
 
 //a class to represent the train, for a train, we need to know its speed, its destination, and we need a way to update its information
 class Train(val speed : Double, val name : String){

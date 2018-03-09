@@ -1,6 +1,8 @@
 package town
 
-import model.point
+import point._
+import train._
+import good._
 
 // a class to implement the towns of the graphs with information on the name, the population, their wealth and methods to update them when a train come over
 class Town(val id : Int,

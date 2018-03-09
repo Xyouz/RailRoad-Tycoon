@@ -1,8 +1,8 @@
 package road
 
-import model.town
-import model.point
-import model.train
+import town._
+import point._
+import train._
 
 // A class to represent road between two Towns
 class Road(val begin : Town,val end : Town){

@@ -1,29 +1,30 @@
 
 package model
 
-import model.town
-import model.road
-import model.point
-import model.train
+import town._
+import road._
+import point._
+import train._
+import good._
 import scala.math._
 
 
 // Eventually a class to launch a game.
 class Game()
 {
-  var goodsList = List(new Goods("lunettes",55), new Goods("chats",8),List(new Goods("lunettes",55), new Goods("chats",8)),
-                      new Goods("diamond",55), new Goods("dogs",8), new Goods("paintit",55), new Goods("black",8) )
-  val townList = Seq[Town](new Town(0, "Bordeaux", 258, List(new Goods("Toto",42)), new Point(275,225)) ,
-      new Town(1, "Paris", 500, List(new Goods("Toto",42)), new Point(800,200)) ,
-      new Town(2, "Marseille", 350, List(new Goods("Toto",42)), new Point(500,550)) ,
-      new Town(3, "Lyon", 350, List(new Goods("Toto",42)), new Point(120,450)),
-      new Town(4, "Toulouse", 400, List(new Goods("Toto",42)),new Point(700,500)),
-      new Town(5, "Rennes", 200, List(new Goods("Toto",42)),new Point(650,110)),
-      new Town(6, "Clermont-Ferrand", 250, List(new Goods("Toto",42)),new Point(900,400)),
-      new Town(7, "Nancy", 150, List(new Goods("Toto",42)),new Point(200,80)),
-      new Town(8, "Angoulême", 42, List(new Goods("Toto",42)),new Point(842,42)),
-      new Town(9, "Nice", 200, List(new Goods("Toto",42)),new Point(425,320)),
-      new Town(10, "Strasbourg", 250, List(new Goods("Toto",42)),new Point(900,600)))
+  var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
+                      new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
+  val townList = Seq[Town](new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(275,225)) ,
+      new Town(1, "Paris", 500, List(new Good("Toto",42)), new Point(800,200)) ,
+      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(500,550)) ,
+      new Town(3, "Lyon", 350, List(new Good("Toto",42)), new Point(120,450)),
+      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(700,500)),
+      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(650,110)),
+      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(900,400)),
+      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(200,80)),
+      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(842,42)),
+      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(425,320)),
+      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(900,600)))
 
   var roadList = Seq[Road](new Road(townList(5),townList(9)),
     new Road(townList(7),townList(3)),
