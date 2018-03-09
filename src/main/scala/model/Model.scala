@@ -27,57 +27,56 @@ class Point(var x : Double,var y : Double){
 
 // A class to represent road between two Towns
 class Road(val begin : Town,val end : Town){
-  val townsVec = end.position - begin.position
-  val length = townsVec.norm()
-  var trainsAB = Seq[Train]()
-  var trainsBA = Seq[Train]()
-  def getStart() = {begin}
-  def getEnd() = {end}
-  def numberOfTrains() = {trainsAB.length + trainsBA.length}
-  def _posTrain(t : Train, b : Boolean) =
-    {
-      var distToBegin = t.distanceOnRoad
-      if (!b) {distToBegin = length - distToBegin}
-      begin.position + townsVec.scale(distToBegin/length)
-    }
-  def getTrainsPos() = {(trainsAB.map(_posTrain(_,true)))++(trainsBA.map(_posTrain(_,false)))}
-  def update() =
-    {
+    val townsVec = end.position - begin.position
+    val length = townsVec.norm()
+    var trainsAB = Seq[Train]()
+    var trainsBA = Seq[Train]()
+    def getStart() = {begin}
+    def getEnd() = {end}
+    def numberOfTrains() = {trainsAB.length + trainsBA.length}
+    def _posTrain(t : Train, b : Boolean) =
+      {
+        var distToBegin = t.distanceOnRoad
+        if (!b) {distToBegin = length - distToBegin}
+        begin.position + townsVec.scale(distToBegin/length)
+      }
+    def getTrainsPos() = {(trainsAB.map(_posTrain(_,true)))++(trainsBA.map(_posTrain(_,false)))}
+    def update() =
+      {
       var arrived = Seq[(Train,Int)]()
       for (train <- trainsAB)
+        {
+        var dist = train.update()
+        if (dist >= length)
+          {
+          arrived = arrived :+ ((train, end.getID()))
+          trainsAB = trainsAB.filter(_ != train)
+          }
+        }
+      for (train <- trainsBA)
       {
         var dist = train.update()
         if (dist >= length)
-        {
-          arrived = arrived :+ ((train, end.getID()))
-          trainsAB = trainsAB.filter(_ != train)
-        }
-      }
-
-      for (train <- trainsBA)
-        {
-          var dist = train.update()
-          if (dist >= length)
           {
             arrived = arrived :+ ((train, begin.getID()))
             trainsBA = trainsBA.filter(_ != train)
           }
       }
       arrived
-  }
+      }
 
-  def launchTrain(train : Train, destination : Town) =
+    def launchTrain(train : Train, destination : Town) =
     {
-      if (destination == end)
-        {
-          trainsAB = trainsAB :+ train
-        }
-      else
-        {
-          trainsBA = trainsBA :+ train
-        }
+    if (destination == end)
+      {
+        trainsAB = trainsAB :+ train
+      }
+    else
+      {
+        trainsBA = trainsBA :+ train
+      }
     }
-}
+  }
 
 //a class to specify the goods that are available : it returns their name and their price.
 class Goods (val namegoods : String, val pricetag : Double ){}
@@ -86,30 +85,31 @@ class Goods (val namegoods : String, val pricetag : Double ){}
 
 // a class to implement the towns of the graphs with information on the name, the population, their wealth and methods to update them when a train come over
 class Town(val id : Int,
-    val name: String,
-    var pop : Int,
-    val listofgoods :List[Goods],
-    // val leaving_roads : List[(Town)],
-    // val coming_roads : List[(Town)],
-    var pos : Point)
-    {
-      override def toString() = {name}
-      var railwayStation = List[Train]()
-      def getID() : Int = {id}
-      def getName() : String = {name}
-      def position() : Point={pos}
-      def population() : Int={pop}
-      def deltaPopulation(delta : Int) = {pop += delta}
-      def incrPop() = {pop = pop+50}
-      def update(){
-      //  pop += 20
+  val name: String,
+  var pop : Int,
+  val listofgoods :List[Goods],
+  // val leaving_roads : List[(Town)],
+  // val coming_roads : List[(Town)],
+  var pos : Point)
+  {
+    override def toString() = {name}
+    var railwayStation = List[Train]()
+    def getID() : Int = {id}
+    def getName() : String = {name}
+    def position() : Point={pos}
+    def population() : Int={pop}
+    def deltaPopulation(delta : Int) = {pop += delta}
+    def incrPop() = {pop = pop+50}
+    def update()
+      {
+    //  pop += 20
       }
-      def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation
-                                          pop += train.loading;
-                                          train.loading = 0}
-      def hasTrains() : Boolean = {railwayStation.isEmpty}
-      def goodbyeTrain(train : Train) : Boolean =
-        {
+    def welcomeTrain(train : Train) = {railwayStation = train :: railwayStation
+                                        pop += train.loading;
+                                        train.loading = 0}
+    def hasTrains() : Boolean = {railwayStation.isEmpty}
+    def goodbyeTrain(train : Train) : Boolean =
+      {
         val n = railwayStation.length
         railwayStation = railwayStation.filter(_!=train)
         (n != railwayStation.length)
