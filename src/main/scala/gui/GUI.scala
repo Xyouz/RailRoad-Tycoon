@@ -7,6 +7,7 @@ import train._
 import model._
 import circTown._
 import lineRoad._
+import circShowTrains._
 import scalafx.Includes._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
@@ -24,23 +25,13 @@ import scalafx.geometry.{Insets, Pos}
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
-    // Used to create a window to send trains out of a city
-
-
     def townToCircle(town : Town) : CircTown = {
       new CircTown(stage, game, town)
     }
 
-    def showTrainCircle(Town : Town) : Circle =
-      {
-        new Circle{
-        val town = Town
-        centerX = town.position().x_coord()
-        centerY = town.position().y_coord()
-        radius = town.population() / 5 + 5
-        fill =  Red
-        }
-      }
+    def showTrainCircle(town : Town) : Circle = {
+      new CircShowTrain(stage, game, town)
+    }
 
     def roadToLine(road : Road) : LineRoad = {
       new LineRoad(stage, road)
@@ -63,14 +54,14 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       val nodeTowns = game.towns().map(townToCircle(_))
       val edgeRoads = game.roads().map(roadToLine(_))
-      var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
+      var townsWithTrains = (game.towns().filter(t => (t.hasTrains()))).map(showTrainCircle(_))
 
       // update what is drawn on the screen
       def drawScene() =
         {
       val nodeTowns = game.towns().map(townToCircle(_))
       val edgeRoads = game.roads().map(roadToLine(_))
-      var townsWithTrains = (game.towns().filter(t => !(t.hasTrains()))).map(showTrainCircle(_))
+      var townsWithTrains = (game.towns().filter(t => (t.hasTrains()))).map(showTrainCircle(_))
 
       var trains = Seq[Circle]()
 

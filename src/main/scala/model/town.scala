@@ -29,7 +29,7 @@ class Town(val id : Int,
     pop += train.loading;
     train.loading = 0
   }
-  def hasTrains() : Boolean = {railwayStation.isEmpty}
+  def hasTrains() : Boolean = {! railwayStation.isEmpty}
   def goodbyeTrain(train : Train) : Boolean = {
     val n = railwayStation.length
     railwayStation = railwayStation.filter(_!=train)

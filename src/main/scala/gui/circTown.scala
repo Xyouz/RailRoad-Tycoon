@@ -12,7 +12,7 @@ import town._
 class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle{
   centerX = town.position().x_coord()
   centerY = town.position().y_coord()
-  radius = town.population() / 5
+  update()
   onMouseClicked = handle {sendTrain(town)}
   fill = Orange
 
@@ -24,4 +24,9 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
       case _ => ()
     }
   }
+
+  def update(){
+    radius = town.population() / 5
+  }
+
 }
