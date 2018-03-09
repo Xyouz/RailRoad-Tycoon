@@ -176,7 +176,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       // tick every 1/10 of a second
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
-        if ((t-lastTick)>=100000000){  // Allow to choose the duration
+        if ((t-lastTick)>=200000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           game.update()
           drawScene()}

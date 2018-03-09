@@ -152,66 +152,31 @@ class Game()
       new Town(10, "Strasbourg", 250, List(new Goods("Toto",42)),new Point(900,600)))
 
   var roadList = Seq[Road](new Road(townList(5),townList(9)),
-new Road(townList(7),townList(3)),
-// new Road(townList(1),townList(3)),
-new Road(townList(9),townList(1)),
-// new Road(townList(0),townList(2)),
-// new Road(townList(1),townList(6)),
-// new Road(townList(9),townList(4)),
-new Road(townList(3),townList(7)),
-new Road(townList(0),townList(3)),
-// new Road(townList(10),townList(3)),
-new Road(townList(5),townList(8)),
-new Road(townList(1),townList(2)),
-// new Road(townList(10),townList(8)),
-// new Road(townList(6),townList(7)),
-// new Road(townList(4),townList(9)),
-// new Road(townList(2),townList(9)),
-// new Road(townList(3),townList(10)),
-new Road(townList(6),townList(10)),
-// new Road(townList(7),townList(6)),
-// new Road(townList(1),townList(5)),
-// new Road(townList(3),townList(6)),
-new Road(townList(7),townList(10)),
-new Road(townList(1),townList(10)),
-new Road(townList(10),townList(0)),
-// new Road(townList(10),townList(9)),
-new Road(townList(4),townList(10)),
-new Road(townList(5),townList(4)),
-new Road(townList(3),townList(2)),
-// new Road(townList(10),townList(4)),
-new Road(townList(7),townList(1)),
-new Road(townList(9),townList(3)),
-new Road(townList(1),townList(4)),
-new Road(townList(2),townList(10))//,
-// new Road(townList(3),townList(9)),
-// new Road(townList(0),townList(5)),
-// new Road(townList(7),townList(5)),
-// new Road(townList(10),townList(1)),
-// new Road(townList(1),townList(0)),
-// new Road(townList(7),townList(9)),
-// new Road(townList(0),townList(1)),
-// new Road(townList(3),townList(5)),
-// new Road(townList(7),townList(8)),
-// new Road(townList(5),townList(10)),
-// new Road(townList(7),townList(0)),
-// new Road(townList(9),townList(2)),
-// new Road(townList(5),townList(7)),
-// new Road(townList(3),townList(8)),
-// new Road(townList(7),townList(4)),
-// new Road(townList(1),townList(8)),
-// new Road(townList(0),townList(6)),
-// new Road(townList(1),townList(7)),
-// new Road(townList(3),townList(4)),
-// new Road(townList(2),townList(4))
-)
-  val nbOfTown = townList.length
+    new Road(townList(7),townList(3)),
+    new Road(townList(9),townList(1)),
+    new Road(townList(3),townList(7)),
+    new Road(townList(0),townList(3)),
+    new Road(townList(5),townList(8)),
+    new Road(townList(1),townList(2)),
+    new Road(townList(6),townList(10)),
+    new Road(townList(7),townList(10)),
+    new Road(townList(1),townList(10)),
+    new Road(townList(10),townList(0)),
+    new Road(townList(4),townList(10)),
+    new Road(townList(5),townList(4)),
+    new Road(townList(3),townList(2)),
+    new Road(townList(7),townList(1)),
+    new Road(townList(9),townList(3)),
+    new Road(townList(1),townList(4)),
+    new Road(townList(2),townList(10))
+    )
+  var nbOfTown = townList.length
 
   var money = 0.0
   def deltaMoney(delta : Double) = {money = money + delta}
 
-//we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
-def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
+  //we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
+  def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,Double)]] =
   {
     val nt = towns.length
     val nr = roads.length
@@ -219,7 +184,8 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
     val matrix = Array.fill[(Int, Int, Double)](nt,nt)((-2,-2,inf))
 
      // a function that maps the first two integers of the tuples with the road and the town that respectively correspond to those numbers.
-    def maps(mat1 : Array[ Array[(Int, Int, Double)]]) : Array[Array[(Road, Town, Double)]] = {
+    def maps(mat1 : Array[ Array[(Int, Int, Double)]]) : Array[Array[(Road, Town, Double)]] =
+    {
       val mat2 = Array.ofDim[(Road,Town, Double)](nt,nt)
       for (i <- 0 until nt) {
         for (j <- 0 until nt) {
@@ -256,29 +222,32 @@ def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[(Road,Town,
     }
 
     maps(matrix)
-    }
+  }
 
   val dispatchMatrix = shortestPath(townList, roadList)
    // List of trains and the ID of the town they are currently in
   var trainsOnTransit = List[(Train, Int)]()
 
-  def trainToBeDispatched(train : Train, localState : Int) = { trainsOnTransit = (train, localState) :: trainsOnTransit }
+  def trainToBeDispatched(train : Train, localState : Int) =
+  {
+    trainsOnTransit = (train, localState) :: trainsOnTransit
+  }
 
   // townID : current town where the train is.
   def dispatchTrain(train : Train, townID : Int) =
-    {
-        if (train.getDestination()== townID)
-        {
-          townList(townID).welcomeTrain(train)
-        }
-        else
-        {
-          train.resetDistance();
-          var info = dispatchMatrix(townID)(train.getDestination())
-          println(s"${train.toString()} redispatché vers ${info._2}")
-          (info._1).launchTrain(train,info._2)
-        }
-    }
+  {
+    if (train.getDestination()== townID)
+      {
+        townList(townID).welcomeTrain(train)
+      }
+    else
+      {
+        train.resetDistance();
+        var info = dispatchMatrix(townID)(train.getDestination())
+        println(s"${train.toString()} redispatché vers ${info._2}")
+        (info._1).launchTrain(train,info._2)
+      }
+  }
 
   def update() =
   {
