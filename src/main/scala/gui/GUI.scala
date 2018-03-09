@@ -6,6 +6,7 @@ import point._
 import train._
 import model._
 import circTown._
+import lineRoad._
 import scalafx.Includes._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
@@ -36,26 +37,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         val town = Town
         centerX = town.position().x_coord()
         centerY = town.position().y_coord()
-        radius = town.population() / 5 + 10
+        radius = town.population() / 5 + 5
         fill =  Red
         }
       }
 
-    def roadToLine(Road : Road) : Line = {
-      new Line {
-        val road = Road
-        startX = road.getStart().position().x_coord()
-        startY = road.getStart().position().y_coord()
-        endX = road.getEnd().position().x_coord()
-        endY = road.getEnd().position().y_coord()
-        strokeWidth = 8
-        onMouseClicked = {ae => new Alert(AlertType.Information) {
-                                    initOwner(stage)
-                                    title = "Route"
-                                    headerText = s"Voici quelques informations à propos de la route reliant ${road.begin} à ${road.end}: "
-                                    contentText = s"Actuellement ${road.numberOfTrains()} trains circulent sur cette voie"
-                                  }.showAndWait()}
-      }
+    def roadToLine(road : Road) : LineRoad = {
+      new LineRoad(stage, road)
     }
 
     def pointToSmallCircle(point : Point) : Circle =
