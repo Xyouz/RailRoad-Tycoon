@@ -25,14 +25,19 @@ class Road(val begin : Town,val end : Town){
     var arrived = Seq[(Train,Int)]()
     for (train <- trainsAB){
       var dist = train.update()
+      train.setPosition( begin.position + townsVec.scale(dist/length) )
       if (dist >= length){
+        train.setPosition(end.position)
         arrived = arrived :+ ((train, end.getID()))
         trainsAB = trainsAB.filter(_ != train)
       }
     }
     for (train <- trainsBA){
       var dist = train.update()
-      if (dist >= length){
+      dist = length - dist
+      train.setPosition(begin.position + townsVec.scale(dist/length))
+      if (dist <= 0){
+        train.setPosition(begin.position)
         arrived = arrived :+ ((train, begin.getID()))
         trainsBA = trainsBA.filter(_ != train)
       }
