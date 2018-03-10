@@ -31,8 +31,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new CircTown(stage, game, town)
     }
 
-    def showTrainCircle(town : Town) : Circle = {
-      new CircShowTrain(stage, game, town)
+    def showTrainCircle(town : Town) : CircShowTrain = {
+      new CircShowTrain(town)
     }
 
     def roadToLine(road : Road) : LineRoad = {
