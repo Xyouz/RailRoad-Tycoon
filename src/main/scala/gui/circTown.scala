@@ -1,5 +1,7 @@
 package circTown
 
+
+import updatable._
 import scalafx.Includes._
 import scalafx.application.{JFXApp}
 import scalafx.scene.shape.{Circle}
@@ -9,7 +11,7 @@ import model._
 import town._
 
 
-class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle{
+class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle with Updatable{
   centerX = town.position().x_coord()
   centerY = town.position().y_coord()
   update()
@@ -25,7 +27,7 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
     }
   }
 
-  def update(){
+  override def update() = {
     radius = town.population() / 5
   }
 

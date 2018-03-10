@@ -54,7 +54,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       val edgeRoads = game.roads().map(roadToLine(_))
       val townsWithTrains = game.towns().map(showTrainCircle(_))
 
-      var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++
+      var toBeDrawn = edgeRoads ++ townsWithTrains ++
+        nodeTowns ++
         Seq(new UpdatableButton(){
               text = "New Train"
               onAction = handle {newTrainWindow()}
@@ -74,7 +75,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
               override def update() = {text = s"Argent : ${game.money}€"}
             })
 
-      root = toBeDrawn
+      content = toBeDrawn
 
       // update what ownis drawn on the screen
       def drawScene() = {

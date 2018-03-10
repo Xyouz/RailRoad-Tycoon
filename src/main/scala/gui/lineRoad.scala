@@ -1,5 +1,6 @@
 package lineRoad
 
+import updatable._
 import town._
 import road._
 import scalafx.Includes._
@@ -8,7 +9,7 @@ import scalafx.scene.control._
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.shape.{Line}
 
-class LineRoad(val master : JFXApp.PrimaryStage, val road : Road) extends Line {
+class LineRoad(val master : JFXApp.PrimaryStage, val road : Road) extends Line with Updatable {
   startX = road.getStart().position().x_coord()
   startY = road.getStart().position().y_coord()
   endX = road.getEnd().position().x_coord()
@@ -23,6 +24,4 @@ class LineRoad(val master : JFXApp.PrimaryStage, val road : Road) extends Line {
         contentText = s"Actuellement ${road.numberOfTrains()} trains circulent sur cette voie"
       }.showAndWait()
   }
-
-  def update() = {}
 }
