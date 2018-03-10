@@ -1,148 +1,30 @@
 
 package model
 
+import town._
+import road._
+import point._
+import train._
+import good._
 import scala.math._
-import scalafx.beans.property.{ DoubleProperty}
-
-
-// A class to represent 2D points
-class Point(var x : Double,var y : Double){
-  def x_coord():Double = {x}
-  def y_coord():Double = {y}
-  override def toString() = s"x : $x ; y : $y"
-  def print():Unit = {println(s"x : $x ; y : $y\n")}
-  def +(that: Point) = {new Point(x + that.x, y + that.y)}  // `this` might be useful
-  def -(that: Point) = {new Point(x - that.x, y - that.y)}
-  def scale(scalar : Double) = {new Point(scalar * x, scalar * y)}
-  def norm() = {this.distance(new Point(0,0))}
-  def distance(p: Point): Double = {
-    sqrt(pow(x-p.x_coord(),2) + pow(y-p.y_coord(),2))
-  }
-  def normalize()= {
-    if (norm() != 0) { this.scale(1/norm()) }
-    this
-  }
-}
-
-
-// A class to represent road between two Towns
-class Road(val begin : Town,val end : Town){
-  val townsVec = end.position - begin.position
-  val length = townsVec.norm()
-  var trainsAB = Seq[Train]()
-  var trainsBA = Seq[Train]()
-  def getStart() = {begin}
-  def getEnd() = {end}
-  def numberOfTrains() = {trainsAB.length + trainsBA.length}
-  def _posTrain(t : Train, b : Boolean) = {
-    var distToBegin = t.distanceOnRoad
-    if (!b) {distToBegin = length - distToBegin}
-    begin.position + townsVec.scale(distToBegin/length)
-  }
-  def getTrainsPos() = {
-    (trainsAB.map(_posTrain(_,true)))++(trainsBA.map(_posTrain(_,false)))
-  }
-  def update() = {
-    var arrived = Seq[(Train,Int)]()
-    for (train <- trainsAB){
-      var dist = train.update()
-      if (dist >= length){
-        arrived = arrived :+ ((train, end.getID()))
-        trainsAB = trainsAB.filter(_ != train)
-      }
-    }
-    for (train <- trainsBA){
-      var dist = train.update()
-      if (dist >= length){
-        arrived = arrived :+ ((train, begin.getID()))
-        trainsBA = trainsBA.filter(_ != train)
-      }
-    }
-  arrived
-  }
-
-  def launchTrain(train : Train, destination : Town) ={
-    if (destination == end){
-      trainsAB = trainsAB :+ train
-      }
-    else{
-      trainsBA = trainsBA :+ train
-      }
-  }
-}
-
-//a class to specify the goods that are available : it returns their name and their price.
-class Goods (val namegoods : String, val pricetag : Double ){}
-
-
-
-// a class to implement the towns of the graphs with information on the name, the population, their wealth and methods to update them when a train come over
-class Town(val id : Int,
-  val name: String,
-  var pop : Int,
-  val listofgoods :List[Goods],
-  // val leaving_roads : List[(Town)],
-  // val coming_roads : List[(Town)],
-  var pos : Point)
-  {
-  override def toString() = {name}
-  var railwayStation = List[Train]()
-  def getID() : Int = {id}
-  def getName() : String = {name}
-  def position() : Point={pos}
-  def population() : Int={pop}
-  def deltaPopulation(delta : Int) = {pop += delta}
-  def incrPop() = {pop = pop+50}
-  def update(){
-  //  pop += 20
-  }
-  def welcomeTrain(train : Train) = {
-    railwayStation = train :: railwayStation
-    pop += train.loading;
-    train.loading = 0
-  }
-  def hasTrains() : Boolean = {railwayStation.isEmpty}
-  def goodbyeTrain(train : Train) : Boolean = {
-    val n = railwayStation.length
-    railwayStation = railwayStation.filter(_!=train)
-    (n != railwayStation.length)
-  }
-}
-
-
-
-//a class to represent the train, for a train, we need to know its speed, its destination, and we need a way to update its information
-class Train(val speed : Double, val name : String){
-  override def toString() = {name}
-  var distanceOnRoad : Double = -1
-  var destination = -1 // L'ID de la destination
-  def update() = { {distanceOnRoad += speed};
-                    distanceOnRoad}
-  def resetDistance() = {distanceOnRoad = 0}
-  def getDestination() = {destination}
-  def setDestination(town : Town) = {destination = town.getID()}
-  def getName() = {name}
-  var loading =  0 // number of passengers in the train.
-  def setLoading( l : Int ) = { loading = l}
-}
 
 
 // Eventually a class to launch a game.
 class Game()
 {
-  var goodsList = List(new Goods("lunettes",55), new Goods("chats",8),List(new Goods("lunettes",55), new Goods("chats",8)),
-                      new Goods("diamond",55), new Goods("dogs",8), new Goods("paintit",55), new Goods("black",8) )
-  val townList = Seq[Town](new Town(0, "Bordeaux", 258, List(new Goods("Toto",42)), new Point(275,225)) ,
-      new Town(1, "Paris", 500, List(new Goods("Toto",42)), new Point(800,200)) ,
-      new Town(2, "Marseille", 350, List(new Goods("Toto",42)), new Point(500,550)) ,
-      new Town(3, "Lyon", 350, List(new Goods("Toto",42)), new Point(120,450)),
-      new Town(4, "Toulouse", 400, List(new Goods("Toto",42)),new Point(700,500)),
-      new Town(5, "Rennes", 200, List(new Goods("Toto",42)),new Point(650,110)),
-      new Town(6, "Clermont-Ferrand", 250, List(new Goods("Toto",42)),new Point(900,400)),
-      new Town(7, "Nancy", 150, List(new Goods("Toto",42)),new Point(200,80)),
-      new Town(8, "Angoulême", 42, List(new Goods("Toto",42)),new Point(842,42)),
-      new Town(9, "Nice", 200, List(new Goods("Toto",42)),new Point(425,320)),
-      new Town(10, "Strasbourg", 250, List(new Goods("Toto",42)),new Point(900,600)))
+  var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
+                      new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
+  val townList = Seq[Town](new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(275,225)) ,
+      new Town(1, "Paris", 500, List(new Good("Toto",42)), new Point(800,200)) ,
+      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(500,550)) ,
+      new Town(3, "Lyon", 350, List(new Good("Toto",42)), new Point(120,450)),
+      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(700,500)),
+      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(650,110)),
+      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(900,400)),
+      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(200,80)),
+      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(842,42)),
+      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(425,320)),
+      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(900,600)))
 
   var roadList = Seq[Road](new Road(townList(5),townList(9)),
     new Road(townList(7),townList(3)),
