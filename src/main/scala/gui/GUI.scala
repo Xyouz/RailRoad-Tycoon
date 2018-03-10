@@ -40,41 +40,52 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new LineRoad(stage, road)
     }
 
-    def trainToDot(train : Train) : CircTrain = {
-        new CircTrain(train)
+    def newTrainWindow(): Unit = {
+      val dialog = new newTrainDialog(stage,game)
+
+      val res = dialog.showAndWait()
+      res match {
+        case _ => ()
+      }
     }
 
     title.value = "Roolraid Tycoan"
     width = 1000
     height = 700
     //content = new Button("Hell World")
+
+    val nodeTowns = game.towns().map(townToCircle(_))
+    val edgeRoads = game.roads().map(roadToLine(_))
+    val townsWithTrains = game.towns().map(showTrainCircle(_))
+
+    var toBeDrawn = edgeRoads ++ townsWithTrains ++
+      nodeTowns ++
+      Seq(new UpdatableButton(){
+            text = "New Train"
+            onAction = handle {newTrainWindow()}
+            layoutX <== stage.width-width
+            layoutY = 0
+          },
+          new UpdatableButton(){
+            text = "Au revoir"
+            onAction = { ae => stage.close() }
+            layoutX <== stage.width-width
+            layoutY = 25
+          },
+          new UpdatableLabel(){
+            text = s"Argent : ${game.money}€"
+            layoutX <== stage.width-width -25
+            layoutY <== stage.height - 75
+            override def update() = {text = s"Argent : ${game.money}€"}
+          })
+
+    def addToBeDrawn(newItem : scalafx.scene.Node with updatable.Updatable) = {
+      toBeDrawn = toBeDrawn :+ newItem
+    }
+
     scene = new Scene{
       fill = LightGreen
 
-      val nodeTowns = game.towns().map(townToCircle(_))
-      val edgeRoads = game.roads().map(roadToLine(_))
-      val townsWithTrains = game.towns().map(showTrainCircle(_))
-
-      var toBeDrawn = edgeRoads ++ townsWithTrains ++
-        nodeTowns ++
-        Seq(new UpdatableButton(){
-              text = "New Train"
-              onAction = handle {newTrainWindow()}
-              layoutX <== stage.width-width
-              layoutY = 0
-            },
-            new UpdatableButton(){
-              text = "Au revoir"
-              onAction = { ae => stage.close() }
-              layoutX <== stage.width-width
-              layoutY = 25
-            },
-            new UpdatableLabel(){
-              text = s"Argent : ${game.money}€"
-              layoutX <== stage.width-width -25
-              layoutY <== stage.height - 75
-              override def update() = {text = s"Argent : ${game.money}€"}
-            })
 
       content = toBeDrawn
 
@@ -87,22 +98,16 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       // tick every 1/10 of a second
       var (lastTick : Long) = 0
       val updateTick = AnimationTimer (t => {
-        if ((t-lastTick)>=200000000){  // Allow to choose the duration
+        if ((t-lastTick)>=100000000){  // Allow to choose the duration
           lastTick = t                  // between two updates
           game.update()
+          content = toBeDrawn
           drawScene()}
       })
       updateTick.start()
 
 
       // use to create an interactive window in order to create new trains
-      def newTrainWindow(): Unit = {
-        val dialog = new newTrainDialog(stage,game)
 
-        val res = dialog.showAndWait()
-        res match {
-          case _ => ()
-        }
-      }
     }
   }

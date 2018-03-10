@@ -27,7 +27,7 @@ class Road(val begin : Town,val end : Town){
       var dist = train.update()
       train.setPosition( begin.position + townsVec.scale(dist/length) )
       if (dist >= length){
-        train.setPosition(end.position)
+        train.setPosition(new Point(-10,-10))
         arrived = arrived :+ ((train, end.getID()))
         trainsAB = trainsAB.filter(_ != train)
       }
@@ -37,7 +37,7 @@ class Road(val begin : Town,val end : Town){
       dist = length - dist
       train.setPosition(begin.position + townsVec.scale(dist/length))
       if (dist <= 0){
-        train.setPosition(begin.position)
+        train.setPosition(new Point(-10,-10))
         arrived = arrived :+ ((train, begin.getID()))
         trainsBA = trainsBA.filter(_ != train)
       }

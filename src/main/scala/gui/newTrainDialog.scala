@@ -1,8 +1,10 @@
 package newTrainDialog
 
+import gui._
 import model._
 import train._
 import town._
+import dotTrain._
 import scalafx.Includes._
 import scalafx.scene.layout._
 import scalafx.application.{JFXApp, Platform}
@@ -14,7 +16,7 @@ import scalafx.scene.control._
 
 case class Result(cochonou : Unit)
 
-class newTrainDialog(val master : JFXApp.PrimaryStage,
+class newTrainDialog(val master : MainGame,
                      val game : Game)
                    extends Dialog[Result]() {
   initOwner(master)
@@ -58,9 +60,16 @@ class newTrainDialog(val master : JFXApp.PrimaryStage,
 
   Platform.runLater(trainName.requestFocus())
 
+  def toBeApplied() = {
+    val startTown = townToStart.value.value
+    val newTrain = new Train(speed.value.toDouble,trainName.text())
+    master.addToBeDrawn(new CircTrain(newTrain))
+    startTown.welcomeTrain(newTrain)
+  }
+
   this.resultConverter = {
     dialogButton =>
-      if (dialogButton == createButtonType) {Result(townToStart.value.value.welcomeTrain(new Train(speed.value.toDouble,trainName.text())))}
+      if (dialogButton == createButtonType) {Result(toBeApplied)}
       else Result(())
   }
 
