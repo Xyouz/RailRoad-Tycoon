@@ -8,7 +8,7 @@ class Point(var x : Double,var y : Double){
   def y_coord():Double = {y}
   override def toString() = s"x : $x ; y : $y"
   def print():Unit = {println(s"x : $x ; y : $y\n")}
-  def +(that: Point) = {new Point(x + that.x, y + that.y)}  // `this` might be useful
+  def +(that: Point) = {new Point(x + that.x, y + that.y)}
   def -(that: Point) = {new Point(x - that.x, y - that.y)}
   def scale(scalar : Double) = {new Point(scalar * x, scalar * y)}
   def norm() = {this.distance(new Point(0,0))}
@@ -17,6 +17,6 @@ class Point(var x : Double,var y : Double){
   }
   def normalize()= {
     if (norm() != 0) { this.scale(1/norm()) }
-    this
+    else { this }
   }
 }

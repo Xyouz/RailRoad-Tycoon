@@ -9,8 +9,10 @@ class Train(val speed : Double, val name : String){
   var position = new Point(-10,-10)
   var distanceOnRoad : Double = -1
   var destination = -1 // L'ID de la destination
-  def update() = { {distanceOnRoad += speed};
-                    distanceOnRoad}
+  def update() = {
+    distanceOnRoad += speed
+    distanceOnRoad
+  }
   def resetDistance() = {distanceOnRoad = 0}
   def getDestination() = {destination}
   def setDestination(town : Town) = {destination = town.getID()}

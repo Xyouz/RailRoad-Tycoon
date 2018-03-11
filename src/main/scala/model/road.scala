@@ -42,7 +42,7 @@ class Road(val begin : Town,val end : Town){
         trainsBA = trainsBA.filter(_ != train)
       }
     }
-  arrived
+    arrived
   }
 
   def launchTrain(train : Train, destination : Town) ={

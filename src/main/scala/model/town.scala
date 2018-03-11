@@ -4,7 +4,8 @@ import point._
 import train._
 import good._
 
-// a class to implement the towns of the graphs with information on the name, the population, their wealth and methods to update them when a train come over
+// a class to implement the towns of the graphs with information on the name,
+// the population, their wealth and methods to update them when a train come over
 class Town(val id : Int,
   val name: String,
   var pop : Int,
@@ -29,7 +30,7 @@ class Town(val id : Int,
     pop += train.loading;
     train.loading = 0
   }
-  def hasTrains() : Boolean = {! railwayStation.isEmpty}
+  def hasTrains() : Boolean = { ! railwayStation.isEmpty}
   def goodbyeTrain(train : Train) : Boolean = {
     val n = railwayStation.length
     railwayStation = railwayStation.filter(_!=train)
