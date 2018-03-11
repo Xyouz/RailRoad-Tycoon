@@ -6,14 +6,21 @@ import road._
 import point._
 import train._
 import good._
+import trainEngine._
+import planeEngine._
 import scala.math._
 
 
 // Eventually a class to launch a game.
 class Game()
 {
+  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true), new TrainEngine("Escargot", 5, 75, false))
+
+  val planeEngineList = List(new PlaneEngine("TurboJet 42", 35, 50))
+
   var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
                       new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
+
   val townList = Seq[Town](
       new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(275,600)) ,
       new Town(1, "Paris", 450, List(new Good("Toto",42)), new Point(600,300)) ,

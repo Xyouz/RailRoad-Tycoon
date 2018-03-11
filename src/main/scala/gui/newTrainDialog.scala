@@ -28,7 +28,8 @@ class newTrainDialog(val master : MainGame,
   val createButtonType = new ButtonType("Créer", ButtonData.OKDone)
   this.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
-  val speed = new Slider(1,10,5)
+  val engine = new ComboBox(game.trainEngineList)
+  engine.getSelectionModel().selectFirst()
 
   //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
 
@@ -46,9 +47,8 @@ class newTrainDialog(val master : MainGame,
 
     add(new Label("Name:"), 0, 0)
     add(trainName, 1, 0)
-    add(new Label("Speed:"), 0, 1)
-    add(speed, 1, 1)
-    //add(echoSpeed,1,2)
+    add(new Label("Engine:"), 0, 1)
+    add(engine, 1, 1)
     add(new Label("Launch town:"),0,2)
     add(townToStart, 1, 2)
   }
@@ -66,7 +66,8 @@ class newTrainDialog(val master : MainGame,
 
   def toBeApplied() = {
     val startTown = townToStart.value.value
-    val newTrain = new Train(speed.value.toDouble,trainName.text())
+    val choosenEngine = engine.value.value
+    val newTrain = new Train(trainName.text(),choosenEngine)
     master.addToBeDrawn(new CircTrain(newTrain))
     startTown.welcomeTrain(newTrain)
   }
