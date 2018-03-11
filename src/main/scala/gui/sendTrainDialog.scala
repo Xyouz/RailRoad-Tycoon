@@ -27,7 +27,11 @@ class SendTrainDialog(val master : JFXApp.PrimaryStage,
   this.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
   val train = new ComboBox(startTown.railwayStation)
-  val townToGo = new ComboBox(game.towns())
+  train.getSelectionModel().selectFirst()
+
+  val townToGo = new ComboBox(game.towns().filter( _ != startTown))
+  townToGo.getSelectionModel().selectFirst()
+
   var maxpassengers = ((startTown.pop)/2).toInt
   val loadings = new Slider(0,maxpassengers,0)
 
@@ -67,5 +71,5 @@ class SendTrainDialog(val master : JFXApp.PrimaryStage,
       if (dialogButton == createButtonType) {Result(leaveTrain())}
       else Result(())
   }
-  
+
 }

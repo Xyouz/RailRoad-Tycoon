@@ -37,6 +37,7 @@ class newTrainDialog(val master : MainGame,
   }
 
   val townToStart = new ComboBox(game.towns())
+  townToStart.getSelectionModel().selectFirst()
 
   val grid = new GridPane(){
     hgap = 10
@@ -53,7 +54,11 @@ class newTrainDialog(val master : MainGame,
   }
 
   val createButton = this.dialogPane().lookupButton(createButtonType)
-  //createButton.disable = true
+  createButton.disable = true
+
+  trainName.text.onChange { (_, _, newValue) =>
+    createButton.disable = newValue.trim().isEmpty
+   }
 
   this.dialogPane().content = grid
 
