@@ -2,8 +2,9 @@ package trainEngine
 
 import engine._
 
-class TrainEngine(name, maxSpeed, maxLoad) extends Engine(name, maxSpeed, maxLoad){
-  def getSpeed(load) = {
+class TrainEngine(name : String, maxSpeed : Double, maxLoad : Double )
+    extends Engine(name, maxSpeed, maxLoad){
+  def getSpeed(load : Double) = {
     maxSpeed * (max(0,maxLoad - load))/maxLoad
   }
 }
