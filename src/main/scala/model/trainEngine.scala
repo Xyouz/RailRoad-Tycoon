@@ -1,6 +1,8 @@
 package trainEngine
 
 import engine._
+import scala.math._
+
 
 class TrainEngine(name : String, maxSpeed : Double, maxLoad : Double )
     extends Engine(name, maxSpeed, maxLoad){

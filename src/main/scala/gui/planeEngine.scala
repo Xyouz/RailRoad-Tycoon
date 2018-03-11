@@ -1,6 +1,8 @@
 package planeEngine
 
 import engine._
+import scala.math._
+
 
 class PlaneEngine( name : String, maxSpeed : Double, maxLoad : Double )
     extends Engine(name, maxSpeed, maxLoad){
