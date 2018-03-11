@@ -94,12 +94,6 @@ class Game()
           }
         }
       }
-      println(s"${k}  ${towns(k)}")
-      matrix foreach { row => row foreach {t => print(s"(${t._1}, ${towns(max(0,t._2))}) ")}; println }
-      println(" ")
-      println(" ")
-      println(" ")
-      println(" ")
     }
     maps(matrix)
   }
