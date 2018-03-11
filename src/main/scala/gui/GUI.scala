@@ -58,8 +58,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     val edgeRoads = game.roads().map(roadToLine(_))
     val townsWithTrains = game.towns().map(showTrainCircle(_))
 
-    var toBeDrawn = edgeRoads ++ townsWithTrains ++
-      nodeTowns ++
+    var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++
       Seq(new UpdatableButton(){
             text = "New Train"
             onAction = handle {newTrainWindow()}
@@ -86,14 +85,12 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     scene = new Scene{
       fill = LightGreen
 
-
       content = toBeDrawn
 
       // update what ownis drawn on the screen
       def drawScene() = {
         toBeDrawn.map(_.update())
       }
-
 
       // tick every 1/10 of a second
       var (lastTick : Long) = 0
@@ -105,9 +102,6 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           drawScene()}
       })
       updateTick.start()
-
-
-      // use to create an interactive window in order to create new trains
 
     }
   }

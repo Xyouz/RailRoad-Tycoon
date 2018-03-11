@@ -16,6 +16,7 @@ import scalafx.scene.control._
 
 case class Result(cochonou : Unit)
 
+// use to create an interactive window in order to create new trains
 class newTrainDialog(val master : MainGame,
                      val game : Game)
                    extends Dialog[Result]() {
@@ -31,15 +32,13 @@ class newTrainDialog(val master : MainGame,
 
   //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
 
-  val trainName = new TextField()
-  {
+  val trainName = new TextField(){
     promptText = "Name"
   }
 
   val townToStart = new ComboBox(game.towns())
 
-  val grid = new GridPane()
-  {
+  val grid = new GridPane(){
     hgap = 10
     vgap = 10
     padding = Insets(20,100,10,10)

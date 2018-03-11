@@ -67,6 +67,5 @@ class SendTrainDialog(val master : JFXApp.PrimaryStage,
       if (dialogButton == createButtonType) {Result(leaveTrain())}
       else Result(())
   }
-
-
+  
 }
