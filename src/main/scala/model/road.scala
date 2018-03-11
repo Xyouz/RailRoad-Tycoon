@@ -14,7 +14,7 @@ class Road(val begin : Town,val end : Town){
   def getEnd() = {end}
   def numberOfTrains() = {trainsAB.length + trainsBA.length}
   def _posTrain(t : Train, b : Boolean) = {
-    var distToBegin = t.distanceOnRoad
+    var distToBegin = t.distance
     if (!b) {distToBegin = length - distToBegin}
     begin.position + townsVec.scale(distToBegin/length)
   }

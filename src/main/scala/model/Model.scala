@@ -14,27 +14,28 @@ class Game()
 {
   var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
                       new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
-  val townList = Seq[Town](new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(275,225)) ,
-      new Town(1, "Paris", 500, List(new Good("Toto",42)), new Point(800,200)) ,
-      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(500,550)) ,
+  val townList = Seq[Town](
+      new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(275,600)) ,
+      new Town(1, "Paris", 450, List(new Good("Toto",42)), new Point(600,300)) ,
+      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(450,500)) ,
       new Town(3, "Lyon", 350, List(new Good("Toto",42)), new Point(120,450)),
-      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(700,500)),
-      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(650,110)),
-      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(900,400)),
-      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(200,80)),
-      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(842,42)),
-      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(425,320)),
-      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(900,600)))
+      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(775,150)),
+      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(350,90)),
+      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(920,400)),
+      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(300,300)),
+      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(42,42)),
+      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(200,220)),
+      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(880,600)))
 
-  var roadList = Seq[Road](new Road(townList(5),townList(9)),
+  var roadList = Seq[Road](
+    new Road(townList(5),townList(9)),
     new Road(townList(7),townList(3)),
     new Road(townList(9),townList(1)),
     new Road(townList(3),townList(7)),
     new Road(townList(0),townList(3)),
-    new Road(townList(5),townList(8)),
     new Road(townList(1),townList(2)),
+    new Road(townList(5),townList(8)),
     new Road(townList(6),townList(10)),
-    new Road(townList(7),townList(10)),
     new Road(townList(1),townList(10)),
     new Road(townList(10),townList(0)),
     new Road(townList(4),townList(10)),
