@@ -57,8 +57,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     val nodeTowns = game.towns().map(townToCircle(_))
     val edgeRoads = game.roads().map(roadToLine(_))
     val townsWithTrains = game.towns().map(showTrainCircle(_))
-
-    var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++
+    val townsLabel = game.towns().map(
+      t => new UpdatableLabel(){
+        text = t.toString()
+        layoutX = t.position().x_coord()
+        layoutY = t.position().y_coord()
+      })
+    var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
             text = "New Train"
             onAction = handle {newTrainWindow()}
@@ -77,6 +82,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             layoutY <== stage.height - 75
             override def update() = {text = s"Argent : ${game.money}€"}
           })
+
 
     def addToBeDrawn(newItem : scalafx.scene.Node with updatable.Updatable) = {
       toBeDrawn = toBeDrawn :+ newItem
