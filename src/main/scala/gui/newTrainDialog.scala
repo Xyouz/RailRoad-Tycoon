@@ -68,6 +68,7 @@ class newTrainDialog(val master : MainGame,
     val startTown = townToStart.value.value
     val choosenEngine = engine.value.value
     val newTrain = new Train(trainName.text(),choosenEngine)
+    game.addTrain(newTrain)
     master.addToBeDrawn(new CircTrain(newTrain))
     startTown.welcomeTrain(newTrain)
   }
