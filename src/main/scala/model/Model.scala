@@ -14,7 +14,7 @@ import scala.math._
 // Eventually a class to launch a game.
 class Game()
 {
-  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true), new TrainEngine("Escargot", 5, 75, false))
+  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11), new TrainEngine("Escargot", 5, 75, false,11))
 
   val planeEngineList = List(new PlaneEngine("TurboJet 42", 35, 50))
 
@@ -33,7 +33,6 @@ class Game()
       new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(42,42)),
       new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(200,220)),
       new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(880,600)))
-
 
   var roadList = Seq[Road](
     new Road(townList(5),townList(9)),
@@ -54,9 +53,6 @@ class Game()
     new Road(townList(2),townList(10)))
 
   var nbOfTown = townList.length
-
-  var trainList = Seq[Train]()
-  def addTrain(train : Train) = {trainList += train}
 
   var money = 0.0
   def deltaMoney(delta : Double) = {money = money + delta}
