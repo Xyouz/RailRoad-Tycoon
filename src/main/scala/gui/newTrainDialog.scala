@@ -69,7 +69,7 @@ class newTrainDialog(val master : MainGame,
     val choosenEngine = engine.value.value
     val newTrain = new Train(trainName.text(),choosenEngine)
     game.addTrain(newTrain)
-    game.money -= trainEngine.price
+    game.money -= choosenEngine.price
     master.addToBeDrawn(new CircTrain(newTrain))
     startTown.welcomeTrain(newTrain)
   }
