@@ -34,6 +34,7 @@ class Game()
       new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(200,220)),
       new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(880,600)))
 
+
   var roadList = Seq[Road](
     new Road(townList(5),townList(9)),
     new Road(townList(9),townList(1)),
@@ -53,6 +54,9 @@ class Game()
     new Road(townList(2),townList(10)))
 
   var nbOfTown = townList.length
+
+  var trainList = Seq[Train]()
+  def addTrain(train : Train) = {trainList += train}
 
   var money = 0.0
   def deltaMoney(delta : Double) = {money = money + delta}
