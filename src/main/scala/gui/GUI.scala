@@ -1,5 +1,6 @@
 package gui
 
+import chooseTrainDialog._
 import town._
 import road._
 import point._
@@ -71,10 +72,16 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             layoutY = 0
           },
           new UpdatableButton(){
+            text = "Trains"
+            onAction = handle { ChooseTrainDialog() }
+            layoutX <== stage.width-width
+            layoutY = 25
+          },
+          new UpdatableButton(){
             text = "Au revoir"
             onAction = { ae => stage.close() }
             layoutX <== stage.width-width
-            layoutY = 25
+            layoutY = 50
           },
           new UpdatableLabel(){
             text = s"Argent : ${game.money}€"
