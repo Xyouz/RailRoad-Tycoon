@@ -68,10 +68,15 @@ class newTrainDialog(val master : MainGame,
     val startTown = townToStart.value.value
     val choosenEngine = engine.value.value
     val newTrain = new Train(trainName.text(),choosenEngine)
-    game.addTrain(newTrain)
-    game.money -= choosenEngine.price
-    master.addToBeDrawn(new CircTrain(newTrain))
-    startTown.welcomeTrain(newTrain)
+    if (game.money < choosenEngine.price){
+      println("pas assez de pognon!")
+    } 
+    else {
+      game.addTrain(newTrain)
+      game.money -= choosenEngine.price
+      master.addToBeDrawn(new CircTrain(newTrain))
+      startTown.welcomeTrain(newTrain)
+    }
   }
 
   this.resultConverter = {
