@@ -16,7 +16,7 @@ case class Result(cochonou : Unit)
 
 // use to create an interactive window in order to create new trains
 class setTrainDialog(val master : MainGame,
-                     val game : Game
+                     val game : Game,
                      val train : Train)
                    extends Dialog[Result]() {
   initOwner(master)
@@ -27,8 +27,8 @@ class setTrainDialog(val master : MainGame,
   val createButtonType = new ButtonType("Ok", ButtonData.OKDone)
   this.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
-  val train = new ComboBox(game.trainList)
-  train.getSelectionModel().selectFirst()
+  //val train = new ComboBox(game.trainList)
+  // train.getSelectionModel().selectFirst()
 
 
   val grid = new GridPane(){
@@ -37,16 +37,16 @@ class setTrainDialog(val master : MainGame,
     padding = Insets(20,100,10,10)
 
     add(new Label("Train:"), 0, 0)
-    add(train, 1, 0)
+    // add(train, 1, 0)
   }
 
   this.dialogPane().content = grid
 
-  Platform.runLater(train.requestFocus())
+  // Platform.runLater(train.requestFocus())
 
   def toBeApplied() = {
-    val choosenTrain = train.value.value
-    println(choosenTrain)
+    // val choosenTrain = train.value.value
+    // println(choosenTrain)
   }
 
   this.resultConverter = {
