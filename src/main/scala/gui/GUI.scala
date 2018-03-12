@@ -50,6 +50,15 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
     }
 
+    def chooseTrainWindow(): Unit = {
+      val dialog = new ChooseTrainDialog(stage,game)
+
+      val res = dialog.showAndWait()
+      res match {
+        case _ => ()
+      }
+    }
+
     title.value = "Roolraid Tycoan"
     width = 1000
     height = 700
@@ -73,7 +82,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           },
           new UpdatableButton(){
             text = "Trains"
-            onAction = handle { ChooseTrainDialog() }
+            onAction = handle { chooseTrainDialog() }
             layoutX <== stage.width-width
             layoutY = 25
           },
