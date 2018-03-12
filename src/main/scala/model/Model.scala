@@ -57,7 +57,7 @@ class Game()
   var trainList = Seq[Train]()
   def addTrain(train : Train) = {trainList = trainList :+ train}
 
-  var money = 0.0
+  var money = 2000.0
   def deltaMoney(delta : Double) = {money = money + delta}
 
   //we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
