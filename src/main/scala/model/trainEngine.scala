@@ -4,8 +4,8 @@ import engine._
 import scala.math._
 
 
-class TrainEngine(name : String, maxSpeed : Double, maxLoad : Double , val electric : Boolean)
-    extends Engine(name, maxSpeed, maxLoad){
+class TrainEngine(name : String, maxSpeed : Double, maxLoad : Double , val electric : Boolean, val price : Int)
+    extends Engine(name, maxSpeed, maxLoad, price){
   def getSpeed(load : Double) = {
     maxSpeed * (max(0,maxLoad - load))/maxLoad
   }
