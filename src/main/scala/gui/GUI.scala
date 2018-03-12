@@ -82,7 +82,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           },
           new UpdatableButton(){
             text = "Trains"
-            onAction = handle { chooseTrainDialog() }
+            onAction = handle { chooseTrainWindow() }
             layoutX <== stage.width-width
             layoutY = 25
           },
