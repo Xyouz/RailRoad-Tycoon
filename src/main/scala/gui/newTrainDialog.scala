@@ -69,8 +69,13 @@ class newTrainDialog(val master : MainGame,
     val choosenEngine = engine.value.value
     val newTrain = new Train(trainName.text(),choosenEngine)
     if (game.money < choosenEngine.price){
-      println("pas assez de pognon!")
-    } 
+      new Alert(AlertType.Warning) {
+        initOwner(master)
+        title = "Plus de pognon!!!"
+        headerText = "Vous manquez d'argent pour créer un nouveau train."
+        contentText = "La création du train n'a pas été possible."
+      }.showAndWait()
+    }
     else {
       game.addTrain(newTrain)
       game.money -= choosenEngine.price
