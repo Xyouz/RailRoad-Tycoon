@@ -55,7 +55,7 @@ class Game()
   var nbOfTown = townList.length
 
   var trainList = Seq[Train]()
-  def addTrain(train : Train) = {trainList += train}
+  def addTrain(train : Train) = {trainList = trainList :+ train}
 
   var money = 0.0
   def deltaMoney(delta : Double) = {money = money + delta}

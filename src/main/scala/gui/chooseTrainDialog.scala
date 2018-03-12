@@ -36,7 +36,7 @@ class chooseTrainDialog(val master : MainGame,
     padding = Insets(20,100,10,10)
 
     add(new Label("Train:"), 0, 0)
-    add(engine, 1, 0)
+    add(train, 1, 0)
   }
 
   this.dialogPane().content = grid
