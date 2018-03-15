@@ -109,7 +109,17 @@ class Game()
   }
 
   val dispatchMatrix = shortestPath(townList, roadList)
-   // List of trains and the ID of the town they are currently in
+
+  def connectedComponent(town : Town) = {
+    var res = Seq[Town]()
+    for ((_,t,d) <- dispatchMatrix(town.getID())){
+      if (d < Double.PositiveInfinity){
+        res = t +: res
+      }
+    }
+  }
+
+  // List of trains and the ID of the town they are currently in
   var trainsOnTransit = List[(Train, Int)]()
 
   def trainToBeDispatched(train : Train, localState : Int) = {
