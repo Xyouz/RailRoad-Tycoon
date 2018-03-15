@@ -67,7 +67,6 @@ class newTrainDialog(val master : MainGame,
   def toBeApplied() = {
     val startTown = townToStart.value.value
     val choosenEngine = engine.value.value
-    val newTrain = new Train(trainName.text(),choosenEngine)
     if (game.money < choosenEngine.price){
       new Alert(AlertType.Warning) {
         initOwner(master)
@@ -77,6 +76,8 @@ class newTrainDialog(val master : MainGame,
       }.showAndWait()
     }
     else {
+      val newTrain = new Train(trainName.text(),choosenEngine)
+      newTrain.setDestination(startTown)
       game.addTrain(newTrain)
       master.selectTrain += newTrain
       game.money -= choosenEngine.price

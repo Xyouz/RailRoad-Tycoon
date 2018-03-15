@@ -40,7 +40,7 @@ class Game()
     new Road(townList(3),townList(7)),
     new Road(townList(0),townList(3)),
     new Road(townList(1),townList(2)),
-    new Road(townList(5),townList(8)),
+    // new Road(townList(5),townList(8)),
     new Road(townList(6),townList(10)),
     new Road(townList(1),townList(10)),
     new Road(townList(0),townList(10)),
@@ -110,13 +110,17 @@ class Game()
 
   val dispatchMatrix = shortestPath(townList, roadList)
 
+
   def connectedComponent(town : Town) = {
     var res = Seq[Town]()
+    var i = 0
     for ((_,t,d) <- dispatchMatrix(town.getID())){
-      if (d < Double.PositiveInfinity){
-        res = t +: res
+      if (! (d.isPosInfinity)){
+        res = townList(i) +: res
       }
+      i += 1
     }
+    res
   }
 
   // List of trains and the ID of the town they are currently in
