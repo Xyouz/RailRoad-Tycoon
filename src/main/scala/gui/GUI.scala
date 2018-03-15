@@ -1,5 +1,6 @@
 package gui
 
+import setRouteDialog._
 import chooseTrainDialog._
 import town._
 import road._
@@ -73,6 +74,22 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         layoutX = t.position().x_coord()
         layoutY = t.position().y_coord()
       })
+
+    val selectTrain = new UpdatableComboBox(game.trainList){
+      layoutX <== stage.width - width
+      layoutY <== 50
+      selectionModel().selectedItem.onChange {
+        (_, _, newValue) => {
+          val dialog = new setRouteDialog(stage,game,newValue)
+
+          val res = dialog.showAndWait()
+          res match {
+            case _ => ()
+          }
+        }
+      }
+    }
+
     var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
             text = "New Train"
@@ -80,24 +97,26 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             layoutX <== stage.width-width
             layoutY = 0
           },
-          new UpdatableButton(){
-            text = "Trains"
-            onAction = handle { chooseTrainWindow() }
-            layoutX <== stage.width-width
-            layoutY = 25
-          },
+          // new UpdatableButton(){
+          //   text = "Trains"
+          //   onAction = handle { chooseTrainWindow() }
+          //   layoutX <== stage.width-width
+          //   layoutY = 25
+          // },
           new UpdatableButton(){
             text = "Au revoir"
             onAction = { ae => stage.close() }
             layoutX <== stage.width-width
-            layoutY = 50
+            layoutY = 25
           },
           new UpdatableLabel(){
             text = s"Argent : ${game.money}€"
             layoutX <== stage.width-width -25
             layoutY <== stage.height - 75
             override def update() = {text = s"Argent : ${game.money}€"}
-          })
+          },
+          selectTrain
+        )
 
 
     def addToBeDrawn(newItem : scalafx.scene.Node with updatable.Updatable) = {
