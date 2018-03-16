@@ -4,6 +4,7 @@ import gui._
 import model._
 import train._
 import town._
+import railMap._
 import scalafx.Includes._
 import scalafx.scene.layout._
 import scalafx.application.{JFXApp, Platform}
@@ -43,7 +44,7 @@ class setRouteDialog(val master : MainGame,
     editable = false
   }
 
-  val towns = new ListView(game.connectedComponent(game.townList(train.getDestination))){
+  val towns = new ListView(game.railmap.connectedComponent(game.townList(train.getDestination))){
     selectionModel().selectedItem.onChange {
       (_, _ , newValue ) => {
         circuit = circuit :+ newValue
