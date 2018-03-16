@@ -9,9 +9,10 @@ abstract class Vehicle( val name : String, val engine : Engine){
   val maxLoad = engine.maxLoad
   var position = new Point(-10, 10)
   var nstep = 0
+  var stepCount = 0
   var distance = -1.0
   var destination = {-1} // the destination's ID
-  var nextDestination = {-1}
+  var nextDest = {-1}
   var route = Array[Town]()
   def update() = {
     distance += engine.getSpeed(load)
@@ -23,10 +24,17 @@ abstract class Vehicle( val name : String, val engine : Engine){
     route = newRoute
     nstep = newRoute.length
     if (nstep > 0){
-        nextDestination = route(0).getID()
+        nextDest = route(0).getID()
     }
   }
-  def unload(t: Town) = {}
+  def unload(t: Town) = {
+    println("/!  fonction vehicle.unload à écrire")
+  }
+  def nextDestination() = {
+    destination = nextDest
+    nextDest = route((stepCount + 1) % nstep).getID()
+    stepCount += 1
+  }
   def setDestination(town : Town) = {destination = town.getID()}
   def setPosition(p : Point) = {position = p}
   var loading =  0 // number of passengers in the train.

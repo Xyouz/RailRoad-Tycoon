@@ -134,19 +134,18 @@ class Game()
   def dispatchTrain(train : Train, townID : Int) = {
     if (train.getDestination()== townID) {
       train.unload(townList(townID))
+      townList(townID).loadTrain(train)
+      train.nextDestination()
       }
-    else {
-      train.resetDistance();
-      var info = dispatchMatrix(townID)(train.getDestination())
-      (info._1).launchTrain(train,info._2)
-    }
+    train.resetDistance();
+    var info = dispatchMatrix(townID)(train.getDestination())
+    (info._1).launchTrain(train,info._2)
   }
 
   def update() = {
     def mappingFun(t : (Train, Int)) = {
       dispatchTrain(t._1, t._2)
     }
-
     for (road <- roadList) {
       trainsOnTransit = trainsOnTransit ++ road.update()
     }
