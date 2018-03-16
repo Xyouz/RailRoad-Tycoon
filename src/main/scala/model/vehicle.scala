@@ -15,7 +15,7 @@ abstract class Vehicle( val name : String, val engine : Engine){
   var nextDest = {-1}
   var route = Array[Town]()
   def update() = {
-    distance += engine.getSpeed(load)
+    distance += engine.getSpeed(load)/2
     distance
   }
   def resetDistance() = {distance = 0}
