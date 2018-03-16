@@ -34,9 +34,9 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new CircTown(stage, game, town)
     }
 
-    def showTrainCircle(town : Town) : CircShowTrain = {
-      new CircShowTrain(town)
-    }
+    // def showTrainCircle(town : Town) : CircShowTrain = {
+    //   new CircShowTrain(town)
+    // }
 
     def roadToLine(road : Road) : LineRoad = {
       new LineRoad(stage, road)
@@ -67,12 +67,12 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
     val nodeTowns = game.towns().map(townToCircle(_))
     val edgeRoads = game.roads().map(roadToLine(_))
-    val townsWithTrains = game.towns().map(showTrainCircle(_))
+    // val townsWithTrains = game.towns().map(showTrainCircle(_))
     val townsLabel = game.towns().map(
       t => new UpdatableLabel(){
         text = t.toString()
-        layoutX = t.position().x_coord()
-        layoutY = t.position().y_coord()
+        layoutX = t.position().x_coord() - 25
+        layoutY = t.position().y_coord() - 25
       })
 
     val selectTrain = new UpdatableComboBox(game.trainList){
@@ -90,7 +90,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
     }
 
-    var toBeDrawn = edgeRoads ++ townsWithTrains ++ nodeTowns ++ townsLabel ++
+    var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
             text = "New Train"
             onAction = handle {newTrainWindow()}
