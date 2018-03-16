@@ -1,5 +1,6 @@
 package gui
 
+import moneyAlert._
 import setRouteDialog._
 import chooseTrainDialog._
 import town._
@@ -43,11 +44,23 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     }
 
     def newTrainWindow(): Unit = {
-      val dialog = new newTrainDialog(stage,game)
+      val dialog = new newTrainDialog(stage,game.townList, game.trainEngineList)
 
       val res = dialog.showAndWait()
       res match {
-        case _ => ()
+        case Some(NewTrainOk(name, town, engine)) => {
+          // create a new train and update the ComboBox used to selectTrain
+          try {
+            selectTrain += game.addTrain(name, town, engine)
+          }
+          catch {
+            case NotEnoughMoneyException(msg) => {
+              val alert = new MoneyAlert(stage, msg)
+              alert.showAndWait()
+            }
+          }
+        }
+        case None => ()
       }
     }
 
@@ -128,7 +141,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
       content = toBeDrawn
 
-      // update what ownis drawn on the screen
+      // update what is drawn on the screen
       def drawScene() = {
         toBeDrawn.map(_.update())
       }

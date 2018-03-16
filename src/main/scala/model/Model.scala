@@ -10,6 +10,8 @@ import trainEngine._
 import planeEngine._
 import scala.math._
 import railMap._
+import moneyAlert._
+
 
 // Eventually a class to launch a game.
 class Game()
@@ -57,9 +59,42 @@ class Game()
   var nbOfTown = townList.length
 
   var trainList = Seq[Train]()
-  def addTrain(train : Train) = {trainList = trainList :+ train}
+  // def toBeApplied() = {
+  //   val startTown = townToStart.value.value
+  //   val choosenEngine = engine.value.value
+  //   if (game.money < choosenEngine.price){
+  //     new Alert(AlertType.Warning) {
+  //       initOwner(master)
+  //       title = "Plus de pognon!!!"
+  //       headerText = "Vous manquez d'argent pour créer un nouveau train."
+  //       contentText = "La création du train n'a pas été possible."
+  //     }.showAndWait()
+  //   }
+  //   else {
+  //     val newTrain = new Train(trainName.text(),choosenEngine)
+  //     newTrain.setDestination(startTown)
+  //     game.addTrain(newTrain)
+  //     master.selectTrain += newTrain
+  //     game.money -= choosenEngine.price
+  //     master.addToBeDrawn(new CircTrain(newTrain))
+  //     startTown.welcomeTrain(newTrain)
+  //   }
+  // }
 
-  var money = 2000.0
+  def addTrain(name : String, town : Town, engine : TrainEngine) = {
+    if (money < engine.price){
+      throw new NotEnoughMoneyException("train")
+    }
+    val newTrain = new Train(name,engine)
+    newTrain.setDestination(town)
+    money -= engine.price
+    town.welcomeTrain(newTrain)
+    println("Il faudra changer la gestion de la ville dans laquelle va le train")
+    trainList = trainList :+ newTrain
+    newTrain
+  }
+
+  var money = 0.0//2000.0
   def deltaMoney(delta : Double) = {money = money + delta}
 
 
