@@ -73,6 +73,10 @@ class setRouteDialog(val master : MainGame,
 
   def toBeApplied() = {
     train.setRoute(circuit.toArray[Town])
+    if (train.distance <= 0){
+      game.trainsOnTransit = game.trainsOnTransit :+ (train,train.getDestination())
+    }
+    //println("/! changer la valeur associé à train (pour l'instant 0) dans setRouteDialog")
   }
 
   this.resultConverter = {

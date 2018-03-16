@@ -23,12 +23,15 @@ class Town(val id : Int,
   def deltaPopulation(delta : Int) = {pop += delta}
   def incrPop() = {pop = pop+50}
   def update(){
-  //  pop += 20
+    
   }
   def welcomeTrain(train : Train) = {
     railwayStation = train :: railwayStation
     pop += train.loading;
     train.loading = 0
+  }
+  def loadTrain(train : Train) = {
+    println("/!  fonction town.loadTrain à écrire")
   }
   def hasTrains() : Boolean = { ! railwayStation.isEmpty}
   def goodbyeTrain(train : Train) : Boolean = {
