@@ -138,7 +138,6 @@ class Game()
     else {
       train.resetDistance();
       var info = dispatchMatrix(townID)(train.getDestination())
-      println(s"${train.toString()} redispatché vers ${info._2}")
       (info._1).launchTrain(train,info._2)
     }
   }
