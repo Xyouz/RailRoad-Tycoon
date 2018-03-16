@@ -71,8 +71,7 @@ class setRouteDialog(val master : MainGame,
   // Platform.runLater(train.requestFocus())
 
   def toBeApplied() = {
-    // val choosenTrain = train.value.value
-    // println(choosenTrain)
+    train.setRoute(circuit.toArray[Town])
   }
 
   this.resultConverter = {

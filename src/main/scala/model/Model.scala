@@ -133,7 +133,7 @@ class Game()
   // townID : current town where the train is.
   def dispatchTrain(train : Train, townID : Int) = {
     if (train.getDestination()== townID) {
-      townList(townID).welcomeTrain(train)
+      train.unload(townList(townID))
       }
     else {
       train.resetDistance();
