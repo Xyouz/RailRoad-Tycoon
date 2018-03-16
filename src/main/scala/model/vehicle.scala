@@ -26,6 +26,7 @@ abstract class Vehicle( val name : String, val engine : Engine){
     if (nstep > 0){
         nextDest = route(0).getID()
     }
+    stepCount = 0
   }
   def unload(t: Town) = {
     println("/!  fonction vehicle.unload à écrire")
