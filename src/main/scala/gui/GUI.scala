@@ -9,6 +9,8 @@ import point._
 import train._
 import model._
 import circTown._
+import infoPane._
+import infoWidget._
 import lineRoad._
 import circShowTrains._
 import dotTrain._
@@ -112,24 +114,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             layoutX <== stage.width-width
             layoutY = 0
           },
-          // new UpdatableButton(){
-          //   text = "Trains"
-          //   onAction = handle { chooseTrainWindow() }
-          //   layoutX <== stage.width-width
-          //   layoutY = 25
-          // },
           new UpdatableButton(){
             text = "Au revoir"
             onAction = { ae => stage.close() }
             layoutX <== stage.width-width
             layoutY = 25
           },
-          new UpdatableLabel(){
-            text = s"Argent : ${game.money}€"
-            layoutX <== stage.width-width -25
-            layoutY <== stage.height - 75
-            override def update() = {text = s"Argent : ${game.money}€"}
-          },
+          new InfoWidget(game),
           selectTrain
         )
 
