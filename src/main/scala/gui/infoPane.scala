@@ -4,6 +4,7 @@ import scalafx.scene.control._
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
 
+
 class InfoPane() extends TitledPane() {
   text = "Informations générales"
   var timeCounter = 0

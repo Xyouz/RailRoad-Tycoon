@@ -1,7 +1,6 @@
 package gui
 
 import moneyAlert._
-import setRouteDialog._
 import chooseTrainDialog._
 import town._
 import road._
@@ -45,6 +44,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new LineRoad(stage, road)
     }
 
+    val infoWidget = new InfoWidget(stage, game)
+
     def newTrainWindow(): Unit = {
       val dialog = new newTrainDialog(stage,game.townList, game.trainEngineList)
 
@@ -54,7 +55,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
           // create a new train and update the ComboBox used to selectTrain
           try {
             var newTrain = game.addTrain(name, town, engine)
-            selectTrain += newTrain
+            infoWidget.addTrainToInfoWidget(newTrain)
             addToBeDrawn(new CircTrain(newTrain))
           }
           catch {
@@ -92,20 +93,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         layoutY = t.position().y_coord() - 25
       })
 
-    val selectTrain = new UpdatableComboBox(game.trainList){
-      layoutX <== stage.width - width
-      layoutY <== 50
-      selectionModel().selectedItem.onChange {
-        (_, _, newValue) => {
-          val dialog = new setRouteDialog(stage,game,newValue)
 
-          val res = dialog.showAndWait()
-          res match {
-            case _ => ()
-          }
-        }
-      }
-    }
 
     var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
@@ -120,8 +108,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             layoutX <== stage.width-width
             layoutY = 25
           },
-          new InfoWidget(game),
-          selectTrain
+          infoWidget
         )
 
 
