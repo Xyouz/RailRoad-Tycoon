@@ -59,27 +59,6 @@ class Game()
   var nbOfTown = townList.length
 
   var trainList = Seq[Train]()
-  // def toBeApplied() = {
-  //   val startTown = townToStart.value.value
-  //   val choosenEngine = engine.value.value
-  //   if (game.money < choosenEngine.price){
-  //     new Alert(AlertType.Warning) {
-  //       initOwner(master)
-  //       title = "Plus de pognon!!!"
-  //       headerText = "Vous manquez d'argent pour créer un nouveau train."
-  //       contentText = "La création du train n'a pas été possible."
-  //     }.showAndWait()
-  //   }
-  //   else {
-  //     val newTrain = new Train(trainName.text(),choosenEngine)
-  //     newTrain.setDestination(startTown)
-  //     game.addTrain(newTrain)
-  //     master.selectTrain += newTrain
-  //     game.money -= choosenEngine.price
-  //     master.addToBeDrawn(new CircTrain(newTrain))
-  //     startTown.welcomeTrain(newTrain)
-  //   }
-  // }
 
   def addTrain(name : String, town : Town, engine : TrainEngine) = {
     if (money < engine.price){
@@ -94,7 +73,7 @@ class Game()
     newTrain
   }
 
-  var money = 0.0//2000.0
+  var money = 56.0
   def deltaMoney(delta : Double) = {money = money + delta}
 
 
