@@ -92,8 +92,9 @@ class Game()
       }
     else {
       train.resetDistance();
-      var info = railmap.dispatchMatrix(townID)(train.getDestination())
-      (info._1).launchTrain(train,info._2)
+      //var info1 = railmap.dispatchMatrix(townID)(train.getDestination())
+      //(info._1).launchTrain(train,info._2)
+      var info = railmap.matrixLength(townID)(train.getDestination())
     }
   }
 
