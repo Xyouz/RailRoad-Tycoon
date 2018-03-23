@@ -7,7 +7,7 @@ import scalafx.geometry.Insets
 
 class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   text = "Villes"
-  maxWidth = 200
+  maxWidth = 250
   var selectedTown = townsList(0)
   val nameLabel = new Label()
   val populationLabel = new Label()
@@ -21,7 +21,8 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val select = new ComboBox(townsList)
   {
     onAction = {ae =>selectedTown = value.value
-            update()  }
+            update()
+            }
   }
 
 

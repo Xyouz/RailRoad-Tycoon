@@ -17,10 +17,9 @@ import scalafx.scene.control._
 case class Result(cochonou : Unit)
 
 // use to create an interactive window in order to create new trains
-class setRouteDialog(val master : MainGame,
-                     val game : Game,
-                     val train : Train)
+class setRouteDialog(val master : MainGame, val train : Train)
                    extends Dialog[Result]() {
+  val game = master.game
   initOwner(master)
   title = "Choix d'un circuit"
   headerText = s"Veuillez indiquer le circuit à suivre par ${train}"

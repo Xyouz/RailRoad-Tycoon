@@ -24,17 +24,17 @@ class Game()
                       new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
 
   val townList = Seq[Town](
-      new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(275,600)) ,
-      new Town(1, "Paris", 450, List(new Good("Toto",42)), new Point(600,300)) ,
-      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(450,500)) ,
-      new Town(3, "Lyon", 350, List(new Good("Toto",42)), new Point(120,450)),
-      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(775,150)),
-      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(350,90)),
-      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(920,400)),
-      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(300,300)),
-      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(42,42)),
-      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(200,220)),
-      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(880,600)))
+      new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(525,600)) ,
+      new Town(1, "Paris", 450, List(new Good("Toto",42)), new Point(850,300)) ,
+      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(700,500)) ,
+      new Town(3, "Lyon", 350, List(new Good("Toto",42)), new Point(370,450)),
+      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(1025,150)),
+      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(600,90)),
+      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(1170,400)),
+      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(550,300)),
+      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(292,42)),
+      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(450,220)),
+      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(1130,600)))
 
   var roadList = Seq[Road](
     new Road(townList(5),townList(9)),

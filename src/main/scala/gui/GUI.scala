@@ -12,10 +12,8 @@ import infoPane._
 import infoWidget._
 import lineRoad._
 import circShowTrains._
-import dotTrain._
 import scalafx.Includes._
 import updatable._
-import newTrainDialog._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
 import scalafx.scene.layout._
@@ -36,50 +34,16 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new CircTown(stage, game, town)
     }
 
-    // def showTrainCircle(town : Town) : CircShowTrain = {
-    //   new CircShowTrain(town)
-    // }
-
     def roadToLine(road : Road) : LineRoad = {
       new LineRoad(stage, road)
     }
 
     val infoWidget = new InfoWidget(stage, game)
 
-    def newTrainWindow(): Unit = {
-      val dialog = new newTrainDialog(stage,game.townList, game.trainEngineList)
 
-      val res = dialog.showAndWait()
-      res match {
-        case Some(NewTrainOk(name, town, engine)) => {
-          // create a new train and update the ComboBox used to selectTrain
-          try {
-            var newTrain = game.addTrain(name, town, engine)
-            infoWidget.addTrainToInfoWidget(newTrain)
-            addToBeDrawn(new CircTrain(newTrain))
-          }
-          catch {
-            case NotEnoughMoneyException(msg) => {
-              val alert = new MoneyAlert(stage, msg)
-              alert.showAndWait()
-            }
-          }
-        }
-        case _ => ()
-      }
-    }
-
-    def chooseTrainWindow(): Unit = {
-      val dialog = new ChooseTrainDialog(stage,game)
-
-      val res = dialog.showAndWait()
-      res match {
-        case _ => ()
-      }
-    }
 
     title.value = "Roolraid Tycoan"
-    width = 1000
+    width = 1250
     height = 700
     //content = new Button("Hell World")
 
@@ -97,16 +61,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
     var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
-            text = "New Train"
-            onAction = handle {newTrainWindow()}
-            layoutX <== stage.width-width
-            layoutY = 0
-          },
-          new UpdatableButton(){
             text = "Au revoir"
             onAction = { ae => stage.close() }
             layoutX <== stage.width-width
-            layoutY = 25
+            layoutY = 0
           },
           infoWidget
         )
