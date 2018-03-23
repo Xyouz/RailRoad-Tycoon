@@ -43,7 +43,7 @@ class setRouteDialog(val master : MainGame, val train : Train)
     editable = false
   }
 
-  val towns = new ListView(game.railmap.connectedComponent(game.townList(train.getDestination))){
+  val towns = new ListView(game.railMap.connectedComponent(game.townList(train.getDestination))){
     selectionModel().selectedItem.onChange {
       (_, _ , newValue ) => {
         circuit = circuit :+ newValue

@@ -54,7 +54,7 @@ class Game()
     new Road(townList(1),townList(4)),
     new Road(townList(2),townList(10)))
 
-  var railmap = new RailMap(townList, roadList)
+  var railMap = new RailMap(townList, roadList)
 
   var nbOfTown = townList.length
 
@@ -90,12 +90,13 @@ class Game()
       townList(townID).loadTrain(train)
       train.nextDestination()
       }
-    else {
-      train.resetDistance();
-      //var info1 = railmap.dispatchMatrix(townID)(train.getDestination())
-      //(info._1).launchTrain(train,info._2)
-      var info = railmap.matrixLength(townID)(train.getDestination())
-    }
+
+    train.resetDistance()
+    var road = railMap.nextRoad(townID, train.getDestination())
+    road.launchTrain(train, townList(townID))
+    //var info1 = railmap.dispatchMatrix(townID)(train.getDestination())
+    //(info._1).launchTrain(train,info._2)
+    //var info = railmap.matrixLength(townID)(train.getDestination())
   }
 
   def update() = {

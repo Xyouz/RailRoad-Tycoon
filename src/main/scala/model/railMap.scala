@@ -13,55 +13,41 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
   val nr = allRoads.length
   val inf = Double.PositiveInfinity
   val matrixLength = Array.fill[Double](nt, nt)(inf)
-  val matrixRoads = Array.fill[Int](nt, nt)(-1)
+  val matrixRoads = Array.fill[Road](nt, nt)(allRoads(0))
 
   def shortestPath() = {
-
-
-   // a function that maps the first two integers of the tuples with the road and the town that respectively correspond to those numbers.
-  def maps1(matou :  Array[ Array[Int]]) : Array[Array[Road]] = {
-    val mat2 = Array.ofDim[Road](nt,nt)
     for (i <- 0 until nt) {
-      for (j <- 0 until nt) {
-        mat2(i)(j) = (allRoads(max(0,matou(i)(j))))
-      }
+      matrixLength(i)(i) = 0
     }
-    mat2
-  }
 
-  for (i <- 0 until nt) {
-    matrixLength(i)(i) = 0
-  }
-
-  for (i <- 0 until nr) {
-    var j = allRoads(i).getEnd.getID()
-    var k = allRoads(i).getStart.getID()
-    var l = allRoads(i).length
-    matrixLength(j)(k) = l
-    matrixLength(k)(j) = l
-    matrixRoads(j)(k) = 1
-    matrixRoads(k)(j) = 1
-  }
+    for (r <- allRoads) {
+      var j = r.getEnd.getID()
+      var k = r.getStart.getID()
+      var l = r.length
+      matrixLength(j)(k) = l
+      matrixLength(k)(j) = l
+      matrixRoads(j)(k) = r
+      matrixRoads(k)(j) = r
+    }
 
 
-  //Algorithm of Floyd-warshall itself
+    //Algorithm of Floyd-warshall itself
 
-  for (k <- 0 until nt){
-    for (i <- 0 until nt){
-      for (j <- 0 until nt){
-        if (matrixLength(i)(j) > matrixLength(i)(k) + matrixLength(k)(j)) {
-          var d = matrixLength(i)(k) + matrixLength(k)(j)
-          var r = matrixRoads(i)(k)
-          matrixLength(i)(j) = d
-          matrixRoads(i)(j) = r
+    for (k <- 0 until nt){
+      for (i <- 0 until nt){
+        for (j <- 0 until nt){
+          if (matrixLength(i)(j) > matrixLength(i)(k) + matrixLength(k)(j)) {
+            var d = matrixLength(i)(k) + matrixLength(k)(j)
+            var r = matrixRoads(i)(k)
+            matrixLength(i)(j) = d
+            matrixRoads(i)(j) = r
+          }
         }
       }
     }
   }
-  //maps1(matrixRoads)
-}
 
-shortestPath()
+  shortestPath()
 
 
   def connectedComponent(town : Town) = {
@@ -73,6 +59,10 @@ shortestPath()
       }
     }
     res
+  }
+
+  def nextRoad(currentTownID : Int, nextTownID : Int) = {
+    matrixRoads(currentTownID)(nextTownID)
   }
 
 

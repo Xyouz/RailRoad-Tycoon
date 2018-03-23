@@ -45,8 +45,8 @@ class Road(val begin : Town,val end : Town){
     arrived
   }
 
-  def launchTrain(train : Train, destination : Town) ={
-    if (destination == end){
+  def launchTrain(train : Train, currentTown : Town) = {
+    if (currentTown == begin){
       trainsAB = trainsAB :+ train
       }
     else{
