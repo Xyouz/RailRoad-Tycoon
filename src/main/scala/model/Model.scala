@@ -76,9 +76,11 @@ class Game()
       townList(townID).loadTrain(train)
       train.nextDestination()
       }
-    train.resetDistance();
-    var info = railmap.dispatchMatrix(townID)(train.getDestination())
-    (info._1).launchTrain(train,info._2)
+    else {
+      train.resetDistance();
+      var info = railmap.dispatchMatrix(townID)(train.getDestination())
+      (info._1).launchTrain(train,info._2)
+    }
   }
 
   def update() = {
