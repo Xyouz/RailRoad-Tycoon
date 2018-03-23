@@ -15,7 +15,7 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
   val matrixLength = Array.fill[Double](nt, nt)(inf)
   val matrixRoads = Array.fill[Int](nt, nt)(-1)
 
-  def shortestPath(towns : Seq[Town], roads : Seq[Road]) : Array[Array[Double]] = {
+  def shortestPath() = {
 
 
    // a function that maps the first two integers of the tuples with the road and the town that respectively correspond to those numbers.
@@ -23,7 +23,7 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
     val mat2 = Array.ofDim[Road](nt,nt)
     for (i <- 0 until nt) {
       for (j <- 0 until nt) {
-        mat2(i)(j) = (roads(max(0,matou(i)(j))))
+        mat2(i)(j) = (allRoads(max(0,matou(i)(j))))
       }
     }
     mat2
@@ -34,9 +34,9 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
   }
 
   for (i <- 0 until nr) {
-    var j = roads(i).getEnd.getID()
-    var k = roads(i).getStart.getID()
-    var l = roads(i).length
+    var j = allRoads(i).getEnd.getID()
+    var k = allRoads(i).getStart.getID()
+    var l = allRoads(i).length
     matrixLength(j)(k) = l
     matrixLength(k)(j) = l
     matrixRoads(j)(k) = 1
@@ -59,19 +59,17 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
     }
   }
   //maps1(matrixRoads)
-  matrixLength
 }
 
-//  val dispatchMatrix = shortestPath(allTowns, allRoads)
+shortestPath()
 
 
   def connectedComponent(town : Town) = {
     var res = Seq[Town]()
-    for (i <- 0 until nt) {
-      for (j <- 0 until nt) {
-        if (! (matrixLength(i)(j).isPosInfinity) ){
-          res = allTowns(i) +: res
-        }
+    var i = town.getID()
+    for (j <- 0 until nt) {
+      if (! (matrixLength(i)(j).isPosInfinity) ){
+        res = allTowns(j) +: res
       }
     }
     res
