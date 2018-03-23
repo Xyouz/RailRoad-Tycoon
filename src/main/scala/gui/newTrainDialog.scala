@@ -5,6 +5,7 @@ import model._
 import train._
 import town._
 import dotTrain._
+import trainEngine._
 import scalafx.Includes._
 import scalafx.scene.layout._
 import scalafx.application.{JFXApp, Platform}
@@ -14,12 +15,13 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 
-case class Result(cochonou : Unit)
+case class NewTrainOk(name : String, town : Town, engine : TrainEngine)
 
 // use to create an interactive window in order to create new trains
 class newTrainDialog(val master : MainGame,
-                     val game : Game)
-                   extends Dialog[Result]() {
+                     val townList : Seq[Town],
+                     val engineList : Seq[TrainEngine])
+                   extends Dialog[NewTrainOk]() {
   initOwner(master)
   title = "Création d'un nouveau train"
   headerText = "Vous vous apprétez à inaugurer un nouveau train"
@@ -28,7 +30,7 @@ class newTrainDialog(val master : MainGame,
   val createButtonType = new ButtonType("Créer", ButtonData.OKDone)
   this.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
 
-  val engine = new ComboBox(game.trainEngineList)
+  val engine = new ComboBox(engineList)
   engine.getSelectionModel().selectFirst()
 
   //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
@@ -37,7 +39,7 @@ class newTrainDialog(val master : MainGame,
     promptText = "Name"
   }
 
-  val townToStart = new ComboBox(game.towns())
+  val townToStart = new ComboBox(townList)
   townToStart.getSelectionModel().selectFirst()
 
   val grid = new GridPane(){
@@ -64,32 +66,14 @@ class newTrainDialog(val master : MainGame,
 
   Platform.runLater(trainName.requestFocus())
 
-  def toBeApplied() = {
-    val startTown = townToStart.value.value
-    val choosenEngine = engine.value.value
-    if (game.money < choosenEngine.price){
-      new Alert(AlertType.Warning) {
-        initOwner(master)
-        title = "Plus de pognon!!!"
-        headerText = "Vous manquez d'argent pour créer un nouveau train."
-        contentText = "La création du train n'a pas été possible."
-      }.showAndWait()
-    }
-    else {
-      val newTrain = new Train(trainName.text(),choosenEngine)
-      newTrain.setDestination(startTown)
-      game.addTrain(newTrain)
-      master.selectTrain += newTrain
-      game.money -= choosenEngine.price
-      master.addToBeDrawn(new CircTrain(newTrain))
-      startTown.welcomeTrain(newTrain)
-    }
-  }
-
   this.resultConverter = {
     dialogButton =>
-      if (dialogButton == createButtonType) {Result(toBeApplied)}
-      else Result(())
+      if (dialogButton == createButtonType) {
+        NewTrainOk(trainName.text(), townToStart.value.value, engine.value.value)
+      }
+      else {
+        null
+      }
   }
 
 }
