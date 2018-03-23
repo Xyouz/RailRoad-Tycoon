@@ -3,6 +3,7 @@ package vehicle
 import point.Point
 import town.Town
 import engine.Engine
+import scalafx.scene.paint.Color._
 
 abstract class Vehicle( val name : String, val engine : Engine){
   override def toString() = {name}
@@ -14,6 +15,7 @@ abstract class Vehicle( val name : String, val engine : Engine){
   var destination = {-1} // the destination's ID
   var nextDest = {-1}
   var route = Array[Town]()
+  var color = DarkCyan
   def update() = {
     distance += engine.getSpeed(load)/2
     distance
