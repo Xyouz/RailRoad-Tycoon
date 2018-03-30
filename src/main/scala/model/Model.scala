@@ -16,6 +16,7 @@ import moneyAlert._
 // Eventually a class to launch a game.
 class Game()
 {
+
   val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11), new TrainEngine("Escargot", 5, 75, false,11))
 
   val planeEngineList = List(new PlaneEngine("TurboJet 42", 35, 50,11))
@@ -23,38 +24,15 @@ class Game()
   var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
                       new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
 
-  val townList = Seq[Town](
-      new Town(0, "Bordeaux", 258, List(new Good("Toto",42)), new Point(525,600)) ,
-      new Town(1, "Paris", 450, List(new Good("Toto",42)), new Point(850,300)) ,
-      new Town(2, "Marseille", 350, List(new Good("Toto",42)), new Point(700,500)) ,
-      new Town(3, "Lyon", 350, List(new Good("Toto",42)), new Point(370,450)),
-      new Town(4, "Toulouse", 400, List(new Good("Toto",42)),new Point(1025,150)),
-      new Town(5, "Rennes", 200, List(new Good("Toto",42)),new Point(600,90)),
-      new Town(6, "Clermont-Ferrand", 250, List(new Good("Toto",42)),new Point(1170,400)),
-      new Town(7, "Nancy", 150, List(new Good("Toto",42)),new Point(550,300)),
-      new Town(8, "Angoulême", 42, List(new Good("Toto",42)),new Point(292,42)),
-      new Town(9, "Nice", 200, List(new Good("Toto",42)),new Point(450,220)),
-      new Town(10, "Strasbourg", 250, List(new Good("Toto",42)),new Point(1130,600)))
-
-  var roadList = Seq[Road](
-    new Road(townList(5),townList(9)),
-    new Road(townList(9),townList(1)),
-    new Road(townList(3),townList(7)),
-    new Road(townList(0),townList(3)),
-    new Road(townList(1),townList(2)),
-    // new Road(townList(5),townList(8)),
-    new Road(townList(6),townList(10)),
-    new Road(townList(1),townList(10)),
-    new Road(townList(0),townList(10)),
-    new Road(townList(4),townList(10)),
-    new Road(townList(5),townList(4)),
-    new Road(townList(3),townList(2)),
-    new Road(townList(7),townList(1)),
-    new Road(townList(9),townList(3)),
-    new Road(townList(1),townList(4)),
-    new Road(townList(2),townList(10)))
-
+  var townList = Seq[Town]()
+  var roadList = Seq[Road]()
   var railMap = new RailMap(townList, roadList)
+
+  def loadMap(towns : Seq[Town], roads : Seq[Road]) = {
+    townList = towns
+    roadList = roads
+    railMap = new RailMap(townList, roadList)
+  }
 
   var nbOfTown = townList.length
 
