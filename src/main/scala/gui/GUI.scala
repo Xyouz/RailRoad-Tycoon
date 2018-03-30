@@ -28,7 +28,7 @@ import scalafx.scene.control._
 import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
-
+import wagon._
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
@@ -54,7 +54,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
         case Some(NewTrainOk(name, town, engine)) => {
           // create a new train and update the ComboBox used to selectTrain
           try {
-            var newTrain = game.addTrain(name, town, engine)
+            var newTrain = game.addTrain(name, town, engine, List(new Wagon("Liquid", 85.2)))
             infoWidget.addTrainToInfoWidget(newTrain)
             addToBeDrawn(new CircTrain(newTrain))
           }

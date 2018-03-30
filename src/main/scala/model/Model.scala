@@ -11,7 +11,7 @@ import planeEngine._
 import scala.math._
 import railMap._
 import moneyAlert._
-
+import wagon._
 
 // Eventually a class to launch a game.
 class Game()
@@ -60,11 +60,11 @@ class Game()
 
   var trainList = Seq[Train]()
 
-  def addTrain(name : String, town : Town, engine : TrainEngine) = {
+  def addTrain(name : String, town : Town, engine : TrainEngine, wagons : List[Wagon]) = {
     if (money < engine.price){
       throw new NotEnoughMoneyException("train")
     }
-    val newTrain = new Train(name,engine)
+    val newTrain = new Train(name,engine, wagons)
     newTrain.setDestination(town)
     money -= engine.price
     town.welcomeTrain(newTrain)

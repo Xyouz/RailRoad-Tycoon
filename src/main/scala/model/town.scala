@@ -3,7 +3,7 @@ package town
 import point._
 import train._
 import good._
-
+import sendTrainDialog._
 // a class to implement the towns of the graphs with information on the name,
 // the population, their wealth and methods to update them when a train come over
 class Town(val id : Int,
@@ -23,8 +23,10 @@ class Town(val id : Int,
   def deltaPopulation(delta : Int) = {pop += delta}
   def incrPop() = {pop = pop+50}
   def update(){
-    
   }
+
+  //def leavingPopulation() : Int={(pop/10).toInt}
+  var lpop = (pop/10).toInt
   def welcomeTrain(train : Train) = {
     railwayStation = train :: railwayStation
     pop += train.loading;
@@ -32,6 +34,8 @@ class Town(val id : Int,
   }
   def loadTrain(train : Train) = {
     println("/!  fonction town.loadTrain à écrire")
+    pop -= lpop
+    train.loading += lpop
   }
   def hasTrains() : Boolean = { ! railwayStation.isEmpty}
   def goodbyeTrain(train : Train) : Boolean = {
