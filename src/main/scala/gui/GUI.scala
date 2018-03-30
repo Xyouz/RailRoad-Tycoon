@@ -12,10 +12,8 @@ import infoPane._
 import infoWidget._
 import lineRoad._
 import circShowTrains._
-import dotTrain._
 import scalafx.Includes._
 import updatable._
-import newTrainDialog._
 import scalafx.application.{JFXApp, Platform}
 import scalafx.scene.Scene
 import scalafx.scene.layout._
@@ -36,15 +34,12 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       new CircTown(stage, game, town)
     }
 
-    // def showTrainCircle(town : Town) : CircShowTrain = {
-    //   new CircShowTrain(town)
-    // }
-
     def roadToLine(road : Road) : LineRoad = {
       new LineRoad(stage, road)
     }
 
     val infoWidget = new InfoWidget(stage, game)
+
 
     def newTrainWindow(): Unit = {
       val dialog = new newTrainDialog(stage,game.townList, game.trainEngineList)
@@ -69,17 +64,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
       }
     }
 
-    def chooseTrainWindow(): Unit = {
-      val dialog = new ChooseTrainDialog(stage,game)
 
-      val res = dialog.showAndWait()
-      res match {
-        case _ => ()
-      }
-    }
 
     title.value = "Roolraid Tycoan"
-    width = 1000
+    width = 1250
     height = 700
     //content = new Button("Hell World")
 
@@ -89,24 +77,18 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     val townsLabel = game.towns().map(
       t => new UpdatableLabel(){
         text = t.toString()
-        layoutX = t.position().x_coord() - 25
-        layoutY = t.position().y_coord() - 25
+        layoutX = t.position().x_coord() + 500
+        layoutY = t.position().y_coord() + 300
       })
 
 
 
     var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
-            text = "New Train"
-            onAction = handle {newTrainWindow()}
-            layoutX <== stage.width-width
-            layoutY = 0
-          },
-          new UpdatableButton(){
             text = "Au revoir"
             onAction = { ae => stage.close() }
             layoutX <== stage.width-width
-            layoutY = 25
+            layoutY = 0
           },
           infoWidget
         )

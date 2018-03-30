@@ -14,5 +14,6 @@ class CircVehicle(val vehicle : Vehicle) extends Circle with Updatable{
     var p = vehicle.position
     centerX = p.x_coord()
     centerY = p.y_coord()
+    fill = vehicle.color
   }
 }

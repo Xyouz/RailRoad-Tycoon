@@ -18,10 +18,10 @@ import scalafx.scene.control._
 case class NewTrainOk(name : String, town : Town, engine : TrainEngine)
 
 // use to create an interactive window in order to create new trains
-class newTrainDialog(val master : MainGame,
-                     val townList : Seq[Town],
-                     val engineList : Seq[TrainEngine])
+class newTrainDialog(val master : MainGame)
                    extends Dialog[NewTrainOk]() {
+  val townList = master.game.townList
+  val engineList = master.game.trainEngineList
   initOwner(master)
   title = "Création d'un nouveau train"
   headerText = "Vous vous apprétez à inaugurer un nouveau train"

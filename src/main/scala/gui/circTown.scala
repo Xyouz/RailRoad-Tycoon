@@ -14,6 +14,8 @@ import town._
 class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle with Updatable{
   centerX = town.position().x_coord()
   centerY = town.position().y_coord()
+  translateX = 500
+  translateY = 300
   update()
   onMouseClicked = handle {sendTrain(town)}
   fill = Orange
@@ -28,7 +30,7 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   }
 
   override def update() = {
-    radius = town.population() / 5
+    radius = 10//town.population() / 5
   }
 
 }
