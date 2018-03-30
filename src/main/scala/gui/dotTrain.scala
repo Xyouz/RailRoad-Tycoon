@@ -8,4 +8,6 @@ import train._
 import dotVehicle.CircVehicle
 
 class CircTrain(train : Train) extends CircVehicle(train) with Updatable{
+  translateX = 500
+  translateY = 300
 }
