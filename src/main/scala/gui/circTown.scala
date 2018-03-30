@@ -28,7 +28,7 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   }
 
   override def update() = {
-    radius = town.population() / 5
+    radius = 10//town.population() / 5
   }
 
 }

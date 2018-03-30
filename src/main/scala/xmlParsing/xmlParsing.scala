@@ -30,8 +30,9 @@ class XMLParser(xmlFile : String) {
       id = id + 1
     }
     for {connection <- doc \\ "Connection"}{
-      var beginName = connection \ "upstream"
-      var endName = connection \ "downstream"
+      var beginName = connection \@ "upstream"
+      var endName = connection \@ "downstream"
+      println(s"A : ${beginName},  B : ${endName}")
       rails = new Road(unwrapOption(towns.find(_.name == beginName)),
                        unwrapOption(towns.find(_.name == endName))) +: rails
     }
