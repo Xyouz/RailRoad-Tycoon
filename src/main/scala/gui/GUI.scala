@@ -41,29 +41,6 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     val infoWidget = new InfoWidget(stage, game)
 
 
-    def newTrainWindow(): Unit = {
-      val dialog = new newTrainDialog(stage,game.townList, game.trainEngineList)
-
-      val res = dialog.showAndWait()
-      res match {
-        case Some(NewTrainOk(name, town, engine)) => {
-          // create a new train and update the ComboBox used to selectTrain
-          try {
-            var newTrain = game.addTrain(name, town, engine, List(new Wagon("Liquid", 85.2)))
-            infoWidget.addTrainToInfoWidget(newTrain)
-            addToBeDrawn(new CircTrain(newTrain))
-          }
-          catch {
-            case NotEnoughMoneyException(msg) => {
-              val alert = new MoneyAlert(stage, msg)
-              alert.showAndWait()
-            }
-          }
-        }
-        case _ => ()
-      }
-    }
-
 
 
     title.value = "Roolraid Tycoan"
