@@ -53,8 +53,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     val townsLabel = game.towns().map(
       t => new UpdatableLabel(){
         text = t.toString()
-        layoutX = t.position().x_coord() - 25
-        layoutY = t.position().y_coord() - 25
+        layoutX = t.position().x_coord() + 500
+        layoutY = t.position().y_coord() + 300
       })
 
 
