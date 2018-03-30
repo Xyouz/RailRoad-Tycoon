@@ -26,7 +26,7 @@ import scalafx.scene.control._
 import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
-
+import wagon._
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
@@ -39,6 +39,30 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
     }
 
     val infoWidget = new InfoWidget(stage, game)
+
+
+    def newTrainWindow(): Unit = {
+      val dialog = new newTrainDialog(stage,game.townList, game.trainEngineList)
+
+      val res = dialog.showAndWait()
+      res match {
+        case Some(NewTrainOk(name, town, engine)) => {
+          // create a new train and update the ComboBox used to selectTrain
+          try {
+            var newTrain = game.addTrain(name, town, engine, List(new Wagon("Liquid", 85.2)))
+            infoWidget.addTrainToInfoWidget(newTrain)
+            addToBeDrawn(new CircTrain(newTrain))
+          }
+          catch {
+            case NotEnoughMoneyException(msg) => {
+              val alert = new MoneyAlert(stage, msg)
+              alert.showAndWait()
+            }
+          }
+        }
+        case _ => ()
+      }
+    }
 
 
 
