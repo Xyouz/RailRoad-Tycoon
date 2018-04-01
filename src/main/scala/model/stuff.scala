@@ -2,4 +2,6 @@ package stuff
 
 import cargo._
 
-class Stuff(){}
+class Stuff(){
+
+}
