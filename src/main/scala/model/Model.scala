@@ -72,9 +72,6 @@ class Game()
     train.resetDistance()
     var road = railMap.nextRoad(townID, train.getDestination())
     road.launchTrain(train, townList(townID))
-    //var info1 = railmap.dispatchMatrix(townID)(train.getDestination())
-    //(info._1).launchTrain(train,info._2)
-    //var info = railmap.matrixLength(townID)(train.getDestination())
   }
 
   def update() = {

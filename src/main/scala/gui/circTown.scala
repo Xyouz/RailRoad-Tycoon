@@ -17,17 +17,8 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   translateX = 500
   translateY = 300
   update()
-  onMouseClicked = handle {sendTrain(town)}
+  //onMouseClicked = handle {println(town)}
   fill = Orange
-
-  // Used to initialise a window to send trains out of a city
-  def sendTrain(startTown: Town): Unit = {
-    // val dialogWindow= new SendTrainDialog(master, game, startTown)
-    // val res = dialogWindow.showAndWait()
-    // res match {
-    //   case _ => ()
-    // }
-  }
 
   override def update() = {
     radius = 10//town.population() / 5

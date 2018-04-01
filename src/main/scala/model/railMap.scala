@@ -8,7 +8,9 @@ import scala.math._
 
 class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
 {
-//we need to define a function to find the shortest path between two towns, not necessarilly assuming that the graph of the towns is connex. We chose the algorithm of Floyd-Warshall.
+// we need to define a function to find the shortest path between two towns,
+// not necessarilly assuming that the graph of the towns is connex.
+// We chose the algorithm of Floyd-Warshall.
   val nt = allTowns.length
   val nr = allRoads.length
   val inf = Double.PositiveInfinity
@@ -48,7 +50,6 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
   }
 
   shortestPath()
-
 
   def connectedComponent(town : Town) = {
     var res = Seq[Town]()

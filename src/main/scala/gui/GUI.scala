@@ -27,6 +27,8 @@ import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import wagon._
+
+
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
@@ -44,7 +46,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 
     title.value = "Roolraid Tycoan"
-    width = 1250
+    width = 1000
     height = 700
     //content = new Button("Hell World")
 
