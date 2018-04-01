@@ -32,12 +32,11 @@ class XMLParser(xmlFile : String) {
     for {connection <- doc \\ "Connection"}{
       var beginName = connection \@ "upstream"
       var endName = connection \@ "downstream"
-      println(s"A : ${beginName},  B : ${endName}")
       rails = new Road(unwrapOption(towns.find(_.name == beginName)),
                        unwrapOption(towns.find(_.name == endName))) +: rails
     }
     val game = new Game()
-    game.loadMap(towns, rails)
+    game.loadMap(towns.reverse, rails)
     game
   }
 }
