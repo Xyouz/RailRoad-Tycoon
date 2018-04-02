@@ -26,9 +26,9 @@ class XMLParser(xmlFile : String) {
       var population = (town \@ "population").toInt
       var x = (town \@ "x").toDouble
       var y = (town \@ "y").toDouble
-      var airport = (town \@ "Airport")
+      var airport = (town \ "Airport")
       var newTown = new Town(id, name, population, new Point(x,y))
-      if (airport != "") {
+      if (airport.length != 0) {
         newTown.hasAirport = true
       }
       towns = newTown +: towns
