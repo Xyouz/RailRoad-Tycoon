@@ -3,6 +3,7 @@ package infoWidget
 import infoPane._
 import cityPane._
 import trainPane._
+import planePane._
 import scalafx.Includes._
 import scalafx.scene.control._
 import updatable._
@@ -19,14 +20,20 @@ class InfoWidget(val master : MainGame, val game : Game) extends Accordion() wit
 
     val trainPane = new TrainPane(master)
 
+    val cityPane = new CityPane(game.townList)
+
+    val planePane = new PlanePane(master)
 
     panes = List(
       informationPane,
-      new CityPane(game.townList),
-      trainPane
+      cityPane,
+      trainPane,
+      planePane
     )
     override def update() = {
       informationPane.update(game.money)
+      cityPane.update()
       trainPane.update()
+      planePane.update()
     }
 }

@@ -21,5 +21,9 @@ class MoneyAlert(val master : MainGame , problem : String) extends Alert(AlertTy
       headerText = "Vous manquez d'argent pour créer un nouveau train."
       contentText = "La création du train n'a pas été possible."
     }
+    case "plane" => {
+      headerText = "Vous manquez d'argent pour créer un nouvel avion."
+      contentText = "La création de l'avion n'a pas été possible."
+    }
   }
 }
