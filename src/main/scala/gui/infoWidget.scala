@@ -19,14 +19,15 @@ class InfoWidget(val master : MainGame, val game : Game) extends Accordion() wit
 
     val trainPane = new TrainPane(master)
 
-
+    val cityPane = new CityPane(game.townList)
     panes = List(
       informationPane,
-      new CityPane(game.townList),
+      cityPane,
       trainPane
     )
     override def update() = {
       informationPane.update(game.money)
+      cityPane.update()
       trainPane.update()
     }
 }
