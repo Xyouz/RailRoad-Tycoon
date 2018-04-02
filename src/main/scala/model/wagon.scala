@@ -5,6 +5,18 @@ import cargo._
 import train._
 
 
-class Wagon(name : String, maxLoad : Double) extends Cargo(name, maxLoad){
-  def typeOfStuff() = {} 
+class Wagon(typeOfLoad : String, maxLoad : Double) extends Cargo(typeOfLoad, maxLoad){
+  var content : Option[Stuff] = None
+  def load(toLoad : Stuff) = {
+    content = Some(toLoad)
+  }
+  def unload() = {
+    content match {
+      case None => throw new Exception
+      case Some(loading) => {
+        content = None
+        loading
+      }
+    }
+  }
 }
