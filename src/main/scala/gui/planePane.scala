@@ -6,10 +6,10 @@ import scalafx.scene.control._
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
 import updatable._
-import newTrainDialog._
+import newPlaneDialog._
 import moneyAlert._
 import gui._
-import dotTrain._
+import dotPlane._
 import scalafx.Includes._
 import setRouteDialog._
 import scalafx.scene.paint.Color._
@@ -20,29 +20,29 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
   maxWidth = 250
 
 
-  // def newTrainWindow(): Unit = {
-  //   val dialog = new newTrainDialog(master)
-  //
-  //   val res = dialog.showAndWait()
-  //   res match {
-  //     case Some(NewTrainOk(name, town, engine)) => {
-  //       // create a new train and update the ComboBox used to selectTrain
-  //       try {
-  //         var newTrain = master.game.addTrain(name, town, engine, List(new Wagon("L",500)))
-  //         addTrainToComboBox(newTrain)
-  //         master.addToBeDrawn(new CircTrain(newTrain))
-  //         select.getSelectionModel().select(newTrain)
-  //       }
-  //       catch {
-  //         case NotEnoughMoneyException(msg) => {
-  //           val alert = new MoneyAlert(master, msg)
-  //           alert.showAndWait()
-  //         }
-  //       }
-  //     }
-  //     case _ => ()
-  //   }
-  // }
+  def newPlaneWindow(): Unit = {
+    val dialog = new newPlaneDialog(master)
+
+    val res = dialog.showAndWait()
+    res match {
+      case Some(NewPlaneOk(name, town, engine)) => {
+        // create a new train and update the ComboBox used to selectTrain
+        try {
+          var newPlane = master.game.addPlane(name, town, engine, new Box("L",500))
+          addTrainToComboBox(newPlane)
+          master.addToBeDrawn(new CircPlane(newPlane))
+          select.getSelectionModel().select(newPlane)
+        }
+        catch {
+          case NotEnoughMoneyException(msg) => {
+            val alert = new MoneyAlert(master, msg)
+            alert.showAndWait()
+          }
+        }
+      }
+      case _ => ()
+    }
+  }
 
 
   val nameLabel = new Label()
@@ -73,7 +73,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
 
   val newTrainButton = new Button(){
     text = "New Plane"
-    // onAction = handle {newTrainWindow()}
+    onAction = handle {newPlaneWindow()}
   }
 
 
@@ -81,10 +81,10 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     onAction = {ae =>
       selectedTrain match {
         case None => ()
-        case Some(train) => train.color = DarkCyan
+        case Some(train) => train.color = Aquamarine
       }
       selectedTrain = Some(value.value)
-      value.value.color = Cyan
+      value.value.color = Aqua
       update()
     }
   }
