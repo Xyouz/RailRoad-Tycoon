@@ -4,7 +4,7 @@ import engine._
 import scala.math._
 
 
-class PlaneEngine( name : String, maxSpeed : Double, maxLoad : Double,  price :Int )
+class PlaneEngine( name : String, maxSpeed : Double, maxLoad : Double, val maxRange : Double, price : Int )
     extends Engine(name, maxSpeed, maxLoad, price){
   val minSpeed = 10  // the minimal speed at which a plane can fly
   def getSpeed(load : Double) = {
