@@ -3,6 +3,7 @@ package town
 import point._
 import train._
 import good._
+import stuff._
 import sendTrainDialog._
 // a class to implement the towns of the graphs with information on the name,
 // the population, their wealth and methods to update them when a train come over
@@ -46,4 +47,6 @@ class Town(val id : Int, val name: String, var pop : Int,
     railwayStation = railwayStation.filter(_!=train)
     (n != railwayStation.length)
   }
+
+  def receiveStuff(unloaded : Stuff) = {}
 }
