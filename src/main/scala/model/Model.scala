@@ -12,6 +12,7 @@ import scala.math._
 import railMap._
 import moneyAlert._
 import wagon._
+import plane._
 
 // Eventually a class to launch a game.
 class Game()
@@ -37,6 +38,7 @@ class Game()
   var nbOfTown = townList.length
 
   var trainList = Seq[Train]()
+  var planeList = Seq[Plane]()
 
   def addTrain(name : String, town : Town, engine : TrainEngine, wagons : List[Wagon]) = {
     if (money < engine.price){
@@ -46,9 +48,20 @@ class Game()
     newTrain.setDestination(town)
     money -= engine.price
     town.welcomeTrain(newTrain)
-    println("Il faudra changer la gestion de la ville dans laquelle va le train")
     trainList = trainList :+ newTrain
     newTrain
+  }
+
+  def addPlane(name : String, town : Town, engine : PlaneEngine, hold : Box) = {
+    if (money < engine.price){
+      throw new NotEnoughMoneyException("plane")
+    }
+    val newPlane = new Plane(name,engine, hold)
+    newPlane.setDestination(town)
+    money -= engine.price
+    //town.welcomeTrain(newTrain)
+    planeList = planeList :+ newPlane
+    newPlane
   }
 
   var money = 56.0
