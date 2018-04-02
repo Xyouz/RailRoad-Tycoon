@@ -26,7 +26,12 @@ class XMLParser(xmlFile : String) {
       var population = (town \@ "population").toInt
       var x = (town \@ "x").toDouble
       var y = (town \@ "y").toDouble
-      towns = new Town(id, name, population, new Point(x,y)) +: towns
+      var airport = (town \@ "Airport")
+      var newTown = new Town(id, name, population, new Point(x,y))
+      if (airport != "") {
+        newTown.hasAirport = true
+      }
+      towns = newTown +: towns
       id = id + 1
     }
     for {connection <- doc \\ "Connection"}{

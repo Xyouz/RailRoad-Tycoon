@@ -12,7 +12,8 @@ class Town(val id : Int, val name: String, var pop : Int,
   var pos : Point){
   var railwayStation = List[Train]()
   var factories = List[String]()
-
+  var hasAirport = false
+  
   override def toString() = {name}
   def addFactory(name : String) = {
     factories = name +: factories
