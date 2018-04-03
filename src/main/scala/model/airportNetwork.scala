@@ -22,12 +22,13 @@ class AirportNetwork(val game : Game) {
 
   def connectedComponent(town : Town, range : Double) : Seq[Town] = {
     var result = Seq[Town]()
+    nt = game.townList.length
     var connected = Array.fill[Boolean](nt)(false)
     var toExplore = Seq[Town](town)
     while (toExplore.length >= 1) {
       var c_town = toExplore.head
       toExplore = toExplore.tail
-      if (! connected(c_town.getID)) {
+      if (false == connected(c_town.getID)) {
         connected(c_town.getID) = true
         result = c_town +: result
         toExplore = neighboors(c_town,range) ++ toExplore

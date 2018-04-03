@@ -5,6 +5,10 @@ import town.Town
 import engine.Engine
 import scalafx.scene.paint.Color._
 
+
+case class NotInTownException() extends Exception()
+
+
 abstract class Vehicle( val name : String, val engine : Engine){
   override def toString() = {name}
   val maxLoad = engine.maxLoad
@@ -16,6 +20,22 @@ abstract class Vehicle( val name : String, val engine : Engine){
   var nextDest = {-1}
   var route = Array[Town]()
   var color = DarkCyan
+
+  var currentTown : Option[Town] = None
+  def getCurrentTown = {
+    currentTown match {
+      case None => {
+        throw new NotInTownException()
+      }
+      case Some(town) => {
+        town
+      }
+    }
+  }
+  def setCurrentTown(town : Option[Town]) = {
+    currentTown = town
+  }
+
   def update() = {
     distance += engine.getSpeed(load)/2
     distance

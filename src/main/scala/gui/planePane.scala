@@ -11,7 +11,7 @@ import moneyAlert._
 import gui._
 import dotPlane._
 import scalafx.Includes._
-import setRouteDialog._
+import setPlaneRouteDialog._
 import scalafx.scene.paint.Color._
 
 
@@ -52,23 +52,30 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     editable = false
   }
 
-  var selectedTrain = None : Option[Plane]
+  var selectedPlane = None : Option[Plane]
 
   val routeButton = new Button(){
     text = "Itinéraire"
-    // onAction = { ae =>
-    //   selectedTrain match {
-    //     case None => ()
-    //     case Some(train) => {
-    //       val dialog = new setRouteDialog(master,train)
-    //
-    //       val res = dialog.showAndWait()
-    //       res match {
-    //         case _ => ()
-    //       }
-    //     }
-    //   }
-    // }
+    onAction = { ae =>
+      selectedPlane match {
+        case None => ()
+        case Some(plane) => {
+          val dialog = new setRouteDialog(master,plane)
+
+          val res = dialog.showAndWait()
+          res match {
+            case Some(OkRoute(circuit)) => {
+              plane.setRoute(circuit)
+              plane.startFly(plane.getCurrentTown,circuit(0))
+              if (plane.distance <= 0){
+                //master.game.trainsOnTransit = master.game.trainsOnTransit :+ (train,train.getDestination())
+              }
+            }
+            case _ => {}
+          }
+        }
+      }
+    }
   }
 
   val newTrainButton = new Button(){
@@ -79,11 +86,11 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
 
   val select : ComboBox[Plane] = new ComboBox[Plane](){
     onAction = {ae =>
-      selectedTrain match {
+      selectedPlane match {
         case None => ()
-        case Some(train) => train.color = Aquamarine
+        case Some(plane) => plane.color = Aquamarine
       }
-      selectedTrain = Some(value.value)
+      selectedPlane = Some(value.value)
       value.value.color = Aqua
       update()
     }
@@ -116,7 +123,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
   }
 
   override def update() = {
-    selectedTrain match {
+    selectedPlane match {
       case None => {
         nameLabel.visible = false
         engineLabel.visible = false
