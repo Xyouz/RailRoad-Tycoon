@@ -23,7 +23,7 @@ class setRouteDialog(val master : MainGame, val train : Train)
   initOwner(master)
   title = "Choix d'un circuit"
   headerText = s"Veuillez indiquer le circuit à suivre par ${train}"
-  graphic = new ImageView(this.getClass.getResource("/gui/locomotive.png").toString)
+  graphic = new ImageView(this.getClass.getResource("/gui/locomotive2.png").toString)
 
   val createButtonType = new ButtonType("Ok", ButtonData.OKDone)
   this.dialogPane().buttonTypes = Seq(createButtonType, ButtonType.Cancel)
