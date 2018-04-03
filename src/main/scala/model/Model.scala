@@ -10,6 +10,7 @@ import trainEngine._
 import planeEngine._
 import scala.math._
 import railMap._
+import airportNetwork._
 import moneyAlert._
 import wagon._
 import plane._
@@ -28,6 +29,7 @@ class Game()
   var townList = Seq[Town]()
   var roadList = Seq[Road]()
   var railMap = new RailMap(townList, roadList)
+  val airports = new AirportNetwork(this)
 
   def loadMap(towns : Seq[Town], roads : Seq[Road]) = {
     townList = towns
