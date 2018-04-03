@@ -14,11 +14,11 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 
-case class Result(cochonou : Unit)
+case class OkRoute(circuit : Array[Town])
 
 // use to create an interactive window in order to create new trains
 class setRouteDialog(val master : MainGame, val train : Train)
-                   extends Dialog[Result]() {
+                   extends Dialog[OkRoute]() {
   val game = master.game
   initOwner(master)
   title = "Choix d'un circuit"
@@ -68,20 +68,16 @@ class setRouteDialog(val master : MainGame, val train : Train)
 
   this.dialogPane().content = grid
 
-  // Platform.runLater(train.requestFocus())
-
-  def toBeApplied() = {
-    train.setRoute(circuit.toArray[Town])
-    if (train.distance <= 0){
-      game.trainsOnTransit = game.trainsOnTransit :+ (train,train.getDestination())
-    }
-    //println("/! changer la valeur associé à train (pour l'instant 0) dans setRouteDialog")
-  }
+  Platform.runLater(towns.requestFocus())
 
   this.resultConverter = {
     dialogButton =>
-      if (dialogButton == createButtonType) {Result(toBeApplied)}
-      else Result(())
+      if (dialogButton == createButtonType) {
+        OkRoute(circuit.toArray[Town])
+      }
+      else {
+        null
+      }
   }
 
 }

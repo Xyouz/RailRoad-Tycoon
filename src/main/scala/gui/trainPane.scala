@@ -64,7 +64,13 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
           val res = dialog.showAndWait()
           res match {
-            case _ => ()
+            case Some(OkRoute(circuit)) => {
+              train.setRoute(circuit)
+              if (train.distance <= 0){
+                master.game.trainsOnTransit = master.game.trainsOnTransit :+ (train,train.getDestination())
+              }
+            }
+            case _ => {}
           }
         }
       }
