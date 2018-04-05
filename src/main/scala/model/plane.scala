@@ -18,6 +18,7 @@ class Box(typeOf : String, maxLoad : Double) extends Cargo(typeOf, maxLoad) {
 class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) extends Vehicle(name, engine){
   println("la classe avion a encore acces à game et a perdu la gestion des exceptions")
   var flying = false
+  var flightBriefing = Array[Town]()
   var begin : Town = new Town(42,"Test",42,new Point(42,42))
   var end : Town = new Town(42,"Test",42,new Point(42,42))
 
