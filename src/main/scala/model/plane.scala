@@ -24,6 +24,7 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
   var endHop = new Town(42,"Test",42,new Point(42,42))
   var beginHop = new Town(42,"Test",42,new Point(42,42))
   var step = 0
+  var nbStep = 42
 
   def startFly(beginTown : Town, endTown : Town) = {
     // if (!(begin.hasAirport && end.hasAirport)) {
@@ -35,10 +36,15 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
       begin = beginTown
       end = endTown
       flightBriefing = game.airports.getBriefing(begin,end,engine.maxRange)
-      var step = 1
-      var nbStep = flightBriefing.length
-      var beginHop = flightBriefing(0)
-      var endHop = flightBriefing(1)
+      step = 1
+      nbStep = flightBriefing.length
+      beginHop = flightBriefing(0)
+      if (nbStep == 1){
+        endHop = flightBriefing(0)
+      }
+      else {
+        endHop = flightBriefing(1)
+      }
       distance = 0
       currentTown = None
     // }
@@ -49,7 +55,8 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
       distance += engine.getSpeed(load)/2
       position = beginHop.pos + (endHop.pos - beginHop.pos).normalize().scale(distance)
       if (distance >= (endHop.pos - beginHop.pos).norm()){
-        if (endHop == end){
+        println(step)
+        if (step >= nbStep-1){
           setCurrentTown(Some(end))
           distance = -1.0
           flying = false
@@ -63,8 +70,6 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
           step += 1
           distance = 0
           beginHop = endHop
-          println(step)
-          println(flightBriefing.length)
           endHop = flightBriefing(step)
         }
       }

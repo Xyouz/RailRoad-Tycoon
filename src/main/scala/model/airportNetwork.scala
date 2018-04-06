@@ -66,7 +66,12 @@ class AirportNetwork(val game : Game) {
     initialize(start.getID, end.getID)
     explore(start, end, range)
     makeBriefing(start, end)
-    briefing.toArray.map(game.townList(_))
+    println("<========>")
+    println(start)
+    briefing foreach {i => println(intToTown(i))}
+    println(end)
+    println("<=======>")
+    briefing.toArray.map(intToTown(_))
   }
 
   def connectedComponent(town : Town, range : Double) : Seq[Town] = {

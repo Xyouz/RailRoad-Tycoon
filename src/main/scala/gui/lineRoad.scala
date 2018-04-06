@@ -16,7 +16,7 @@ class LineRoad(val master : JFXApp.PrimaryStage, val road : Road) extends Line w
   endY = road.getEnd().position().y_coord()
   translateX = 500
   translateY = 300
-  strokeWidth = 8
+  strokeWidth = 4
   onMouseClicked = {
     ae =>
       new Alert(AlertType.Information) {
