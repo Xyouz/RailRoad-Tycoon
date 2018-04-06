@@ -4,13 +4,29 @@ import building._
 import stuff._
 import town._
 
-class Factory(input : List[Stuff], output : Stuff, val ticks : Int, city : Town) extends Building(input, output, city){
+
+class Factory(input : List[Stuff], output : Stuff, val ticks : Int, city : Town, stocks : List[Stuff]) extends Building(input, output, city, stocks){
+  var time = 0
+  def runningTime() = { //synchroniser les ticks et time...
+    time += 1
+  }
   override def takeInput() = {
     for (i <- input){
-
+      for (j <- stocks) {
+        if (j.equals(i)) {
+          j.addQuantity(i)
+          i.quantity = 0.0
+        }
+      }
     }
   }
-  override def giveOutput() = {}
-  override def updates() = {}
-  override def stock() = {}
+  override def giveOutput() = {output}
+  override def updates() = {
+    if (time == 200) {
+      for (j <- stocks) {
+        j.consumeStuff(3)
+        time = 0
+      }
+    }
+  }
 }
