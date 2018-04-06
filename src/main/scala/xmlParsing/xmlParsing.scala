@@ -34,7 +34,13 @@ class XMLParser(xmlFile : String) {
         newTown.hasAirport = true
       }
       for {factory <- town \\ "Factory"}{
-        newTown.addFactory(builder.build(factory \@ "type",newTown))
+        var typeOfFactory = factory \@ "type"
+        try {
+          newTown.addFactory(builder.build(typeOfFactory,newTown))
+        }
+        catch {
+          case NotFoundTypeFactoryException() => println(s"$typeOfFactory : unknown factory type")
+        }
       }
       towns = newTown +: towns
       id = id + 1

@@ -7,7 +7,7 @@ import town._
 import scala.util.Random
 
 
-//case class NotFoundTypeFactoryException(s : String) extends Exception(s)
+case class NotFoundTypeFactoryException() extends Exception()
 
 
 class FactoryBuilder() {
@@ -77,7 +77,7 @@ class FactoryBuilder() {
       case "wire_mill" => {orf(new Factory(List[Stuff](new Aluminum(100)),new AluminumWires(100),200,town),
                            orf(new Factory(List[Stuff](new Copper(100)),new CopperWires(100),200,town),
                               new Factory(List[Stuff](new Steel(100)),new SteelWires(100),200,town)))}
-      //case _ => throw NotFoundTypeFactoryException(typeOf)
+      case _ => throw NotFoundTypeFactoryException()
     }
   }
 }
