@@ -41,7 +41,7 @@ class Rubber() extends Stuff("Rubber",0,1000){}
 class Sand() extends Stuff("Sand",0,1000){}
 class Sheep() extends Stuff("Sheep",0,1000){}
 class Steel() extends Stuff("Steel",0,1000){}
-class Steel Wires() extends Stuff("Steel Wires",0,1000){}
+class SteelWires() extends Stuff("Steel Wires",0,1000){}
 class Textiles() extends Stuff("Textiles",0,1000){}
 class Timber() extends Stuff("Timber",0,1000){}
 class Tyres() extends Stuff("Tyres",0,1000){}

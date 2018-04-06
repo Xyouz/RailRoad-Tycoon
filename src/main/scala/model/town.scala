@@ -6,6 +6,7 @@ import plane._
 import good._
 import stuff._
 import sendTrainDialog._
+import factory._
 
 case class NoAirportException() extends Exception()
 
@@ -18,12 +19,13 @@ class Town(val id : Int, val name: String, var pop : Int,
   var pos : Point){
   var railwayStation = List[Train]()
   var airport = List[Plane]()
-  var factories = List[String]()
+  var factories = List[Factory]()
+  var stocks = List[Stuff]()
   var hasAirport = false
 
   override def toString() = {name}
-  def addFactory(name : String) = {
-    factories = name +: factories
+  def addFactory(plan : Factory) = {
+    factories = plan +: factories
   }
   def getID() : Int = {id}
   def getName() : String = {name}
@@ -44,7 +46,6 @@ class Town(val id : Int, val name: String, var pop : Int,
     }
   }
 
-  //def leavingPopulation() : Int={(pop/10).toInt}
   var lpop = (pop/10).toInt
   def welcomeTrain(train : Train) = {
     railwayStation = train :: railwayStation
@@ -72,5 +73,11 @@ class Town(val id : Int, val name: String, var pop : Int,
     (n != railwayStation.length)
   }
 
-  def receiveStuff(unloaded : Stuff) = {}
+  def receiveStuff(unloaded : Stuff) = {
+    for (i <- stocks) {
+      if (i.equalsTest(unloaded)){
+        i.quantity += unloaded.quantity
+      }
+    }
+  }
 }

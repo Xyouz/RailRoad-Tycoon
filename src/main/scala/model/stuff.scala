@@ -12,7 +12,7 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
   }
 
    def addQuantity(that : Stuff) = {
-    if (equals(that)) {
+    if (equalsTest(that)) {
       this.quantity = this.quantity + that.quantity
     }
   }
