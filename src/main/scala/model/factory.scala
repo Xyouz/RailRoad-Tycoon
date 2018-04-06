@@ -3,12 +3,15 @@ package factory
 import building._
 import stuff._
 import town._
+import infoPane._
 
 
-class Factory(input : List[Stuff], output : Stuff, val ticks : Int, city : Town, stocks : List[Stuff]) extends Building(input, output, city, stocks){
+class Factory(input : List[Stuff], output : Stuff, val ticks : Int, city : Town) extends Building(input, output, city){
   var time = 0
   def runningTime() = { //synchroniser les ticks et time...
-    time += 1
+    while (true) {
+
+    }
   }
   override def takeInput() = {
     for (i <- input){
