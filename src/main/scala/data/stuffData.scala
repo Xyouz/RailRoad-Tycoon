@@ -2,7 +2,7 @@ package stuffData
 
 import stuff._
 
-class Aluminium(quantity : Double) extends Stuff("Aluminium",quantity,1000){}
+class Aluminum(quantity : Double) extends Stuff("Aluminium",quantity,1000){}
 class AluminumWires(quantity : Double) extends Stuff("Aluminium Wires",quantity,1500){}
 class BakedGoods(quantity : Double) extends Stuff("Baked Goods",quantity,1000){}
 class Bauxite(quantity : Double) extends Stuff("Bauxite",quantity,1000){}

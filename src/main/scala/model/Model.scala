@@ -17,8 +17,7 @@ import plane._
 
 
 // Eventually a class to launch a game.
-class Game()
-{
+class Game(){
 
   val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11), new TrainEngine("Escargot", 5, 75, false,11))
 

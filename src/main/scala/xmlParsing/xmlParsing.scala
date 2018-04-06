@@ -5,9 +5,11 @@ import scala.xml.{Elem, XML}
 import town._
 import road._
 import point._
+import factoryBuilder._
 
 class XMLParser(xmlFile : String) {
   val doc = XML.loadFile(xmlFile)
+  val builder = new FactoryBuilder()
 
   def unwrapOption( townOp : Option[Town] ) = {
     townOp match {
@@ -30,6 +32,9 @@ class XMLParser(xmlFile : String) {
       var newTown = new Town(id, name, population, new Point(x,y))
       if (airport.length != 0) {
         newTown.hasAirport = true
+      }
+      for {factory <- town \\ "Factory"}{
+        newTown.addFactory(builder.build(factory \@ "type",newTown))
       }
       towns = newTown +: towns
       id = id + 1
