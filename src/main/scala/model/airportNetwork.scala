@@ -24,7 +24,9 @@ class AirportNetwork(val game : Game) {
     prec = Array.fill[Int](nt)(-1)
     visited = Array.fill(nt)(false)
     distances(startTownID) = 0
-    heap = PriorityQueue((0,startTownID))
+    heap = PriorityQueue((0.0,startTownID))(
+      implicitly[Ordering[(Double, Int)]].reverse
+    )
     briefing = List[Int](endTownID)
   }
 
