@@ -3,7 +3,7 @@ package stuff
 import cargo._
 import factory._
 
-class Stuff(val name : String, var quantity : Double){
+class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
   def getName() : String = {name}
   def getQuantity() : Double = {quantity}
 
@@ -25,4 +25,9 @@ class Stuff(val name : String, var quantity : Double){
       throw new Exception
     }
   }
+
+  def consumeStuff(d : Int) = {
+    this.quantity = this.quantity/d
+  }
+
 }
