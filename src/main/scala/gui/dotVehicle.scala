@@ -7,7 +7,7 @@ import scalafx.scene.paint.Color._
 import vehicle.Vehicle
 
 class CircVehicle(val vehicle : Vehicle) extends Circle with Updatable{
-  radius = 10
+  radius = 4
   update()
 
   override def update() = {
