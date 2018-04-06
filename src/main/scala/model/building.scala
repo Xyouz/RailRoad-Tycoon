@@ -7,7 +7,6 @@ abstract class Building(val input : List[Stuff], val output : Stuff, val city : 
   var stocks = List[Stuff]()
   var funds = 1000
   def takeInput()
-  def giveOutput()
+  def giveOutput() : Stuff
   def updates()
-  //def stock()
 }
