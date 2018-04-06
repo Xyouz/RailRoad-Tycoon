@@ -21,6 +21,10 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
   var flightBriefing = Array[Town]()
   var begin : Town = new Town(42,"Test",42,new Point(42,42))
   var end : Town = new Town(42,"Test",42,new Point(42,42))
+  var endHop = new Town(42,"Test",42,new Point(42,42))
+  var beginHop = new Town(42,"Test",42,new Point(42,42))
+  var step = 0
+  var nbStep = 42
 
   def startFly(beginTown : Town, endTown : Town) = {
     // if (!(begin.hasAirport && end.hasAirport)) {
@@ -31,6 +35,16 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
       flying = true
       begin = beginTown
       end = endTown
+      flightBriefing = game.airports.getBriefing(begin,end,engine.maxRange)
+      step = 1
+      nbStep = flightBriefing.length
+      beginHop = flightBriefing(0)
+      if (nbStep == 1){
+        endHop = flightBriefing(0)
+      }
+      else {
+        endHop = flightBriefing(1)
+      }
       distance = 0
       currentTown = None
     // }
@@ -39,16 +53,25 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
   override def update() = {
     if (flying) {
       distance += engine.getSpeed(load)/2
-      position = begin.pos + (end.pos - begin.pos).normalize().scale(distance)
-      if (distance >= (end.pos - begin.pos).norm()){
-        setCurrentTown(Some(end))
-        distance = -1.0
-        flying = false
-        getCurrentTown.receiveStuff(hold.getStuff())
-        getCurrentTown.loadPlane(this)
-        nextDestination()
-        startFly(getCurrentTown,game.townList(destination))
-        println("TODO : prendre en compte les multiTrajets")
+      position = beginHop.pos + (endHop.pos - beginHop.pos).normalize().scale(distance)
+      if (distance >= (endHop.pos - beginHop.pos).norm()){
+        println(step)
+        if (step >= nbStep-1){
+          setCurrentTown(Some(end))
+          distance = -1.0
+          flying = false
+          step = 0
+          getCurrentTown.receiveStuff(hold.getStuff())
+          getCurrentTown.loadPlane(this)
+          nextDestination()
+          startFly(getCurrentTown,game.townList(destination))
+        }
+        else {
+          step += 1
+          distance = 0
+          beginHop = endHop
+          endHop = flightBriefing(step)
+        }
       }
     }
     // if (route.length <= distance ){

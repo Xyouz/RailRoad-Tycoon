@@ -22,7 +22,7 @@ class Game()
 
   val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11), new TrainEngine("Escargot", 5, 75, false,11))
 
-  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,10,11))
+  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,175,11))
 
   var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
                       new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
@@ -61,6 +61,7 @@ class Game()
     }
     val newPlane = new Plane(name,engine, hold, this)
     newPlane.setDestination(town)
+    newPlane.nextDest = town.getID
     money -= engine.price
     town.welcomePlane(newPlane)
     planeList = planeList :+ newPlane

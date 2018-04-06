@@ -24,7 +24,9 @@ class AirportNetwork(val game : Game) {
     prec = Array.fill[Int](nt)(-1)
     visited = Array.fill(nt)(false)
     distances(startTownID) = 0
-    heap = PriorityQueue((0,startTownID))
+    heap = PriorityQueue((0.0,startTownID))(
+      implicitly[Ordering[(Double, Int)]].reverse
+    )
     briefing = List[Int](endTownID)
   }
 
@@ -64,7 +66,12 @@ class AirportNetwork(val game : Game) {
     initialize(start.getID, end.getID)
     explore(start, end, range)
     makeBriefing(start, end)
-    briefing.toArray.map(game.townList(_))
+    println("<========>")
+    println(start)
+    briefing foreach {i => println(intToTown(i))}
+    println(end)
+    println("<=======>")
+    briefing.toArray.map(intToTown(_))
   }
 
   def connectedComponent(town : Town, range : Double) : Seq[Town] = {
