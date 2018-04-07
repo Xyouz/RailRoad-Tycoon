@@ -66,11 +66,6 @@ class AirportNetwork(val game : Game) {
     initialize(start.getID, end.getID)
     explore(start, end, range)
     makeBriefing(start, end)
-    println("<========>")
-    println(start)
-    briefing foreach {i => println(intToTown(i))}
-    println(end)
-    println("<=======>")
     briefing.toArray.map(intToTown(_))
   }
 
