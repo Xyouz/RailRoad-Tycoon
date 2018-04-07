@@ -66,9 +66,11 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
           res match {
             case Some(OkRoute(circuit)) => {
               plane.setRoute(circuit)
-
               if (plane.distance <= 0){
+                var briefing = master.game.airports.getBriefing(plane.getCurrentTown,circuit(0),plane.engine.maxRange)
+                if (briefing.length > 1 && (briefing(0).pos-briefing(1).pos).norm()*plane.engine.priceByKm <= master.game.money) {
                   plane.startFly(plane.getCurrentTown,circuit(0))
+                }
               }
             }
             case _ => {}

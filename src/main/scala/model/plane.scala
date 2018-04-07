@@ -53,21 +53,42 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
           setCurrentTown(Some(end))
           distance = -1.0
           flying = false
-          step = 0
-          getCurrentTown.receiveStuff(hold.getStuff())
-          getCurrentTown.loadPlane(this)
+          end.receiveStuff(hold.getStuff())
+          end.loadPlane(this)
           nextDestination()
-          startFly(getCurrentTown,game.townList(destination))
+          // var briefing = game.airports.getBriefing(getCurrentTown,game.townList(destination),engine.maxRange)
+          // if (briefing.length > 1 && (briefing(0).pos-briefing(1).pos).norm()*engine.priceByKm <= game.money) {
+              startFly(getCurrentTown,game.townList(destination))
+          // }
+          // else {
+          //   position = new Point(-1000000,-10000000)
+          // }
         }
-        else if((endHop.pos-flightBriefing(step+1).pos).norm()*engine.priceByKm <= game.money){
-          step += 1
-          distance = 0
-          beginHop = endHop
-          endHop = flightBriefing(step)
-          game.deltaMoney((endHop.pos-beginHop.pos).norm() * engine.priceByKm)
+        else {
+          // if((endHop.pos-flightBriefing(step+1).pos).norm()*engine.priceByKm <= game.money){
+            step += 1
+            distance = 0
+            beginHop = endHop
+            endHop = flightBriefing(step)
+            game.deltaMoney(-(endHop.pos-beginHop.pos).norm() * engine.priceByKm)
+          // }
+          // else {
+            // position = new Point(-1000000,-10000000)
+          // }
         }
       }
     }
+    // else {
+    //   try {
+    //     var briefing = game.airports.getBriefing(getCurrentTown,game.townList(destination),engine.maxRange)
+    //     if (briefing.length > 1 && (briefing(0).pos-briefing(1).pos).norm()*engine.priceByKm <= game.money) {
+    //       startFly(getCurrentTown,game.townList(destination))
+    //     }
+    //   }
+    //   catch {
+    //     case _ : ArrayIndexOutOfBoundsException => ()
+    //   }
+    // }
     distance
   }
 

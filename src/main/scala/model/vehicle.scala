@@ -50,9 +50,7 @@ abstract class Vehicle( val name : String, val engine : Engine){
     }
     stepCount = 0
   }
-  def unload(t: Town) = {
-    println("/!  fonction vehicle.unload à écrire")
-  }
+  def unload(t: Town) : Unit
   def nextDestination() = {
     destination = nextDest
     nextDest = route((stepCount + 1) % nstep).getID()
