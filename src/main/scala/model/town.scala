@@ -30,8 +30,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def population() : Int={pop}
   def deltaPopulation(delta : Int) = {pop += delta}
   def incrPop() = {pop = pop+50}
-  def update(){
 
+  def update(){
+    factories.map(_.update())
   }
 
   def getAirport = {

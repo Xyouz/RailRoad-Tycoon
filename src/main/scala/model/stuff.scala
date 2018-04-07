@@ -3,6 +3,9 @@ package stuff
 import cargo._
 import factory._
 
+case class UnmatchedStuffException() extends Exception()
+case class NotEnoughQuantityException() extends Exception()
+
 class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
   def getName() : String = {name}
   def getQuantity() : Double = {quantity}
@@ -11,18 +14,53 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
     this.name == that.name
   }
 
+  override def equals(that : Any) : Boolean = {
+    that match {
+      case s : Stuff => this.name == s.name
+      case _ => false
+    }
+  }
+
    def addQuantity(that : Stuff) = {
     if (equalsTest(that)) {
       this.quantity = this.quantity + that.quantity
     }
   }
 
-  def subStuff(that : Stuff) = {
-    if (this.quantity >= that.quantity) {
-      this.quantity = this.quantity - that.quantity
+  def copy() = {
+    new Stuff(name,0,maxPrice)
+  }
+
+  def transferTo(that : Stuff, quant : Stuff) = {
+    if ((this == that) && (that == quant)) {
+      if (this.quantity >= quant.quantity) {
+        println("Appel à transferTo")
+        this.subStuff(quant)
+        that.addStuff(quant)
+      }
+    }
+  }
+
+  def addStuff(that : Stuff) = {
+    if (this == that) {
+      this.quantity = this.quantity + that.quantity
     }
     else {
-      throw new Exception
+      throw new UnmatchedStuffException()
+    }
+  }
+
+  def subStuff(that : Stuff) = {
+    if (this == that) {
+      if (this.quantity >= that.quantity) {
+        this.quantity = this.quantity - that.quantity
+      }
+      else {
+        throw new NotEnoughQuantityException()
+      }
+    }
+    else {
+      throw new UnmatchedStuffException
     }
   }
 

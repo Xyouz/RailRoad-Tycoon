@@ -8,20 +8,27 @@ import town._
 class Factory(input : List[Stuff], output : Stuff, ticks : Int, city : Town) extends Building(input, output, city){
   var time = 0
   override def takeInput() = {
-    for (i <- input){
-      for (j <- stocks) {
-        if (j.equals(i)) {
-          j.addQuantity(i)
-          i.quantity = 0.0
+    for (i <- 0 until input.length){
+      for (j <- city.stocks){
+        try {
+          j.transferTo(stocks(i),input(i))
+        } catch {
+          case _ : Throwable => ()//println("à changer")
         }
       }
     }
   }
   override def giveOutput() = {output}
-  override def updates() = {
+  override def update() = {
     time += 1
-    if (time == 200) {
-      for (j <- stocks) {
+    //          \/ mettre ticks
+    if (time == 100) {
+      takeInput()
+      if (city.getID == 0){
+        println("update")
+        stocks foreach {t=>println(s"${t.name} ${t.quantity}")}
+      }
+      for (j <- stocks) {  
         j.consumeStuff(3)
         time = 0
         println(j.quantity)
