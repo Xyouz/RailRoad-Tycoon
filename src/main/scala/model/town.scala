@@ -65,10 +65,20 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     plane.setCurrentTown(Some(this))
   }
 
+  var excedent = 12.0
+
   def loadTrain(train : Train) = {
-    println("/!  fonction town.loadTrain à écrire")
     pop -= lpop
     train.loading += lpop
+    for (i <- stocks) {
+      for (j <- train.wagons()){
+        if (j.kindOfLoad() == i.stuffCategory() && i.quantity > excedent) {
+          var toSend = new Stuff(i.name, (excedent - i.quantity), 12.0, i.category)
+          j.load(toSend)
+          i.subStuff(toSend)
+        }
+      }
+    }
   }
 
   def loadPlane(plane : Plane) = {

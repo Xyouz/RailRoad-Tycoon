@@ -10,7 +10,7 @@ import point._
 
 class Box(typeOf : String, maxLoad : Double) extends Cargo(typeOf, maxLoad) {
   def getStuff() = {
-    new Stuff(typeOf, 1.0, 45.0)
+    new Stuff(typeOf, 1.0, 45.0, "to specify")
   }
 }
 

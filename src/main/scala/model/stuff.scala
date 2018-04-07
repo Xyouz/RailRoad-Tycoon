@@ -6,7 +6,8 @@ import factory._
 case class UnmatchedStuffException() extends Exception()
 case class NotEnoughQuantityException() extends Exception()
 
-class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
+class Stuff(val name : String, var quantity : Double, val maxPrice : Double, val category : String){
+  def stuffCategory() = {category}
   def getName() : String = {name}
   def getQuantity() : Double = {quantity}
 
@@ -32,7 +33,7 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
   }
 
   def copy() = {
-    new Stuff(name,0,maxPrice)
+    new Stuff(name,0,maxPrice, category)
   }
 
   def transferTo(that : Stuff, quant : Stuff) = {

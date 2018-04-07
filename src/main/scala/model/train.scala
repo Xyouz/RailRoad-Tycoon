@@ -6,6 +6,7 @@ import town._
 import wagon._
 //a class to represent trains
 class Train(name : String, engine : TrainEngine, listOfWagon : List[Wagon]) extends Vehicle(name, engine){
+  def wagons() = {listOfWagon}
   override def unload(t : Town) = {
     t.pop += loading
     val numberOfWagons = listOfWagon.length
