@@ -28,7 +28,7 @@ class InfoPane() extends TitledPane() {
 
   def update(newMoney : Double) = {
     timeCounter += 1
-    moneyLabel.text = s"Argent ${newMoney}"
+    moneyLabel.text = f"Argent ${newMoney}%2.2f"
     timeLabel.text = s"Date : ${timeCounter}"
   }
 }
