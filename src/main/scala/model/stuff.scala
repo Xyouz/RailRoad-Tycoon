@@ -28,7 +28,7 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
   }
 
   def hasEnough(that : Stuff) = {
-    quantity >= that.quantity && this==that
+    this.quantity >= that.quantity && this==that
   }
 
   def copy() = {

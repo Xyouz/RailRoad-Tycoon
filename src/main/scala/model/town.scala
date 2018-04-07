@@ -51,7 +51,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           stocks(j).subStuff(consuptionStuff(i).scale(0.001* population))
         }
         catch {
-          case NotEnoughQuantityException() => println("pas assez de bouffe")
+          case NotEnoughQuantityException() => ()//println("pas assez de bouffe")
         }
         i = i + 1
         j = j + 1
@@ -68,7 +68,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     t = t + 1
     if (t==200) {
       t = 0
-      cityConsumption()
+      //cityConsumption()
     }
     factories.map(_.update())
   }

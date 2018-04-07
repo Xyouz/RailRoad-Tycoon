@@ -21,7 +21,7 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
-    stocks.items = ObservableBuffer(selectedTown.stocks.map(s => s"${s.name} : ${s.quantity}"))
+    stocks.items = ObservableBuffer(selectedTown.stocks.map(s => f"${s.name} : ${s.quantity}%1.1f"))
   }
   update()
 
