@@ -7,6 +7,7 @@ import good._
 import stuff._
 import sendTrainDialog._
 import factory._
+import scala.math.max
 
 case class NoAirportException() extends Exception()
 
@@ -30,6 +31,16 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def population() : Int={pop}
   def deltaPopulation(delta : Int) = {pop += delta}
   def incrPop() = {pop = pop+50}
+
+  def priceOfStuff(stuff : Stuff):Double = {
+    var i = stocks.find(_==stuff)
+    i match {
+      case Some(s) => max(0,s.maxPrice - 0.5*(s.quantity))
+      case None => throw new Exception
+    }
+  }
+
+
 
   def update(){
     factories.map(_.update())
@@ -73,9 +84,12 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
 
   def receiveStuff(unloaded : Stuff) = {
     for (i <- stocks) {
-      if (i.equalsTest(unloaded)){
-        i.quantity += unloaded.quantity
+      if (i==unloaded){
+        var res = priceOfStuff(i)*unloaded.quantity
+        i.addStuff(unloaded)
+        res
       }
     }
+    0.0
   }
 }

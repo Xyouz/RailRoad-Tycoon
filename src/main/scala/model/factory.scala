@@ -22,8 +22,11 @@ class Factory(input : List[Stuff], output : Stuff, ticks : Int, city : Town) ext
     time += 1
     //          \/ mettre ticks
     if (time == 100) {
+      funds = funds - 200
       takeInput()
       giveOutput()
+      funds = funds + city.receiveStuff(output)
+      output.quantity = 0
     }
   }
   def sendTo() = {} // choisir le type de véhicule avec lequel on veut envoyer les stuff (et ce vers city)

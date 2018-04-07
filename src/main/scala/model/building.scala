@@ -9,7 +9,7 @@ abstract class Building(val input : List[Stuff], val output : Stuff, val city : 
   for {i <- input} {
     stocks = stocks :+ i.copy()
   }
-  var funds = 1000
+  var funds = 1000.0
   def takeInput()
   def giveOutput() = {
     var token = true

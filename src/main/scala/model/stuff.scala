@@ -38,7 +38,6 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
   def transferTo(that : Stuff, quant : Stuff) = {
     if ((this == that) && (that == quant)) {
       if (this.quantity >= quant.quantity) {
-        println("Appel à transferTo")
         this.subStuff(quant)
         that.addStuff(quant)
       }
