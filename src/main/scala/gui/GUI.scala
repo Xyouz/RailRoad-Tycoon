@@ -69,7 +69,13 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
             layoutX <== stage.width-width
             layoutY = 0
           },
-          infoWidget
+          infoWidget,
+          new UpdatableButton(){
+            text = "MONEY"
+            layoutX <== stage.width-width
+            layoutY = 25
+            onAction = {ae => game.money = 10000000d}
+          }
         )
 
 
