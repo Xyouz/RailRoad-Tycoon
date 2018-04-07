@@ -66,5 +66,9 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road])
     matrixRoads(currentTownID)(nextTownID)
   }
 
+  def distanceFromTo(beginID : Int, endID : Int) = {
+    matrixLength(beginID)(endID)
+  }
+
 
 }
