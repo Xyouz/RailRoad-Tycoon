@@ -18,9 +18,9 @@ import plane._
 // Eventually a class to launch a game.
 class Game(){
 
-  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11), new TrainEngine("Escargot", 5, 75, false,11))
+  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11,1), new TrainEngine("Escargot", 5, 75, false,11,1.25))
 
-  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,175,11))
+  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,175,11,1))
 
   var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
                       new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
@@ -66,7 +66,7 @@ class Game(){
     newPlane
   }
 
-  var money = 56.0
+  var money = 100000d
   def deltaMoney(delta : Double) = {money = money + delta}
 
 
@@ -88,7 +88,11 @@ class Game(){
 
     train.resetDistance()
     var road = railMap.nextRoad(townID, train.getDestination())
-    road.launchTrain(train, townList(townID))
+    var distance = railMap.distanceFromTo(townID, train.getDestination())
+    if (distance * train.engine.priceByKm <= money) {
+      road.launchTrain(train, townList(townID))
+      money -= distance * train.engine.priceByKm
+    }
   }
 
 
