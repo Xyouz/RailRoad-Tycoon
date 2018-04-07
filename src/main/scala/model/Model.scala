@@ -66,14 +66,13 @@ class Game(){
     newPlane
   }
 
-  var money = 100000d
+  var money = 11d
   def deltaMoney(delta : Double) = {money = money + delta}
 
 
   // List of trains and the ID of the town they are currently in
   var trainsOnTransit = List[(Train, Int)]()
-  // The current location of plane is located inside the object
-  var planeOnTransit = List[Plane]()
+  var trainsToBeOnTransit = List[(Train,Int)]()
 
   def trainToBeDispatched(train : Train, localState : Int) = {
     trainsOnTransit = (train, localState) :: trainsOnTransit
@@ -93,6 +92,9 @@ class Game(){
       road.launchTrain(train, townList(townID))
       money -= distance * train.engine.priceByKm
     }
+    else {
+      trainsToBeOnTransit = (train, townID) +: trainsToBeOnTransit
+    }
   }
 
 
@@ -106,7 +108,8 @@ class Game(){
     }
     planeList.map(_.update())
     trainsOnTransit.map(trainMappingFun(_))
-    trainsOnTransit = List[(Train,Int)]()
+    trainsOnTransit = trainsToBeOnTransit
+    trainsToBeOnTransit = List[(Train,Int)]()
     townList.map(_.update())
   }
 
