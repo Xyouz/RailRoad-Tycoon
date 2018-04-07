@@ -35,6 +35,12 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
     new Stuff(name,0,maxPrice)
   }
 
+  def scale(scalar : Double) = {
+    var res = this.copy()
+    res.quantity = this.quantity * scalar
+    res
+  }
+
   def transferTo(that : Stuff, quant : Stuff) = {
     if ((this == that) && (that == quant)) {
       if (this.quantity >= quant.quantity) {
