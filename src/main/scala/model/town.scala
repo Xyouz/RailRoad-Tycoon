@@ -8,6 +8,7 @@ import stuff._
 import sendTrainDialog._
 import factory._
 import scala.math.max
+import stuffData._
 
 case class NoAirportException() extends Exception()
 
@@ -40,9 +41,35 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     }
   }
 
+  val consuptionStuff = List(new Aluminum(1), new BakedGoods(1), new Beer(1), new Bricks(1), new CannedFood(1), new Cement(1), new Chemicals(1), new Electronics(1), new Fish(1), new Fruit(1), new Fuel(1), new Furniture(1), new Glass(1), new Grain(1), new Leather(1), new Liquor(1), new Liquor(1), new Lumber(1), new Marble(1), new Meat(1), new Milk(1), new Paper(1), new Plastics(1), new Press(1), new Rubber(1), new Steel(1), new Textiles(1), new Tyres(1), new Vegetables(1), new Vehicles(1), new Wine(1) )
+  def cityConsumption() = {
+    var i = 0
+    var j = 0
+    while ((i < consuptionStuff.length) && (j < stocks.length)){
+      if (consuptionStuff(i) == stocks(j)) {
+        try {
+          stocks(j).subStuff(consuptionStuff(i).scale(0.001* population))
+        }
+        catch {
+          case NotEnoughQuantityException() => ()//println("pas assez de bouffe")
+        }
+        i = i + 1
+        j = j + 1
+      }
+      else {
+        j = j + 1
+      }
+    }
+  }
 
+  var t = 0
 
   def update(){
+    t = t + 1
+    if (t==200) {
+      t = 0
+      //cityConsumption()
+    }
     factories.map(_.update())
   }
 

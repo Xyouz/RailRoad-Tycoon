@@ -29,11 +29,17 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double, val
   }
 
   def hasEnough(that : Stuff) = {
-    quantity >= that.quantity && this==that
+    this.quantity >= that.quantity && this==that
   }
 
   def copy() = {
     new Stuff(name,0,maxPrice, category)
+  }
+
+  def scale(scalar : Double) = {
+    var res = this.copy()
+    res.quantity = this.quantity * scalar
+    res
   }
 
   def transferTo(that : Stuff, quant : Stuff) = {
