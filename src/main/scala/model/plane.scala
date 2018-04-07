@@ -27,27 +27,21 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
   var nbStep = 42
 
   def startFly(beginTown : Town, endTown : Town) = {
-    // if (!(begin.hasAirport && end.hasAirport)) {
-    //   println(s"${begin}   ${end}")
-    //   throw new NoAirportException()
-    // }
-    // else {
-      flying = true
-      begin = beginTown
-      end = endTown
-      flightBriefing = game.airports.getBriefing(begin,end,engine.maxRange)
-      step = 1
-      nbStep = flightBriefing.length
-      beginHop = flightBriefing(0)
-      if (nbStep == 1){
-        endHop = flightBriefing(0)
-      }
-      else {
-        endHop = flightBriefing(1)
-      }
-      distance = 0
-      currentTown = None
-    // }
+    flying = true
+    begin = beginTown
+    end = endTown
+    flightBriefing = game.airports.getBriefing(begin,end,engine.maxRange)
+    step = 1
+    nbStep = flightBriefing.length
+    beginHop = flightBriefing(0)
+    if (nbStep == 1){
+      endHop = flightBriefing(0)
+    }
+    else {
+      endHop = flightBriefing(1)
+    }
+    distance = 0
+    currentTown = None
   }
 
   override def update() = {
@@ -55,7 +49,6 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
       distance += engine.getSpeed(load)/2
       position = beginHop.pos + (endHop.pos - beginHop.pos).normalize().scale(distance)
       if (distance >= (endHop.pos - beginHop.pos).norm()){
-        println(step)
         if (step >= nbStep-1){
           setCurrentTown(Some(end))
           distance = -1.0
@@ -66,21 +59,15 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
           nextDestination()
           startFly(getCurrentTown,game.townList(destination))
         }
-        else {
+        else if((endHop.pos-flightBriefing(step+1).pos).norm()*engine.priceByKm <= game.money){
           step += 1
           distance = 0
           beginHop = endHop
           endHop = flightBriefing(step)
+          game.deltaMoney((endHop.pos-beginHop.pos).norm() * engine.priceByKm)
         }
       }
     }
-    // if (route.length <= distance ){
-    //   getCurrentTown.receiveStuff(hold.getStuff())
-    //   getCurrentTown.loadPlane(this)
-    //   nextDestination()
-    //   startFly(getCurrentTown,game.townList(destination))
-    //   println("TODO : reecrire plane.update pour avoir des escales")
-    // }
     distance
   }
 
