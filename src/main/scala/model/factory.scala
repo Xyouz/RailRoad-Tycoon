@@ -20,8 +20,7 @@ class Factory(input : List[Stuff], output : Stuff, ticks : Int, city : Town) ext
   }
   override def update() = {
     time += 1
-    //          \/ mettre ticks
-    if (time == 100) {
+    if (time == ticks) {
       funds = funds - 200
       takeInput()
       giveOutput()
