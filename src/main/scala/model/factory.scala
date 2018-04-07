@@ -18,21 +18,12 @@ class Factory(input : List[Stuff], output : Stuff, ticks : Int, city : Town) ext
       }
     }
   }
-  override def giveOutput() = {output}
   override def update() = {
     time += 1
     //          \/ mettre ticks
     if (time == 100) {
       takeInput()
-      if (city.getID == 0){
-        println("update")
-        stocks foreach {t=>println(s"${t.name} ${t.quantity}")}
-      }
-      for (j <- stocks) {  
-        j.consumeStuff(3)
-        time = 0
-        println(j.quantity)
-      }
+      giveOutput()
     }
   }
   def sendTo() = {} // choisir le type de véhicule avec lequel on veut envoyer les stuff (et ce vers city)

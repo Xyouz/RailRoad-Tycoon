@@ -21,10 +21,14 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double){
     }
   }
 
-   def addQuantity(that : Stuff) = {
+  def addQuantity(that : Stuff) = {
     if (equalsTest(that)) {
       this.quantity = this.quantity + that.quantity
     }
+  }
+
+  def hasEnough(that : Stuff) = {
+    quantity >= that.quantity && this==that
   }
 
   def copy() = {
