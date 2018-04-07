@@ -66,9 +66,9 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
           res match {
             case Some(OkRoute(circuit)) => {
               plane.setRoute(circuit)
-              plane.startFly(plane.getCurrentTown,circuit(0))
+
               if (plane.distance <= 0){
-                //master.game.trainsOnTransit = master.game.trainsOnTransit :+ (train,train.getDestination())
+                  plane.startFly(plane.getCurrentTown,circuit(0))
               }
             }
             case _ => {}
