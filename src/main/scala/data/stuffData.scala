@@ -50,4 +50,13 @@ class Vegetables(quantity : Double) extends Stuff("Vegetables",quantity,1000){}
 class Vehicles(quantity : Double) extends Stuff("Vehicles",quantity,1000){}
 class Wine(quantity : Double) extends Stuff("Wine",quantity,1000){}
 class Woodchips(quantity : Double) extends Stuff("Woodchips",quantity,1000){}
-class Wool(quantity : Double) extends Stuff("Wool",quantity,1000){}
+class Wool(quantity : Double) extends Stuff("Wool",quantity,1000){} 
+
+
+
+
+class StockFiller(quantity : Double) {
+  def fill() = {
+    List(new Aluminum(quantity) ,new AluminumWires(quantity) ,new BakedGoods(quantity) ,new Bauxite(quantity) ,new Beer(quantity) ,new Bricks(quantity) ,new Cattle(quantity) ,new CannedFood(quantity) ,new Cement(quantity) ,new Chemicals(quantity) ,new Clay(quantity) ,new Coal(quantity) ,new Copper(quantity) ,new CopperWires(quantity) ,new Cotton(quantity) ,new Electronics(quantity) ,new Fish(quantity) ,new Fruit(quantity) ,new Fuel(quantity) ,new Furniture(quantity) ,new Glass(quantity) ,new Grain(quantity) ,new Iron(quantity) ,new Leather(quantity) ,new Limestone(quantity) ,new Liquor(quantity) ,new Lumber(quantity) ,new Marble(quantity) ,new Meat(quantity) ,new Milk(quantity) ,new Oil(quantity) ,new Paper(quantity) ,new PetroleumProducts(quantity) ,new Pigs(quantity) ,new Plastics(quantity) ,new Press(quantity) ,new Rubber(quantity) ,new Sand(quantity) ,new Sheep(quantity) ,new Steel(quantity) ,new SteelWires(quantity) ,new Textiles(quantity) ,new Timber(quantity) ,new Tyres(quantity) ,new Vegetables(quantity) ,new Vehicles(quantity) ,new Wine(quantity) ,new Woodchips(quantity) ,new Wool(quantity) ,new Coal(quantity) ,new Copper(quantity) ,new CopperWires(quantity) ,new Cotton(quantity) ,new Electronics(quantity) ,new Fish(quantity) ,new Fruit(quantity) ,new Fuel(quantity) ,new Furniture(quantity) ,new Glass(quantity) ,new Grain(quantity) ,new Iron(quantity) ,new Leather(quantity) ,new Limestone(quantity) ,new Liquor(quantity) ,new Lumber(quantity) ,new Marble(quantity) ,new Meat(quantity) ,new Milk(quantity) ,new Oil(quantity) ,new Paper(quantity) ,new PetroleumProducts(quantity) ,new Pigs(quantity) ,new Plastics(quantity) ,new Press(quantity) ,new Rubber(quantity) ,new Sand(quantity) ,new Sheep(quantity) ,new Steel(quantity) ,new SteelWires(quantity) ,new Textiles(quantity) ,new Timber(quantity) ,new Tyres(quantity) ,new Vegetables(quantity) ,new Vehicles(quantity) ,new Wine(quantity) ,new Woodchips(quantity) ,new Wool(quantity))
+  }
+}

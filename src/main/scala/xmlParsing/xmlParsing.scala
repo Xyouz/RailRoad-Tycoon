@@ -6,11 +6,12 @@ import town._
 import road._
 import point._
 import factoryBuilder._
+import stuffData._
 
 class XMLParser(xmlFile : String) {
   val doc = XML.loadFile(xmlFile)
   val builder = new FactoryBuilder()
-
+  val filler = new StockFiller(1000)
   def unwrapOption( townOp : Option[Town] ) = {
     townOp match {
       case Some(t) => t
@@ -30,6 +31,7 @@ class XMLParser(xmlFile : String) {
       var y = (town \@ "y").toDouble
       var airport = (town \ "Airport")
       var newTown = new Town(id, name, population, new Point(x,y))
+      newTown.stocks = filler.fill()
       if (airport.length != 0) {
         newTown.hasAirport = true
       }
