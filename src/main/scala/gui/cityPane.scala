@@ -4,6 +4,7 @@ import town._
 import scalafx.scene.control._
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
+import scalafx.collections.ObservableBuffer
 
 class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   text = "Villes"
@@ -13,10 +14,14 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val populationLabel = new Label()
   val factories = new Label()
 
+  // Commented because it was too slow with this implementation
+  //val stocks = new ListView[String]()
+
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
+  //  stocks.items = ObservableBuffer(selectedTown.stocks.map(s => s"${s.name} : ${s.quantity}"))
   }
   update()
 
@@ -35,6 +40,7 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     add(nameLabel, 0, 1)
     add(populationLabel, 0, 2)
     add(factories,0,3)
+    //add(stocks,0,4)
   }
 
   content = grid
