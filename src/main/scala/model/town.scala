@@ -111,7 +111,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     }
     for (i <- stocks) {
       for (j <- train.wagons()){
-        if (j.kindOfLoad() == i.stuffCategory() && i.quantity > excedent) {
+        if (j.kindOfLoad() == i.stuffCategory() && i.quantity > excedent && i.quantity < j.maxLoad) {
           var toSend = new Stuff(i.name, (excedent - i.quantity), 12.0, i.category)
           j.load(toSend)
           i.subStuff(toSend)
