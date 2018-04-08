@@ -15,7 +15,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 
-case class NewTrainOk(name : String, town : Town, engine : TrainEngine)
+case class NewTrainOk(name : String, town : Town, engine : TrainEngine, wagons : String)
 
 // use to create an interactive window in order to create new trains
 class newTrainDialog(val master : MainGame)
@@ -32,6 +32,8 @@ class newTrainDialog(val master : MainGame)
 
   val engine = new ComboBox(engineList)
   engine.getSelectionModel().selectFirst()
+
+  val wagons = new ComboBox(List("Liquid", "Dry", "Container", "Individual"))
 
   //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
 
@@ -53,6 +55,8 @@ class newTrainDialog(val master : MainGame)
     add(engine, 1, 1)
     add(new Label("Launch town:"),0,2)
     add(townToStart, 1, 2)
+    add(new Label("Cars:"), 0, 3)
+    add(wagons,1, 3)
   }
 
   val createButton = this.dialogPane().lookupButton(createButtonType)
@@ -69,7 +73,7 @@ class newTrainDialog(val master : MainGame)
   this.resultConverter = {
     dialogButton =>
       if (dialogButton == createButtonType) {
-        NewTrainOk(trainName.text(), townToStart.value.value, engine.value.value)
+        NewTrainOk(trainName.text(), townToStart.value.value, engine.value.value, wagons.value.value)
       }
       else {
         null

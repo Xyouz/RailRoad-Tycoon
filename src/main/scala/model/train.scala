@@ -9,6 +9,7 @@ import wagon._
 class Train(name : String, engine : TrainEngine, listOfWagon : List[Wagon]) extends Vehicle(name, engine){
   def wagons() = {listOfWagon}
   override def unload(t : Town) = {
+    t.pop = t.pop + loading
     val numberOfWagons = listOfWagon.length
     for (i <- 0 until numberOfWagons){
       if (listOfWagon(i).content == None) {
