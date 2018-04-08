@@ -105,8 +105,10 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var excedent = 12.0
 
   def loadTrain(train : Train) = {
-    pop -= lpop
-    train.loading += lpop
+    if (pop - lpop > 0){
+      pop -= lpop
+      train.loading += lpop
+    }
     for (i <- stocks) {
       for (j <- train.wagons()){
         if (j.kindOfLoad() == i.stuffCategory() && i.quantity > excedent) {
@@ -119,7 +121,13 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   }
 
   def loadPlane(plane : Plane) = {
-    println("TODO  loadPlaane")
+    for (i <- stocks){
+      if (plane.holdings() == i.stuffCategory() && i.quantity < plane.maximalLoad){
+        var toSend = new Stuff(i.name, (excedent - i.quantity), 11.0, i.category)
+        i.subStuff(toSend)
+        println("fonction loadPlane pas finie")
+      }
+    }
   }
 
   def hasTrains() : Boolean = { ! railwayStation.isEmpty}
