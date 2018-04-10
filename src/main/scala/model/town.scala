@@ -120,7 +120,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           var toSend = new Stuff(i.name, (excedent - i.quantity), 12.0, i.category)
           j.load(toSend)
           i.subStuff(toSend)
-          println("train loaded")
         }
       }
     }
@@ -131,7 +130,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     var max = Double.NegativeInfinity
     for (i <- stocks){
       if (plane.holdType == i.stuffCategory() && i.quantity >= 0 && priceOfStuff(i)>=max){
-        max = (priceOfStuff(i)*rndGen.nextFloat()/10 + 0.1)
+        max = priceOfStuff(i)*(rndGen.nextFloat()/10 + 0.1)
         argMax = i
       }
     }

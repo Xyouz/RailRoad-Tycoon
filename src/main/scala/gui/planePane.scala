@@ -25,10 +25,10 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
 
     val res = dialog.showAndWait()
     res match {
-      case Some(NewPlaneOk(name, town, engine)) => {
+      case Some(NewPlaneOk(name, town, engine, hold)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
-          var newPlane = master.game.addPlane(name, town, engine, new Cargo("Liquide",500))
+          var newPlane = master.game.addPlane(name, town, engine, hold)
           addTrainToComboBox(newPlane)
           master.addToBeDrawn(new CircPlane(newPlane))
           select.getSelectionModel().select(newPlane)
@@ -44,7 +44,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     }
   }
 
-
+  val cargoLabel = new Label()
   val nameLabel = new Label()
   val engineLabel = new Label()
   val circuitLabel = new TextArea(){
@@ -106,8 +106,9 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     add(select, 0, 1)
     add(nameLabel, 0, 2)
     add(engineLabel, 0, 3)
-    add(circuitLabel, 0, 4)
-    add(routeButton, 0, 5)
+    add(cargoLabel,0,4)
+    add(circuitLabel, 0, 5)
+    add(routeButton, 0, 6)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -128,6 +129,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     selectedPlane match {
       case None => {
         nameLabel.visible = false
+        cargoLabel.visible = false
         engineLabel.visible = false
         circuitLabel.visible = false
         routeButton.visible = false
@@ -136,12 +138,14 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
       case Some(plane) => {
         nameLabel.text = s"  ${plane.toString()}  "
         engineLabel.text = s"Moteur : ${plane.engine}"
+        cargoLabel.text = s"Cargo : ${plane.holdType}"
         circuitLabel.text = circuitToString(plane.route)
         nameLabel.visible = true
         engineLabel.visible = true
         circuitLabel.visible = true
         routeButton.visible = true
         select.visible = true
+        cargoLabel.visible = true
       }
     }
   }

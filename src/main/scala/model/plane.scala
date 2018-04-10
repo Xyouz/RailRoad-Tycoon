@@ -12,7 +12,6 @@ import point._
 
 //a class to represent planes
 class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Game) extends Vehicle(name, engine){
-  println("la classe avion a encore acces à game et a perdu la gestion des exceptions")
   var flying = false
   var flightBriefing = Array[Town]()
   var begin : Town = new Town(42,"Test",42,new Point(42,42))

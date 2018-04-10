@@ -8,6 +8,7 @@ case class EmptyCargo() extends Exception() {
 }
 
 class Cargo (val typeOfLoad : String, val maxLoad : Double) {
+  override def toString() = {typeOfLoad }
   def kindOfLoad() = {typeOfLoad}
   var content : Option[Stuff] = None
   var destination : Option[Town] = None

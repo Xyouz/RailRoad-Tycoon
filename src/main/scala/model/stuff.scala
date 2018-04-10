@@ -10,7 +10,7 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double, val
   def stuffCategory() = {category}
   def getName() : String = {name}
   def getQuantity() : Double = {quantity}
-
+  override def toString() = {name}
   def equalsTest(that : Stuff)  = {
     this.name == that.name
   }
