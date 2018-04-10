@@ -41,7 +41,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def priceOfStuff(stuff : Stuff):Double = {
     var i = stocks.find(_==stuff)
     i match {
-      case Some(s) => max(0,s.maxPrice - 0.5*(s.quantity))
+      case Some(s) => max(0,s.maxPrice - 0.1*(s.quantity))
       case None => throw new Exception
     }
   }
@@ -107,7 +107,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     plane.setCurrentTown(Some(this))
   }
 
-  var excedent = 12.0
+  var excedent = 1000.0
 
   def loadTrain(train : Train) = {
     if (pop - lpop > 0){
@@ -116,11 +116,11 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     }
     for (i <- stocks) {
       for (j <- train.wagons()){
-        if (j.kindOfLoad() == i.stuffCategory() && i.quantity > excedent && i.quantity < j.maxLoad) {
-          var toSend = new Stuff(i.name, (excedent - i.quantity), 12.0, i.category)
+        if (j.kindOfLoad() == i.stuffCategory() && i.quantity >= excedent ) {
+          var toSend = new Stuff(i.name, (i.quantity/50), 12.0, i.category)
           j.load(toSend)
           i.subStuff(toSend)
-          println("train loaded")
+          i.quantity -= i.quantity - i.quantity/50
         }
       }
     }
@@ -149,13 +149,14 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   }
 
   def receiveStuff(unloaded : Stuff) = {
+    var sum = 0.0
     for (i <- stocks) {
       if (i==unloaded){
-        var res = priceOfStuff(i)*unloaded.quantity
+        val res = priceOfStuff(i)*unloaded.quantity
         i.addStuff(unloaded)
-        res
+        sum = res
       }
     }
-    0.0
+    sum
   }
 }

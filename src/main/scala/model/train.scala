@@ -18,7 +18,8 @@ class Train(name : String, engine : TrainEngine, listOfWagon : List[Wagon], val 
       if (listOfWagon(i).content != None) {
         try {
           var unloaded = listOfWagon(i).unload()
-          t.receiveStuff(unloaded)
+          game.deltaMoney(t.receiveStuff(unloaded))
+          listOfWagon(i).content = None
         }
         catch {
           case _ : Exception  => {}
