@@ -3,7 +3,11 @@ package cargo
 import stuff._
 import town._
 
-abstract class Cargo (val typeOfLoad : String, val maxLoad : Double) {
+case class EmptyCargo() extends Exception() {
+
+}
+
+class Cargo (val typeOfLoad : String, val maxLoad : Double) {
   def kindOfLoad() = {typeOfLoad}
   var content : Option[Stuff] = None
   var destination : Option[Town] = None
@@ -12,7 +16,7 @@ abstract class Cargo (val typeOfLoad : String, val maxLoad : Double) {
   }
   def unload() = {
     content match {
-      case None => throw new Exception
+      case None => throw new EmptyCargo()
       case Some(loading) => {
         content = None
         loading
