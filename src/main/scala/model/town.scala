@@ -114,20 +114,8 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       pop -= lpop
       train.loading += lpop
     }
-<<<<<<< HEAD
     for (j <- train.wagons()){
       loadCargo(j)
-=======
-    for (i <- stocks) {
-      for (j <- train.wagons()){
-        if (j.kindOfLoad() == i.stuffCategory() && i.quantity >= excedent ) {
-          var toSend = new Stuff(i.name, (i.quantity/50), 12.0, i.category)
-          j.load(toSend)
-          i.subStuff(toSend)
-          i.quantity -= i.quantity - i.quantity/50
-        }
-      }
->>>>>>> c29235df565443a628d58bcef599708919879ff8
     }
   }
 
