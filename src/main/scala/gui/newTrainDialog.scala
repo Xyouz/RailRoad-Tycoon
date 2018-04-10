@@ -57,6 +57,7 @@ class newTrainDialog(val master : MainGame)
   }
 
   val carsOfTrain = new ListView(List("Liquid", "Dry", "Container", "Individual")){
+    maxHeight = 100
     selectionModel().selectedItem.onChange {
       (_, _ , newValue ) => {
         kindOfWagons = kindOfWagons :+ newValue
