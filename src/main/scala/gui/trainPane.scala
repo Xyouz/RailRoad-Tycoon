@@ -28,7 +28,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
       case Some(NewTrainOk(name, town, engine)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
-          var newTrain = master.game.addTrain(name, town, engine, List(new Wagon("L",500)))
+          var newTrain = master.game.addTrain(name, town, engine, List(new Wagon("Dry",500)))
           addTrainToComboBox(newTrain)
           master.addToBeDrawn(new CircTrain(newTrain))
           select.getSelectionModel().select(newTrain)

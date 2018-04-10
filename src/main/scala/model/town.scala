@@ -78,9 +78,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     t = t + 1
     if (t==200) {
       t = 0
-      cityConsumption()
+  //    cityConsumption()
     }
-    factories.map(_.update())
+  //  factories.map(_.update())
   }
 
   def getAirport = {
@@ -102,17 +102,17 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     plane.setCurrentTown(Some(this))
   }
 
-  var excedent = 12.0
 
   def loadTrain(train : Train) = {
-    pop -= lpop
-    train.loading += lpop
-    for (i <- stocks) {
-      for (j <- train.wagons()){
-        if (j.kindOfLoad() == i.stuffCategory() && i.quantity > excedent) {
-          var toSend = new Stuff(i.name, (excedent - i.quantity), 12.0, i.category)
+    println(s"load $train")
+    for (j <- train.wagons()) {
+      var ok = true
+      for (i <- stocks){
+        if (j.kindOfLoad() == i.stuffCategory() && ok) {
+          var toSend = new Stuff(i.name, 50, 12.0, i.category)
           j.load(toSend)
           i.subStuff(toSend)
+          ok = false
         }
       }
     }
