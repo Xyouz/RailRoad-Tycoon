@@ -131,7 +131,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     var max = Double.NegativeInfinity
     for (i <- stocks){
       if (plane.holdType == i.stuffCategory() && i.quantity >= 0 && priceOfStuff(i)>=max){
-        max = priceOfStuff(i)
+        max = (priceOfStuff(i)*rndGen.nextFloat()/10 + 0.1)
         argMax = i
       }
     }
