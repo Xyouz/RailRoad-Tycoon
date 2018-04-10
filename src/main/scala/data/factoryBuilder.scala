@@ -10,7 +10,9 @@ import scala.util.Random
 case class NotFoundTypeFactoryException() extends Exception()
 
 
-class FactoryBuilder() {
+// Use to build different type of factories while parsing xml maps
+// Strange spelling to avoid a warning related to case-sensitive class distinction
+class FactoryBuiilder() {
   val random = Random
 
   def or(s1 : Stuff, s2 : Stuff) = {
@@ -37,7 +39,7 @@ class FactoryBuilder() {
       case "bakery" => {new Factory(List[Stuff](new Grain(100)),new BakedGoods(100),200,town)}
       case "bauxite_mine" => {new Factory(List[Stuff](),new Bauxite(100),200,town)}
       case "brewery" => {new Factory(List[Stuff](new Grain(100),new Glass(10)),new Beer(100),200,town)}
-      case "brick_works" => {new Factory(List[Stuff](new Clay(100)),new Bricks(100),200,town)}
+      case "brickworks" => {new Factory(List[Stuff](new Clay(100)),new Bricks(100),200,town)}
       case "cannery" => {new Factory(List[Stuff](new Steel(10),or(or(new Fish(100),new Fruit(100)),or(new Meat(100),new Vegetables(100)))),new CannedFood(100),200,town)}
       case "cattle_ranch" => {new Factory(List[Stuff](new Grain(100)),or(new Cattle(100),new Milk(100)),200,town)}
       case "cement_factory" => {new Factory(List[Stuff](new Coal(100),new Limestone(100)),new Cement(100),200,town)}
@@ -51,7 +53,7 @@ class FactoryBuilder() {
       case "forestry" => {new Factory(List[Stuff](),new Timber(100),200,town)}
       case "fruit_orchard" => {new Factory(List[Stuff](),new Fruit(100),200,town)}
       case "furniture_factory" => {new Factory(List[Stuff](or(new Lumber(100),new Steel(100)),or(or(new Glass(100),new Leather(100)),new Textiles(100))),new Furniture(100),200,town)}
-      case "glass_works" => {new Factory(List[Stuff](new Coal(50),new Sand(100)),new Glass(100),200,town)}
+      case "glass_factory" => {new Factory(List[Stuff](new Coal(50),new Sand(100)),new Glass(100),200,town)}
       case "grain_farm" => {new Factory(List[Stuff](),new Grain(100),200,town)}
       case "iron_mine" => {new Factory(List[Stuff](),new Iron(100),200,town)}
       case "liquor_distillery" => {new Factory(List[Stuff](new Glass(20),or(new Fruit(100),new Grain(100))),new Liquor(100),200,town)}
@@ -75,6 +77,9 @@ class FactoryBuilder() {
       case "vehicle_factory" => {new Factory(List[Stuff](new Aluminum(100),new Electronics(100),new Glass(100),new Plastics(100),new Steel(100),new Tyres(100)),new Vehicles(100),200,town)}
       case "vineyard" => {new Factory(List[Stuff](new Glass(100)),new Wine(100),200,town)}
       case "wire_mill" => {orf(new Factory(List[Stuff](new Aluminum(100)),new AluminumWires(100),200,town),
+                           orf(new Factory(List[Stuff](new Copper(100)),new CopperWires(100),200,town),
+                              new Factory(List[Stuff](new Steel(100)),new SteelWires(100),200,town)))}
+      case "wire_factory" => {orf(new Factory(List[Stuff](new Aluminum(100)),new AluminumWires(100),200,town),
                            orf(new Factory(List[Stuff](new Copper(100)),new CopperWires(100),200,town),
                               new Factory(List[Stuff](new Steel(100)),new SteelWires(100),200,town)))}
       case _ => throw NotFoundTypeFactoryException()

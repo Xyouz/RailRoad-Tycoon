@@ -8,28 +8,63 @@ import scalafx.scene.Scene
 import scalafx.scene.control._
 import scalafx.stage.FileChooser
 import scalafx.stage.FileChooser.ExtensionFilter
+import java.io.File
+
+import xmlAlert.XMLAlert
 
 object Program extends JFXApp {
-  // val loader = new XMLParser("src/main/resources/maps/debug_map.xml")
-  // val game = loader.getGame()
-  // stage = new MainGame(game)
-
   stage = new JFXApp.PrimaryStage {
-    title.value = "Hello Stage"
-    width = 600
-    height = 450
+    master =>
+    title.value = "Roolraid Tycoan"
+    width = 450
+    height = 300
     scene = new Scene {
       content = Seq(
-        new Label("Roolraid Tycoan"),
-        new Button("Paf"){
-          onAction = {ae => {
-            val fileChooser = new FileChooser(){
-              title = "Choisissez une carte."
+        new Label("Roolraid Tycoan"){
+          layoutX <== (master.width - width)/2
+          layoutY = 40
+        },
+        new Button("Choix d'une carte"){
+          layoutX <== (master.width - width)/2
+          layoutY = 90
+          onAction = {
+            ae => {
+              val fileChooser = new FileChooser(){
+                initialFileName = "src/main/resources/maps/"
+                title = "Choisissez une carte."
+                extensionFilters ++= Seq(new ExtensionFilter("XML Map", "*.xml"))
+              }
+              val mapFile = fileChooser.showOpenDialog(stage)
+              mapFile match {
+                case null => ()
+                case file : java.io.File => {
+                  try {
+                    val loader = new XMLParser(file)
+                    val game = loader.getGame()
+                    stage = new MainGame(game)
+                  }
+                  catch {
+                    case XMLError(msg) => {
+                      val alert = new XMLAlert(master, msg)
+                      alert.showAndWait()
+                    }
+                  }
+                }
+              }
             }
-            val mapFile = fileChooser.showOpenDialog(stage)
           }
-        }},
-        new Button("Pif")
+        },
+        new Button("Nouvelle partie"){
+          layoutX <== (master.width - width)/2
+          layoutY = 140
+          onAction = {
+            ae => {
+              val loader = new XMLParser(new File("src/main/resources/maps/debug_map.xml"))
+              val game = loader.getGame()
+              stage = new MainGame(game)
+            }
+          }
+        }
       )
     }
   }

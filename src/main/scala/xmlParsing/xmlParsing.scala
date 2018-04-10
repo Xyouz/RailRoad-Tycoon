@@ -7,10 +7,15 @@ import road._
 import point._
 import factoryBuilder._
 import stuffData._
+import java.io.File
 
-class XMLParser(xmlFile : String) {
+case class XMLError(msg : String) extends Exception(msg) {
+
+}
+
+class XMLParser(xmlFile : File) {
   val doc = XML.loadFile(xmlFile)
-  val builder = new FactoryBuilder()
+  val builder = new FactoryBuiilder()
   val filler = new StockFiller(1000)
   def unwrapOption( townOp : Option[Town] ) = {
     townOp match {
@@ -41,7 +46,9 @@ class XMLParser(xmlFile : String) {
           newTown.addFactory(builder.build(typeOfFactory,newTown))
         }
         catch {
-          case NotFoundTypeFactoryException() => println(s"$typeOfFactory : unknown factory type")
+          case NotFoundTypeFactoryException() => {
+            throw XMLError(s"$typeOfFactory : unknown factory type")
+          }
         }
       }
       towns = newTown +: towns

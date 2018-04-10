@@ -5,7 +5,7 @@
         <Factory type="steel_mill" size="4" />
         <Factory type="oil_refinery" size="3" />
         <Factory type="tannery" size="2" />
-        <Factory type="brick_works" size="5" />
+        <Factory type="brickworks" size="5" />
     </City>
     <City name="The Beetles" x="-72" y="-108" population="81280">
         <Airport size="2" runway_length="2108" />
@@ -13,6 +13,7 @@
         <Factory type="brewery" size="3" />
         <Factory type="sheep_farm" size="2" />
         <Factory type="fruit_orchard" size="4" />
+        <Factory type="vineyard" size="2" />
     </City>
     <City name="Ladybag" x="-16" y="-194" population="11562">
         <Factory type="fishery" size="3" />
@@ -52,7 +53,7 @@
         <Airport size="2" runway_length="2586" />
         <Factory type="bakery" size="6" />
         <Factory type="textile_mill" size="6" />
-        <Factory type="glass_works" size="4" />
+        <Factory type="glass_factory" size="4" />
         <Factory type="aluminum_plant" size="2" />
     </City>
     <City name="Croquette" x="-75" y="131" population="22308">
@@ -68,7 +69,7 @@
     </City>
     <City name="Lea" x="-141" y="44" population="10106">
         <Factory type="fishery" size="1" />
-        <Factory type="stone_quarry" size="2" />
+        <Factory type="quarry" size="4" />
     </City>
     <City name="Loose Head" x="68" y="-80" population="17905">
         <Factory type="grain_farm" size="2" />
@@ -81,7 +82,7 @@
         <Factory type="liquor_distillery" size="8" />
         <Factory type="bakery" size="6" />
         <Factory type="cannery" size="5" />
-        <Factory type="glass_works" size="2" />
+        <Factory type="glass_factory" size="2" />
         <Factory type="furniture_factory" size="3" />
     </City>
     <City name="Copper Grass" x="-70" y="3" population="50337">
@@ -196,5 +197,11 @@
     </Connection>
     <Connection upstream="Mound Terramite" downstream="Butter Fae">
         <Road length="134" maximum_speed="90" lanes="1" />
+    </Connection>
+    <Connection upstream="Loose Head" downstream="The Beetles">
+        <Road length="173" maximum_speed="70" lanes="1" />
+    </Connection>
+    <Connection upstream="Loose Head" downstream="Warm Earth">
+        <Road length="151" maximum_speed="60" lanes="1" />
     </Connection>
 </Map>
