@@ -4,11 +4,12 @@ import vehicle.Vehicle
 import trainEngine.TrainEngine
 import town._
 import wagon._
+import infoPane._
+import model._
 
 //a class to represent trains
-class Train(name : String, engine : TrainEngine, listOfWagon : List[Wagon]) extends Vehicle(name, engine){
+class Train(name : String, engine : TrainEngine, listOfWagon : List[Wagon], val game : Game ) extends Vehicle(name, engine){
   def wagons() = {listOfWagon}
-
   override def unload(t : Town) = {
     t.pop = t.pop + loading
     loading = 0
