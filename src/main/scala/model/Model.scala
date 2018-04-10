@@ -45,7 +45,7 @@ class Game(){
     if (money < engine.price){
       throw new NotEnoughMoneyException("train")
     }
-    val newTrain = new Train(name,engine, wagons)
+    val newTrain = new Train(name,engine, wagons, this)
     newTrain.setDestination(town)
     money -= engine.price
     town.welcomeTrain(newTrain)
