@@ -41,6 +41,31 @@ class newTrainDialog(val master : MainGame)
     promptText = "Name"
   }
 
+  var kindOfWagons = Seq[String]()
+
+  def listOfCars() = {
+    var st = ""
+    for (t <- kindOfWagons){
+      st = st + " + " + t.toString()
+    }
+    st
+  }
+
+  val feedbackText = new TextArea(){
+    wrapText = true
+    editable = false
+  }
+
+  val carsOfTrain = new ListView(List("Liquid", "Dry", "Container", "Individual")){
+    selectionModel().selectedItem.onChange {
+      (_, _ , newValue ) => {
+        kindOfWagons = kindOfWagons :+ newValue
+        feedbackText.text = listOfCars()
+      }
+    }
+  }
+
+
   val townToStart = new ComboBox(townList)
   townToStart.getSelectionModel().selectFirst()
 
@@ -55,8 +80,10 @@ class newTrainDialog(val master : MainGame)
     add(engine, 1, 1)
     add(new Label("Launch town:"),0,2)
     add(townToStart, 1, 2)
-    add(new Label("Cars:"), 0, 3)
-    add(wagons,1, 3)
+    add(new Label("Cars"),0, 3)
+    add(carsOfTrain, 1, 3)
+    add(new Label("List of wagons:"),4,2)
+    add(feedbackText, 4,3)
   }
 
   val createButton = this.dialogPane().lookupButton(createButtonType)
