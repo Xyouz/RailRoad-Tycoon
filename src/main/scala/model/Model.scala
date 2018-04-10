@@ -13,6 +13,7 @@ import airportNetwork._
 import moneyAlert._
 import wagon._
 import plane._
+import cargo._
 
 
 // Eventually a class to launch a game.
@@ -53,7 +54,7 @@ class Game(){
     newTrain
   }
 
-  def addPlane(name : String, town : Town, engine : PlaneEngine, hold : Box) = {
+  def addPlane(name : String, town : Town, engine : PlaneEngine, hold : Cargo) = {
     if (money < engine.price){
       throw new NotEnoughMoneyException("plane")
     }
@@ -66,7 +67,7 @@ class Game(){
     newPlane
   }
 
-  var money = 1100000000000d
+  var money = 10000000.0
   def deltaMoney(delta : Double) = {money = money + delta}
 
 

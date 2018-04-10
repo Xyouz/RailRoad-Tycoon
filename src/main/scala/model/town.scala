@@ -7,8 +7,12 @@ import good._
 import stuff._
 import sendTrainDialog._
 import factory._
-import scala.math.max
+import scala.math.{max,min}
 import stuffData._
+import model._
+import scala.util.Random
+
+
 
 case class NoAirportException() extends Exception()
 
@@ -21,6 +25,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var factories = List[Factory]()
   var stocks = List[Stuff]()
   var hasAirport = false
+  val rndGen = new Random()
 
   override def toString() = {name}
   def addFactory(plan : Factory) = {
@@ -88,7 +93,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       airport
     }
     else {
-      throw new NoAirportException
+      throw new NoAirportException()
     }
   }
 
@@ -115,19 +120,25 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           var toSend = new Stuff(i.name, (excedent - i.quantity), 12.0, i.category)
           j.load(toSend)
           i.subStuff(toSend)
+          println("train loaded")
         }
       }
     }
   }
 
   def loadPlane(plane : Plane) = {
+    var argMax = stocks(0)
+    var max = Double.NegativeInfinity
     for (i <- stocks){
-      if (plane.holdings() == i.stuffCategory() && i.quantity < plane.maximalLoad){
-        var toSend = new Stuff(i.name, (excedent - i.quantity), 11.0, i.category)
-        i.subStuff(toSend)
-        println("fonction loadPlane pas finie")
+      if (plane.holdType == i.stuffCategory() && i.quantity >= 0 && priceOfStuff(i)>=max){
+        max = (priceOfStuff(i)*rndGen.nextFloat()/10 + 0.1)
+        argMax = i
       }
     }
+    var toSend = argMax.copy()
+    toSend.quantity = min(argMax.quantity,plane.maximalLoad())*(rndGen.nextFloat()+1)/2
+    argMax.subStuff(toSend)
+    plane.hold.load(toSend)
   }
 
   def hasTrains() : Boolean = { ! railwayStation.isEmpty}

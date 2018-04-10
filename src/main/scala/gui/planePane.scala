@@ -13,7 +13,7 @@ import dotPlane._
 import scalafx.Includes._
 import setPlaneRouteDialog._
 import scalafx.scene.paint.Color._
-
+import cargo._
 
 class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
   text = "Avions"
@@ -28,7 +28,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
       case Some(NewPlaneOk(name, town, engine)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
-          var newPlane = master.game.addPlane(name, town, engine, new Box("L",500))
+          var newPlane = master.game.addPlane(name, town, engine, new Cargo("Liquide",500))
           addTrainToComboBox(newPlane)
           master.addToBeDrawn(new CircPlane(newPlane))
           select.getSelectionModel().select(newPlane)

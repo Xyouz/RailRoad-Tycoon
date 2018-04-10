@@ -8,14 +8,10 @@ import stuff._
 import model._
 import point._
 
-class Box(typeOf : String, maxLoad : Double) extends Cargo(typeOf, maxLoad) {
-  def getStuff() = {
-    new Stuff("name", 1.0, 45.0, typeOf)
-  }
-}
+
 
 //a class to represent planes
-class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) extends Vehicle(name, engine){
+class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Game) extends Vehicle(name, engine){
   println("la classe avion a encore acces à game et a perdu la gestion des exceptions")
   var flying = false
   var flightBriefing = Array[Town]()
@@ -25,7 +21,7 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
   var beginHop = new Town(42,"Test",42,new Point(42,42))
   var step = 0
   var nbStep = 42
-  def holdings() = {hold}
+  def holdType = {hold.kindOfLoad()}
   def maximalLoad() = {hold.maxLoad}
 
   def startFly(beginTown : Town, endTown : Town) = {
@@ -55,16 +51,15 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
           setCurrentTown(Some(end))
           distance = -1.0
           flying = false
-          end.receiveStuff(hold.getStuff())
+          try {
+            end.receiveStuff(hold.unload())
+          }
+          catch {
+            case EmptyCargo() => ()
+          }
           end.loadPlane(this)
           nextDestination()
-          // var briefing = game.airports.getBriefing(getCurrentTown,game.townList(destination),engine.maxRange)
-          // if (briefing.length > 1 && (briefing(0).pos-briefing(1).pos).norm()*engine.priceByKm <= game.money) {
-              startFly(getCurrentTown,game.townList(destination))
-          // }
-          // else {
-          //   position = new Point(-1000000,-10000000)
-          // }
+          startFly(getCurrentTown,game.townList(destination))
         }
         else {
           // if((endHop.pos-flightBriefing(step+1).pos).norm()*engine.priceByKm <= game.money){
