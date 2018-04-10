@@ -25,7 +25,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
     val res = dialog.showAndWait()
     res match {
-      case Some(NewTrainOk(name, town, engine)) => {
+      case Some(NewTrainOk(name, town, engine, wagons)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
           var newTrain = master.game.addTrain(name, town, engine, List(new Wagon("Dry",500)))

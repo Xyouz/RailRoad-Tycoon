@@ -1,0 +1,65 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage {pstricks-add}
+\usepackage {mathrsfs}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{ucs}
+\usepackage{stmaryrd}
+\usepackage{mathpartir}
+\usepackage{bussproofs}
+\usepackage{graphicx}
+\pagestyle{fancy}
+
+
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{Projet programmation 2} 
+\fancyhead[R]{Manon BLANC, Marius DUFRAISSE}
+
+
+\renewcommand{\footrulewidth}{1pt}
+\fancyfoot[C]{\textbf{Page \thepage}} 
+\fancyfoot[L]{L3 Informatique}
+
+\title{Report part 2}
+\author{Manon BLANC, Marius DUFRAISSE}
+\date{  }
+
+\begin{document}
+	\maketitle
+	\thispagestyle{fancy}
+	
+	\section{Corrections}
+	The main goal at the beginning of the second part of the project was to correct the mistakes we made in the first part.\\
+	First of all, we split our three functions into different ones : the idea is one function for one class. Then we reorganized and unified the code, to make it more readable. Eventually, we had to correct some issues you pointed out, for example, sometimes the trains just kept on looping between two cities even if it was not the route the player had implemented. We also changed the way of sending trains from one city to another, now the player must choose the itinerary themselves and can change it when they want. Eventually, we created a class $Vehicle$ from which the class $Train$ inherits in order to reuse it for the other kinds of vehicles we had to create in the second part. It also enables us to add different engine for the trains.
+	
+	\section{Having a more complex game}
+	\paragraph{Creating a map}
+	
+	We had to had a map in the game. We used a lot the code that was proposed, and we compile it with $xmlParsing$.
+	
+	\paragraph{Handling the goods}
+	
+	In addition to dealing with the population variations, we also had to handle consumption and the travels of the goods between the towns. We created a new class $stuff$ that take as parameters the name, the quantity, the maximal price and the type of it (for example, water is in the $liquid$ category). We defined different methods that manage the goods. Those methods are used to load and unload the vehicles, and to update the stocks in the cities. They are also used in the class $Factory$.\\
+	
+	We also extended the class $stuff$ to classes of goods in the function $ stuffData$. 
+	
+	\paragraph{Adding some factories}
+	Creating factories in the cities was also a major requirement. We first create a class $Buildings$ that basically take an input, an output and a town of belonging, it will be useful to create facilities that require the same parameters. It just handles all of them. Then we created a class $Factory$ that extends $Buildings$. Granted that the method to return the output ($giveOutput$) is the same for both, we had to change the way it deals with its input, because a factory must consume, as the matter of fact buy, the stocks of its city. We also must override the method $update$. At each ticks, a factory consume some proportion of its input, buy the goods it needs, sell their surplus to make profit. We granted here that a factory can produce all year long. We already implement factories in towns, and what they produce.
+	 We also assume that a mine works the same way a factory does, that is why the class $mines$ extends $factory$, without changing any method. 
+	
+	\paragraph{Transporting the goods}
+	Now we can produce some goods, we also must be able to send them to different towns. We saw that we have different types of goods, we assumed we must make travel them in different types of cargo, for example, we cannot transport milk (liquid) and limestone (dry) in the same type of cargo. We created a class $Cargo$ that just takes a type of load, and a maximal weight. At first we transported goods only by trains. So we created a class $Wagon$ that extends $Cargo$, and that can load and unload goods. Then, we redefined trains by lists of wagons. 
+	
+	\paragraph{Make the planes fly}
+	We again extended the class $Vehicle$ by creating planes. It basically works the same way as trains, except the planes only follow the itinerary the player gave, and do not have to follow the routes.\\
+	In the requirements, it was mentioned we had to create stations and basically that we cannot send a plane in a city where there is no airport. We decided to implement the stations inside the cities themselves. For example, if the player want to create a new plane, their choice is limited by the cities that can actually have a plane. On the graphic interface, the points that represent the towns that have an airport are half gray.\\
+	
+	
+	\section{Some hints to improve the game}
+	
+\end{document}

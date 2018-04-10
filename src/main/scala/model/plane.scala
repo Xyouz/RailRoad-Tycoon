@@ -10,7 +10,7 @@ import point._
 
 class Box(typeOf : String, maxLoad : Double) extends Cargo(typeOf, maxLoad) {
   def getStuff() = {
-    new Stuff(typeOf, 1.0, 45.0, "to specify")
+    new Stuff("name", 1.0, 45.0, typeOf)
   }
 }
 
@@ -25,6 +25,8 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
   var beginHop = new Town(42,"Test",42,new Point(42,42))
   var step = 0
   var nbStep = 42
+  def holdings() = {hold}
+  def maximalLoad() = {hold.maxLoad}
 
   def startFly(beginTown : Town, endTown : Town) = {
     flying = true
