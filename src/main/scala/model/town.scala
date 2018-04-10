@@ -120,10 +120,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           var toSend = new Stuff(i.name, (i.quantity/50), 12.0, i.category)
           j.load(toSend)
           i.subStuff(toSend)
-<<<<<<< HEAD
           i.quantity -= i.quantity - i.quantity/50
-=======
->>>>>>> ec13ff0b315d5a4c0d0a5f03d03cc2824124b425
         }
       }
     }
