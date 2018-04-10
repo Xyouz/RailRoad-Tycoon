@@ -138,6 +138,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     toSend.quantity = min(argMax.quantity,plane.maximalLoad())*(rndGen.nextFloat()+1)/2
     argMax.subStuff(toSend)
     plane.hold.load(toSend)
+    priceOfStuff(toSend)
   }
 
   def hasTrains() : Boolean = { ! railwayStation.isEmpty}

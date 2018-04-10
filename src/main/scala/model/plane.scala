@@ -51,45 +51,28 @@ class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Gam
           distance = -1.0
           flying = false
           try {
-            end.receiveStuff(hold.unload())
+            game.deltaMoney(end.receiveStuff(hold.unload()))
           }
           catch {
             case EmptyCargo() => ()
           }
-          end.loadPlane(this)
+          game.deltaMoney(-(end.loadPlane(this)))
           nextDestination()
           startFly(getCurrentTown,game.townList(destination))
         }
         else {
-          // if((endHop.pos-flightBriefing(step+1).pos).norm()*engine.priceByKm <= game.money){
-            step += 1
-            distance = 0
-            beginHop = endHop
-            endHop = flightBriefing(step)
-            game.deltaMoney(-(endHop.pos-beginHop.pos).norm() * engine.priceByKm)
-          // }
-          // else {
-            // position = new Point(-1000000,-10000000)
-          // }
+          step += 1
+          distance = 0
+          beginHop = endHop
+          endHop = flightBriefing(step)
+          game.deltaMoney(-(endHop.pos-beginHop.pos).norm() * engine.priceByKm)
         }
       }
     }
-    // else {
-    //   try {
-    //     var briefing = game.airports.getBriefing(getCurrentTown,game.townList(destination),engine.maxRange)
-    //     if (briefing.length > 1 && (briefing(0).pos-briefing(1).pos).norm()*engine.priceByKm <= game.money) {
-    //       startFly(getCurrentTown,game.townList(destination))
-    //     }
-    //   }
-    //   catch {
-    //     case _ : ArrayIndexOutOfBoundsException => ()
-    //   }
-    // }
     distance
   }
 
   override def unload(t : Town) = {
-    t.pop += loading
   }
 
 
