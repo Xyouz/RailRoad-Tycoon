@@ -3,7 +3,7 @@ package town
 import point._
 import train._
 import plane._
-import good._
+import cargo._
 import stuff._
 import sendTrainDialog._
 import factory._
@@ -125,19 +125,19 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     }
   }
 
-  def loadPlane(plane : Plane) = {
+  def loadCargo(cargo : Cargo) = {
     var argMax = stocks(0)
     var max = Double.NegativeInfinity
     for (i <- stocks){
-      if (plane.holdType == i.stuffCategory() && i.quantity >= 0 && priceOfStuff(i)>=max){
+      if (cargo.kindOfLoad() == i.stuffCategory() && i.quantity >= 0 && priceOfStuff(i)>=max){
         max = priceOfStuff(i)*(rndGen.nextFloat()/10 + 0.1)
         argMax = i
       }
     }
     var toSend = argMax.copy()
-    toSend.quantity = min(argMax.quantity,plane.maximalLoad())*(rndGen.nextFloat()+1)/2
+    toSend.quantity = min(argMax.quantity,cargo.maxLoad)*(rndGen.nextFloat()+1)/2
     argMax.subStuff(toSend)
-    plane.hold.load(toSend)
+    cargo.load(toSend)
     priceOfStuff(toSend)
   }
 

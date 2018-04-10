@@ -56,7 +56,7 @@ class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Gam
           catch {
             case EmptyCargo() => ()
           }
-          game.deltaMoney(-(end.loadPlane(this)))
+          game.deltaMoney(-(end.loadCargo(hold)))
           nextDestination()
           startFly(getCurrentTown,game.townList(destination))
         }

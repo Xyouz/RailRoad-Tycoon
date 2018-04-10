@@ -34,7 +34,7 @@ class newPlaneDialog(val master : MainGame)
   val engine = new ComboBox(engineList)
   engine.getSelectionModel().selectFirst()
 
-  val holdSelect = new ComboBox(List(new Cargo("Liquide", 500),new Cargo("Dry", 500),new Cargo("Container", 500),new Cargo("Individual", 500)))
+  val holdSelect = new ComboBox(List(new Cargo("Liquid", 500),new Cargo("Dry", 500),new Cargo("Container", 500),new Cargo("Individual", 500)))
   holdSelect.getSelectionModel().selectFirst()
 
   val planeName = new TextField(){
