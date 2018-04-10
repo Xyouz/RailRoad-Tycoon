@@ -8,14 +8,10 @@ import stuff._
 import model._
 import point._
 
-class Box(typeOf : String, maxLoad : Double) extends Cargo(typeOf, maxLoad) {
-  def getStuff() = {
-    new Stuff("name", 1.0, 45.0, typeOf)
-  }
-}
+
 
 //a class to represent planes
-class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) extends Vehicle(name, engine){
+class Plane(name : String, engine : PlaneEngine, hold : Cargo, val game : Game) extends Vehicle(name, engine){
   println("la classe avion a encore acces à game et a perdu la gestion des exceptions")
   var flying = false
   var flightBriefing = Array[Town]()
@@ -55,7 +51,12 @@ class Plane(name : String, engine : PlaneEngine, hold : Box, val game : Game) ex
           setCurrentTown(Some(end))
           distance = -1.0
           flying = false
-          end.receiveStuff(hold.getStuff())
+          try {
+            end.receiveStuff(hold.unload())
+          }
+          catch {
+            case Exception => ()
+          }
           end.loadPlane(this)
           nextDestination()
           // var briefing = game.airports.getBriefing(getCurrentTown,game.townList(destination),engine.maxRange)

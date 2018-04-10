@@ -125,7 +125,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       if (plane.holdings() == i.stuffCategory() && i.quantity < plane.maximalLoad){
         var toSend = new Stuff(i.name, (excedent - i.quantity), 11.0, i.category)
         i.subStuff(toSend)
-        println("fonction loadPlane pas finie")
+        plane.hold.load(toSend)
       }
     }
   }
