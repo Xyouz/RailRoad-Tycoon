@@ -14,8 +14,9 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
+import cargo._
 
-case class NewPlaneOk(name : String, town : Town, engine : PlaneEngine)
+case class NewPlaneOk(name : String, town : Town, engine : PlaneEngine, hold : Cargo)
 
 // use to create an interactive window in order to create new trains
 class newPlaneDialog(val master : MainGame)
@@ -33,7 +34,8 @@ class newPlaneDialog(val master : MainGame)
   val engine = new ComboBox(engineList)
   engine.getSelectionModel().selectFirst()
 
-  //val echoSpeed = new Label(){text <== StringProperty(speed.value.toString())}
+  val holdSelect = new ComboBox(List(new Cargo("Liquid", 500),new Cargo("Dry", 500),new Cargo("Container", 500),new Cargo("Individual", 500)))
+  holdSelect.getSelectionModel().selectFirst()
 
   val planeName = new TextField(){
     promptText = "Name"
@@ -51,8 +53,10 @@ class newPlaneDialog(val master : MainGame)
     add(planeName, 1, 0)
     add(new Label("Engine:"), 0, 1)
     add(engine, 1, 1)
-    add(new Label("Launch town:"),0,2)
-    add(townToStart, 1, 2)
+    add(new Label("Cargo:"), 0, 2)
+    add(holdSelect, 1, 2)
+    add(new Label("Launch town:"),0,3)
+    add(townToStart, 1, 3)
   }
 
   val createButton = this.dialogPane().lookupButton(createButtonType)
@@ -69,11 +73,10 @@ class newPlaneDialog(val master : MainGame)
   this.resultConverter = {
     dialogButton =>
       if (dialogButton == createButtonType) {
-        NewPlaneOk(planeName.text(), townToStart.value.value, engine.value.value)
+        NewPlaneOk(planeName.text(), townToStart.value.value, engine.value.value, holdSelect.value.value)
       }
       else {
         null
       }
   }
-
 }
