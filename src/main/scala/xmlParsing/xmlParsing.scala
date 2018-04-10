@@ -15,7 +15,7 @@ case class XMLError(msg : String) extends Exception(msg) {
 
 class XMLParser(xmlFile : File) {
   val doc = XML.loadFile(xmlFile)
-  val builder = new FactoryBuiilder()
+  val builder = new FactoryBuilder()
   val filler = new StockFiller(1000)
   def unwrapOption( townOp : Option[Town] ) = {
     townOp match {

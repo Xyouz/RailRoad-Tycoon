@@ -12,7 +12,7 @@ case class NotFoundTypeFactoryException() extends Exception()
 
 // Use to build different type of factories while parsing xml maps
 // Strange spelling to avoid a warning related to case-sensitive class distinction
-class FactoryBuiilder() {
+class FactoryBuilder() {
   val random = Random
 
   def or(s1 : Stuff, s2 : Stuff) = {

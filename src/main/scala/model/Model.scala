@@ -23,9 +23,6 @@ class Game(){
 
   val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,175,11,1))
 
-  var goodsList = List(new Good("lunettes",55), new Good("chats",8),List(new Good("lunettes",55), new Good("chats",8)),
-                      new Good("diamond",55), new Good("dogs",8), new Good("paintit",55), new Good("black",8) )
-
   var townList = Seq[Town]()
   var roadList = Seq[Road]()
   var railMap = new RailMap(townList, roadList)
