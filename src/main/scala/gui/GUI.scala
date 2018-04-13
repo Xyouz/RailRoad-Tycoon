@@ -62,7 +62,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 
 
-    var toBeDrawn = edgeRoads ++ nodeTowns ++ //townsLabel ++
+    var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
       Seq(new UpdatableButton(){
             text = "Au revoir"
             onAction = { ae => stage.close() }

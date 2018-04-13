@@ -65,7 +65,7 @@ class Game(){
   }
 
   var money = 10000000.0
-  def deltaMoney(delta : Double) = {money = money + delta; println(delta)}
+  def deltaMoney(delta : Double) = {money = money + delta}
 
 
   // List of trains and the ID of the town they are currently in
