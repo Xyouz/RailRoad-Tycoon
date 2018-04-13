@@ -9,7 +9,6 @@ import scala.util.Random
 
 case class NotFoundTypeFactoryException() extends Exception()
 
-
 // Use to build different type of factories while parsing xml maps
 // Strange spelling to avoid a warning related to case-sensitive class distinction
 class FactoryBuilder() {
