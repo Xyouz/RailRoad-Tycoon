@@ -6,6 +6,9 @@ import scalafx.scene.shape.{Circle}
 import scalafx.scene.paint.Color._
 import vehicle.Vehicle
 
+/** This class turns the different vehicles into point to enable the player to see where are those vehicles on the interface.
+*/
+
 class CircVehicle(val vehicle : Vehicle) extends Circle with Updatable{
   radius = 4
   update()

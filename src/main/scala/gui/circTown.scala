@@ -11,6 +11,9 @@ import sendTrainDialog._
 import model._
 import town._
 
+/** This class represents the towns by points on the interface.
+*/
+
 
 class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle with Updatable{
   centerX = town.position().x_coord()

@@ -6,6 +6,10 @@ import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
 import scalafx.collections.ObservableBuffer
 
+/** This class enables the player to chose a city on the interface to have information about it
+ such as the population, the number of factories, the quantity of goods...
+*/
+
 class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   text = "Villes"
   maxWidth = 250

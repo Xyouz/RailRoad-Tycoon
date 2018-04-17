@@ -8,6 +8,8 @@ import scalafx.scene.paint.Color._
 import model._
 import town._
 
+/** This class represents the moving trains by points, so the player can actually see the trains on the interface.
+*/
 
 class CircShowTrain(val town : Town) extends Circle with Updatable {
   centerX = town.position().x_coord()
