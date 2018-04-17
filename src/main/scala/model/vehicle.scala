@@ -8,6 +8,10 @@ import scalafx.scene.paint.Color._
 
 case class NotInTownException() extends Exception()
 
+/** This abstact class is extended in "train" and "plane".
+ * A vehicle is just meant to connect a city to another, to load and to unload goods and passengers.
+*/
+
 
 abstract class Vehicle( val name : String, val engine : Engine){
   override def toString() = {name}
