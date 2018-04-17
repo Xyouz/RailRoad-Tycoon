@@ -9,8 +9,14 @@ import model._
 import point._
 
 
+/** This class extends the class "Vehicles".
+ * A plane can be launch only between cities that have an airport.
+ * The speed depends on the weigth of what it carries.
+ * A plane can trnsport passengers and only one kind of goods.
+ * The player earn money when the plane arrive in a city. 
+*/
 
-//a class to represent planes
+
 class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Game) extends Vehicle(name, engine){
   var flying = false
   var flightBriefing = Array[Town]()

@@ -16,7 +16,12 @@ import plane._
 import cargo._
 
 
-// Eventually a class to launch a game.
+/** The class "Game" enables the player to launch a new game.
+ * The train stations and the airports are already implemented in the maps.
+ * The player can launch planes and trains by giving them an itenerary, and collect money.
+ * We update the game and the positions of the vehicles at each tick.
+*/
+
 class Game(){
 
   val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11,1), new TrainEngine("Escargot", 5, 75, false,11,1.25))

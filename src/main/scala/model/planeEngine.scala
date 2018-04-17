@@ -3,6 +3,9 @@ package planeEngine
 import engine._
 import scala.math._
 
+/** It extends the abstract class "Engine".
+ * It also takes into account the influence of the weight of the loading on the speed.
+*/
 
 class PlaneEngine( name : String, maxSpeed : Double, maxLoad : Double, maxRange : Double, price : Double , priceByKm : Double)
     extends Engine(name, maxSpeed, maxLoad, maxRange, price, priceByKm){

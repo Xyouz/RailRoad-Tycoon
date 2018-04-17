@@ -2,7 +2,10 @@ package point
 
 import scala.math.{pow, sqrt}
 
-// A class to represent 2D points
+/** Since we are dealing with maps in 2D;
+ * this class descibes several methods to handle the relations between the towns (the points) with eah other (the distance between two towns for example).
+*/
+
 class Point(var x : Double,var y : Double){
   def x_coord():Double = {x}
   def y_coord():Double = {y}
