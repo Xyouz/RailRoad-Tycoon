@@ -4,6 +4,10 @@ import model._
 import town._
 import scala.collection.mutable.PriorityQueue
 
+/** This class enables us to send planes into cities that actually own an airport.
+ * If a plane must fly over several town, we use Dijkstra algorithm to find the shortest path.
+ */
+
 class AirportNetwork(val game : Game) {
   var nt = game.townList.length
   var distances = Array.fill[Double](nt)(0)
