@@ -36,7 +36,6 @@ import scalafx.geometry.{Insets, Pos}
 */
 
 
-
 class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     stage =>
 
