@@ -18,7 +18,9 @@ import wagon._
 
 case class NewTrainOk(name : String, town : Town, engine : TrainEngine, wagons : List[Wagon])
 
-// use to create an interactive window in order to create new trains
+/** use to create an interactive window in order to create new trains
+*/
+
 class newTrainDialog(val master : MainGame)
                    extends Dialog[NewTrainOk]() {
   val townList = master.game.townList

@@ -5,6 +5,10 @@ import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
 
 
+/** This function posts the information related to the player
+ * (their money, or the time that pass since the begining of the game).
+*/
+
 class InfoPane() extends TitledPane() {
   text = "Informations générales"
   var timeCounter = 0

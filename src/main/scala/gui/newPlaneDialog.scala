@@ -18,7 +18,9 @@ import cargo._
 
 case class NewPlaneOk(name : String, town : Town, engine : PlaneEngine, hold : Cargo)
 
-// use to create an interactive window in order to create new trains
+/** use to create an interactive window in order to create new trains
+*/
+
 class newPlaneDialog(val master : MainGame)
                    extends Dialog[NewPlaneOk]() {
   val townList = (master.game.townList).filter(_.hasAirport)

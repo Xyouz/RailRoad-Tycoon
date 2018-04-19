@@ -29,6 +29,13 @@ import scalafx.geometry.{Insets, Pos}
 import wagon._
 
 
+/** Here is the function that handles the graphical user interface.
+ * Through most of the functions we define, it actually draws all the interface,
+ * making it corresponds to the maps.
+ * It also deals with the ticks of the game. 
+*/
+
+
 class MainGame(val game: Game) extends JFXApp.PrimaryStage
   { stage =>
 
