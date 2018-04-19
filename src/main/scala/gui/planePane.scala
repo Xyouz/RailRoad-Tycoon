@@ -15,6 +15,10 @@ import setPlaneRouteDialog._
 import scalafx.scene.paint.Color._
 import cargo._
 
+/** This class enables the player to create a new plane with its specificities
+ * (like the itinerary, or the goods that are loaded)
+*/
+
 class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
   text = "Avions"
   maxWidth = 250

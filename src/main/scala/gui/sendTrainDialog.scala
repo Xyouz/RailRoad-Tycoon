@@ -12,8 +12,14 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 
-// A simple case class used to bypass scala limitations
+/** A simple case class used to bypass scala limitations
+*/
+
 case class Result(cochonou : Unit)
+
+/** This class opens a new window on the interface,
+ * so the player can choose what the train will transport and which cities it's stopping.
+*/
 
 class SendTrainDialog(val master : JFXApp.PrimaryStage,
                       val game : Game,

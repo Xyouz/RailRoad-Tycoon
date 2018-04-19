@@ -16,7 +16,9 @@ import scalafx.scene.control._
 
 case class OkRoute(circuit : Array[Town])
 
-// creat an interactive window to select a route for a plane
+/** create an interactive window to select a route for a plane
+*/
+
 class setRouteDialog(val master : MainGame, val plane : Plane)
                    extends Dialog[OkRoute]() {
   val game = master.game

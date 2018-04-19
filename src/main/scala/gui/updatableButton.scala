@@ -2,8 +2,10 @@ package updatable
 
 import scalafx.scene.control.{Button, Label, ComboBox, Accordion}
 
-// trait used in order to add a method update to somme scalafx objects so that
-// the type system is happy
+/** trait used in order to add a method update to somme scalafx objects so that
+ *the type system is happy
+*/
+
 trait Updatable {
   def update() = {}
 }
