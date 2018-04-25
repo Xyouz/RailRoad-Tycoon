@@ -63,13 +63,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage
 
 
     var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
-      Seq(new UpdatableButton(){
-            text = "Au revoir"
-            onAction = { ae => stage.close() }
-            layoutX <== stage.width-width
-            layoutY = 0
-          },
-          infoWidget//,
+      Seq(infoWidget//,
           // new UpdatableButton(){
           //   text = "MONEY"
           //   layoutX <== stage.width-width

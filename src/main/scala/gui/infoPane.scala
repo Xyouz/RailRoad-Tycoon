@@ -3,9 +3,9 @@ package infoPane
 import scalafx.scene.control._
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
+import gui.MainGame
 
-
-class InfoPane() extends TitledPane() {
+class InfoPane(val master : MainGame) extends TitledPane() {
   text = "Informations générales"
   var timeCounter = 0
   var moneyLabel = new Label(){
@@ -15,6 +15,11 @@ class InfoPane() extends TitledPane() {
     text = s"Date : ${timeCounter}"
   }
 
+  var exitButton = new Button(){
+        text = "Au revoir"
+        onAction = { ae => master.close() }
+  }
+
   val grid = new GridPane(){
     hgap = 10
     vgap = 10
@@ -22,6 +27,7 @@ class InfoPane() extends TitledPane() {
 
     add(timeLabel, 0, 0)
     add(moneyLabel, 0, 1)
+    add(exitButton, 0, 2)
   }
 
   content = grid

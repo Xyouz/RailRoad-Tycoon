@@ -16,7 +16,7 @@ import scalafx.application.{JFXApp, Platform}
 
 class InfoWidget(val master : MainGame, val game : Game) extends Accordion() with Updatable{
     maxWidth = 250
-    val informationPane = new InfoPane()
+    val informationPane = new InfoPane(master)
 
     val trainPane = new TrainPane(master)
 
