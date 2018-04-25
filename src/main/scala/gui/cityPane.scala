@@ -22,19 +22,19 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
-  //  stocks.items = ObservableBuffer(selectedTown.stocks.map(s => f"${s.name} : ${s.quantity}%1.1f"))
+    //stocks.data = selectedTown.stocks.map(s => PieChart.Data(s.name,s.quantity))
   }
   update()
 
   val select = new ComboBox(townsList)
   {
     onAction = {ae =>selectedTown = value.value
-            update()
-            }
+      update()
+    }
   }
 
   val stocks = new PieChart() {
-          data = Seq(PieChart.Data("C",12.3),PieChart.Data("Ocaml",25.42))
+    data = selectedTown.stocks.map(s => PieChart.Data(s.name,s.quantity))
   }
 
   val grid = new GridPane(){
