@@ -28,6 +28,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
   lineChart.getData.add(serieMoney)
   lineChart.title = "Stock Monitoring, 2010"
   lineChart.legendVisible = false
+  lineChart.setCreateSymbols(false)
 //  val moneyOverTime =
 
   val exitButton = new Button(){
