@@ -5,6 +5,7 @@ import scalafx.scene.control._
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
 import scalafx.collections.ObservableBuffer
+import scalafx.scene.chart.PieChart
 
 class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   text = "Villes"
@@ -15,13 +16,13 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val factories = new Label()
 
   // Commented because it was too slow with this implementation
-  val stocks = new ListView[String]()
+  // val stocks = new ListView[String]()
 
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
-    stocks.items = ObservableBuffer(selectedTown.stocks.map(s => f"${s.name} : ${s.quantity}%1.1f"))
+  //  stocks.items = ObservableBuffer(selectedTown.stocks.map(s => f"${s.name} : ${s.quantity}%1.1f"))
   }
   update()
 
@@ -32,6 +33,9 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
             }
   }
 
+  val stocks = new PieChart() {
+          data = Seq(PieChart.Data("C",12.3),PieChart.Data("Ocaml",25.42))
+  }
 
   val grid = new GridPane(){
     vgap = 10
