@@ -24,6 +24,7 @@ Second byte:
 
 - 2
   + 10 : End of game
+  + 11 : Client closing it's session
 
 - 3
   + 10 : Train
