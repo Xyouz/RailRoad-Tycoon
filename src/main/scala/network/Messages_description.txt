@@ -1,5 +1,7 @@
 * Description of the messages and of their meaning
 
+TODO: Forbid the use of special characters such as \n
+
 First byte:
   - 0 : Errors
   - 1 : Miscellaneous informations
@@ -30,4 +32,4 @@ Second byte:
     [name, engine id, starting town, cargo infos]
 
 - 4
-  [vehicle ID, list of town IDs] (targeted number of cargo) 
+  [vehicle ID, list of town IDs] (targeted number of cargo)
