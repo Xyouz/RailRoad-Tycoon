@@ -7,3 +7,7 @@ package decapsulate
 
 import messages._
 import model._
+
+class MessageReader() {
+  // read message
+}
