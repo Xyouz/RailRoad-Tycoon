@@ -9,6 +9,10 @@ import scalafx.scene.control._
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.shape.{Line}
 
+
+/** This class enables to have information on the vehicles that are on the selected road
+*/
+
 class LineRoad(val master : JFXApp.PrimaryStage, val road : Road) extends Line with Updatable {
   startX = road.getStart().position().x_coord()
   startY = road.getStart().position().y_coord()

@@ -12,6 +12,9 @@ import infoPane._
 import infoWidget._
 import lineRoad._
 import circShowTrains._
+import wagon._
+import zoom._
+
 import scalafx.Includes._
 import updatable._
 import scalafx.application.{JFXApp, Platform}
@@ -19,6 +22,7 @@ import scalafx.scene.Scene
 import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
 import scalafx.scene.shape.{Circle,Rectangle,Line,Polygon}
+import scalafx.scene._
 import scalafx.beans.property.{DoubleProperty, StringProperty}
 import scalafx.animation.AnimationTimer
 import scalafx.scene.control.Alert.AlertType
@@ -26,11 +30,21 @@ import scalafx.scene.control._
 import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
-import wagon._
+import scalafx.geometry._
+import scalafx.event._
+import scalafx.event.EventHandler
+import scalafx.scene.input.ScrollEvent
+import scalafx.scene.input.MouseEvent
+
+/** Here is the function that handles the graphical user interface.
+ * Through most of the functions we define, it actually draws all the interface,
+ * making it corresponds to the maps.
+ * It also deals with the ticks of the game.
+*/
 
 
-class MainGame(val game: Game) extends JFXApp.PrimaryStage
-  { stage =>
+class MainGame(val game: Game) extends JFXApp.PrimaryStage {
+    stage =>
 
     def townToCircle(town : Town) : CircTown = {
       new CircTown(stage, game, town)

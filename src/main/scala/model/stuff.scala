@@ -6,6 +6,13 @@ import factory._
 case class UnmatchedStuffException() extends Exception()
 case class NotEnoughQuantityException() extends Exception()
 
+/** This class describes in which category is the goods and how to deal with their respective stocks.
+ * There are methods to know if some goods is the same than an other one,
+ * to consume them according to the time,
+ * to add or to substract some quantity of goods.
+ * This class is quite useful to load or unload the goods in or out of the vehicles
+*/
+
 class Stuff(val name : String, var quantity : Double, val maxPrice : Double, val category : String){
   def stuffCategory() = {category}
   def getName() : String = {name}

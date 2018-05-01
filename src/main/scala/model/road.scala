@@ -4,7 +4,9 @@ import town._
 import point._
 import train._
 
-// A class to represent road between two Towns
+/** This class represents the roads, and espacially the railroads, between the towns.
+*/
+
 class Road(val begin : Town,val end : Town){
   val townsVec = end.position - begin.position
   val length = townsVec.norm()

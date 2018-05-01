@@ -7,7 +7,16 @@ import gui.MainGame
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.chart.{LineChart, NumberAxis, XYChart}
 
+<<<<<<< HEAD
 class InfoPane(val master : MainGame) extends TitledPane() {
+=======
+
+/** This function posts the information related to the player
+ * (their money, or the time that pass since the begining of the game).
+*/
+
+class InfoPane() extends TitledPane() {
+>>>>>>> 1a50787e91a5205f31d7eae0922238bf0ed49c66
   text = "Informations générales"
   var timeCounter = 0
   var moneyLabel = new Label(){

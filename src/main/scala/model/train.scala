@@ -7,7 +7,11 @@ import wagon._
 import infoPane._
 import model._
 
-//a class to represent trains
+
+/**This class represents the trains, it extends the class "Vehicle", except here, we must also deal
+ with the different loadings and the different wagons.
+*/
+
 class Train(name : String, engine : TrainEngine, listOfWagon : List[Wagon], val game : Game ) extends Vehicle(name, engine){
   def wagons() = {listOfWagon}
   override def unload(t : Town) = {

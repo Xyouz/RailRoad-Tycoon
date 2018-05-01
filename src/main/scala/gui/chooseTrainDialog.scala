@@ -14,7 +14,8 @@ import scalafx.scene.control._
 
 case class Result(cochonou : Unit)
 
-// use to create an interactive window in order to create new trains
+/** This class enables the player to create an interactive window in order to create new trains
+*/
 class ChooseTrainDialog(val master : MainGame,
                      val game : Game)
                    extends Dialog[Result]() {

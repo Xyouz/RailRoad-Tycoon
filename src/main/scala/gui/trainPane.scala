@@ -15,6 +15,9 @@ import setRouteDialog._
 import scalafx.scene.paint.Color._
 import wagon._
 
+/** This class handles the trains on the graphical interface (so the player can see them).
+*/
+
 class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
   text = "Trains"
   maxWidth = 250

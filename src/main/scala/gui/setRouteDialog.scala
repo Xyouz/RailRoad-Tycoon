@@ -16,7 +16,9 @@ import scalafx.scene.control._
 
 case class OkRoute(circuit : Array[Town])
 
-// use to create an interactive window in order to create new trains
+/** is used to create an interactive window in order to create new trains
+*/
+
 class setRouteDialog(val master : MainGame, val train : Train)
                    extends Dialog[OkRoute]() {
   val game = master.game

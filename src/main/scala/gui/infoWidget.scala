@@ -12,7 +12,9 @@ import train._
 import gui._
 import scalafx.application.{JFXApp, Platform}
 
-
+/** This class make the graphical interface more "user-friendly".
+ * The idea is that the player choose the category (town, train, plane...) they want to explore.
+*/
 
 class InfoWidget(val master : MainGame, val game : Game) extends Accordion() with Updatable{
     maxWidth = 250

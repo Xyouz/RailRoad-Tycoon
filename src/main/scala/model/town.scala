@@ -17,8 +17,11 @@ import scala.util.Random
 case class NoAirportException() extends Exception()
 
 
-// a class to implement the towns of the graphs with information on the name,
-// the population, their wealth and methods to update them when a train come over
+/** This class implements the towns of the graphs with information on the name,
+ the population, their wealth and methods to update them when a train or a plane come over.
+ * There is also a method that handles the stocks of the goods in the town.
+*/
+
 class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var railwayStation = List[Train]()
   var airport = List[Plane]()

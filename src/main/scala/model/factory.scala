@@ -4,6 +4,9 @@ import building._
 import stuff._
 import town._
 
+/** It extends the class "Building". It takes as an input one or more goods, and transform it into an ouput.
+ * A transformation occurs after a certain amount of ticks: it is the time the factory needs to produce something.
+*/
 
 class Factory(input : List[Stuff], output : Stuff, ticks : Int, city : Town) extends Building(input, output, city){
   var time = 0
