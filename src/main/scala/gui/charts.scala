@@ -22,7 +22,6 @@ class ChartLine(val getValue : giveValue ) extends LineChart(new NumberAxis(),ne
   val serie = new XYChart.Series[Number,Number]()
 
   this.getData.add(serie)
-  title = "Stock Monitoring, 2010"
   legendVisible = false
   this.setCreateSymbols(false)
   maxHeight = 200
