@@ -25,7 +25,8 @@ class ChartLine(val getValue : giveValue ) extends LineChart(new NumberAxis(),ne
   title = "Stock Monitoring, 2010"
   legendVisible = false
   this.setCreateSymbols(false)
-
+  maxHeight = 200
+  minWidth = 300
 
   def update() {
     var (x,y) = getValue.value()

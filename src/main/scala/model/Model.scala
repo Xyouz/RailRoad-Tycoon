@@ -69,7 +69,7 @@ class Game(){
     newPlane
   }
 
-  var money = 50000000.0
+  var money = 500000.0
   def deltaMoney(delta : Double) = {money = money + delta}
 
 

@@ -41,7 +41,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
   val grid = new GridPane(){
     hgap = 10
     vgap = 10
-    padding = Insets(20,100,10,10)
+    // padding = Insets(20,100,10,10)
 
     add(timeLabel, 0, 0)
     add(moneyLabel, 0, 1)
