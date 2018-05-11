@@ -12,14 +12,15 @@ trait giveValue {
   def value() : (Number,Number)
 }
 
-class ChartLine(val getValue : giveValue ) extends LineChart(new NumberAxis(),new NumberAxis()){
+class ChartLine(val getValue : giveValue) extends LineChart(new NumberAxis(),new NumberAxis()){
 
   // xAxis = new NumberAxis()
   // this.xAxis.label = "Number of Month"
   // yAxis = new NumberAxis()
 
-
+  var frequencyUpd : Int  = 1
   val serie = new XYChart.Series[Number,Number]()
+  var time = 0
 
   this.getData.add(serie)
   legendVisible = false
@@ -28,8 +29,11 @@ class ChartLine(val getValue : giveValue ) extends LineChart(new NumberAxis(),ne
   minWidth = 300
 
   def update() {
-    var (x,y) = getValue.value()
-    serie.getData().add(XYChart.Data(x,y))
+    time += 1
+    if (time%frequencyUpd == 0){
+      var (x,y) = getValue.value()
+      serie.getData().add(XYChart.Data(x,y))
+    }
   }
 
 }

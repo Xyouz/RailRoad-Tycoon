@@ -17,18 +17,19 @@ class InfoPane(val master : MainGame) extends TitledPane() {
   var timeLabel = new Label(){
     text = s"Date : ${timeCounter}"
   }
-
-//  val moneyOverTime =
+  val frequency = 15
 
   object getMoney extends giveValue {
     var time = 0
     def value = {
-      time = time + 5
+      time = time + frequency
       (time, master.game.money)
     }
   }
 
   val chartMoney = new ChartLine(getMoney)
+
+  chartMoney.frequencyUpd = frequency
 
   chartMoney.title = "Argent"
 
@@ -56,8 +57,6 @@ class InfoPane(val master : MainGame) extends TitledPane() {
     timeCounter += 1
     moneyLabel.text = f"Argent : ${newMoney}%2.2f"
     timeLabel.text = s"Date : ${timeCounter}"
-    if ((timeCounter % 5) == 0) {
-      chartMoney.update()
-    }
+    chartMoney.update()
   }
 }
