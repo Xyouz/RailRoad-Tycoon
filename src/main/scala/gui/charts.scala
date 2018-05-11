@@ -43,7 +43,7 @@ class ChartLine(val getValue : giveValue) extends LineChart(new NumberAxis(),new
     if (time%frequencyUpd == 0){
       var (x,y) = getValue.value()
       serie.getData().add(XYChart.Data(x,y))
-      derivedSerie.getData().add(XYChart.Data(((x+xs)/2), (((ys-y) / (xs-x)) )))
+      derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
       xs = x
       ys = y
     }
