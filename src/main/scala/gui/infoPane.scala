@@ -21,7 +21,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
 
   object getMoney extends giveValue {
     var time = 0
-    def value = {
+    def value= {
       time = time + frequency
       (time, master.game.money)
     }
