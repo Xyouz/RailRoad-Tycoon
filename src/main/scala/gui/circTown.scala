@@ -10,6 +10,7 @@ import scalafx.scene.paint.{Stops, LinearGradient}
 import sendTrainDialog._
 import model._
 import town._
+import scalafx.scene.shape.StrokeType.Outside
 
 /** This class represents the towns by points on the interface.
 */
@@ -21,6 +22,9 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   translateX = 500
   translateY = 300
   update()
+  stroke = White opacity 1
+  strokeWidth = 0
+  strokeType = Outside
   //onMouseClicked = handle {println(town)}
   fill = Orange
   if (town.hasAirport){
@@ -29,7 +33,13 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   }
 
   override def update() = {
-    radius = 10//town.population() / 5
+    radius = 6//town.population() / 5
+    if (town.isHub) {
+      strokeWidth = 3
+    }
+    else {
+      strokeWidth = 0
+    }
   }
 
 }
