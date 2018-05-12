@@ -17,7 +17,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
   var timeLabel = new Label(){
     text = s"Date : ${timeCounter}"
   }
-  val frequency = 15
+  val frequency = 50
 
   object getMoney extends giveValue {
     var time = 0
