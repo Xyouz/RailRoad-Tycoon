@@ -29,6 +29,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var stocks = List[Stuff]()
   var hasAirport = false
   val rndGen = new Random()
+  var isHub = false
 
   override def toString() = {name}
   def addFactory(plan : Factory) = {
