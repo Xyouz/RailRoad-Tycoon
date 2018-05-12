@@ -19,26 +19,28 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val populationLabel = new Label()
   val factories = new Label()
 
-  // Commented because it was too slow with this implementation
-  // val stocks = new ListView[String]()
-
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
-    //stocks.data = selectedTown.stocks.map(s => PieChart.Data(s.name,s.quantity))
   }
   update()
 
-  val select = new ComboBox(townsList)
-  {
-    onAction = {ae =>selectedTown = value.value
-      update()
+  val hub = new RadioButton("Hub?"){
+    onAction = {
+      ae => selectedTown.isHub = selected.value
+      println(s"${selected.value}   \n")
     }
   }
 
-  val stocks = new PieChart() {
-    data = selectedTown.stocks.map(s => PieChart.Data(s.name,s.quantity))
+
+  val select = new ComboBox(townsList)
+  {
+    onAction = {ae =>
+      selectedTown = value.value
+      hub.selected.value = selectedTown.isHub
+      update()
+    }
   }
 
   val grid = new GridPane(){
@@ -48,7 +50,7 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     add(nameLabel, 0, 1)
     add(populationLabel, 0, 2)
     add(factories,0,3)
-  add(stocks,0,4)
+    add(hub,0,4)
   }
 
   content = grid
