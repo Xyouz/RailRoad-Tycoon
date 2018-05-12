@@ -29,7 +29,6 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val hub = new RadioButton("Hub?"){
     onAction = {
       ae => selectedTown.isHub = selected.value
-      println(s"${selected.value}   \n")
     }
   }
 
