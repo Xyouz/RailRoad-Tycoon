@@ -1,4 +1,4 @@
-package dotVehicle
+package circVehicle
 
 import updatable._
 import scalafx.Includes._

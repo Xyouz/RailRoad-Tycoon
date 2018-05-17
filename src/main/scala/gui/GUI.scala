@@ -34,7 +34,8 @@ import scalafx.event.EventHandler
 import zoom.Zoom
 import scalafx.scene.input._
 import townLabel.TownLabel
-
+import vehicle.Vehicle
+import circVehicle.CircVehicle
 /** Here is the function that handles the graphical user interface.
  * Through most of the functions we define, it actually draws all the interface,
  * making it corresponds to the maps.
@@ -96,9 +97,11 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
         )
 
 
-    def addToBeDrawn(newItem : scalafx.scene.Node with updatable.Updatable) = {
-      toBeDrawn = toBeDrawn :+ newItem
+    def addToBeDrawn(newVehicle : Vehicle) = {
+      toBeDrawn = toBeDrawn :+ new CircVehicle(newVehicle, zoom)
     }
+
+    
 
     scene = new Scene{
       onScroll = (event: ScrollEvent) => {

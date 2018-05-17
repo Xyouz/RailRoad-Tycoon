@@ -9,7 +9,6 @@ import updatable._
 import newTrainDialog._
 import moneyAlert._
 import gui._
-import dotTrain._
 import scalafx.Includes._
 import setRouteDialog._
 import scalafx.scene.paint.Color._
@@ -33,7 +32,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         try {
           var newTrain = master.game.addTrain(name, town, engine, wagons)
           addTrainToComboBox(newTrain)
-          master.addToBeDrawn(new CircTrain(newTrain,master.zoom))
+          master.addToBeDrawn(newTrain)
           select.getSelectionModel().select(newTrain)
         }
         catch {

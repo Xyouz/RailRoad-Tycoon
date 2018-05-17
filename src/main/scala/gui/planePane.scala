@@ -9,7 +9,6 @@ import updatable._
 import newPlaneDialog._
 import moneyAlert._
 import gui._
-import dotPlane._
 import scalafx.Includes._
 import setPlaneRouteDialog._
 import scalafx.scene.paint.Color._
@@ -34,8 +33,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
         try {
           var newPlane = master.game.addPlane(name, town, engine, hold)
           addTrainToComboBox(newPlane)
-          println("Changer planePane et trainPane pour ajouter un avion a dessiner")
-          master.addToBeDrawn(new CircPlane(newPlane,master.zoom))
+          master.addToBeDrawn(newPlane)
           select.getSelectionModel().select(newPlane)
         }
         catch {
