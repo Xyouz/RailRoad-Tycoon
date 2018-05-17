@@ -8,37 +8,42 @@ import scalafx.scene._
 import scalafx.scene.control._
 import scalafx.geometry._
 import scalafx.event._
-import javafx.event.EventHandler
-import javafx.scene.input.ScrollEvent
-import javafx.scene.input.MouseEvent
+import scalafx.property.ReadOnlyDoubleProperty
 
 
-/** This class is supposed to allow the player to zoom in and out,
- * this class is useful in the class "GUI".
+/** This class is used to change transform coordinates depending on a zoom factor,
+ *  this class is useful in the class "GUI".
 */
 
-class Zoom() extends Pane {
-  var zoomMini : Double = 0
-  var zoomMaxi : Double = Double.PositiveInfinity
-  onScroll = new EventHandler[ScrollEvent] {
-    override def handle(event : ScrollEvent) : Unit = {
-      var zoomingBy : Double = 2.0
-      if (event.getDeltaY() <= 0) {
-        zoomingBy = 1 / zoomingBy
-      }
-      zoomable(zoomingBy)
-      event.consume()
-    }
+class Zoom(val stageWidth:ReadOnlyDoubleProperty, val stageHeight:ReadOnlyDoubleProperty) {
+  val leftOffset = 300.0
+  var maxX = 1000.0
+  var minX = 0.0
+  var maxY= 700.0
+  var minY = 0.0
+
+  def transform(x : Double, y : Double) = {
+    var resX = (x - minX) * (stageWidth - leftOffset) / (maxX - minX) + leftOffset
+    var resY = (y - minY) * ( - stageHeight ) / (maxY - minY)
+    (resX, resY)
   }
 
-  def zoomable(coeff : Double) = {
-    var factor = scaleX() * coeff
-    if (factor > zoomMaxi) {
-      factor = zoomMaxi
-    }
-    if (factor < zoomMini) {
-      factor = zoomMini
-    }
+  def translate(deltaX : Double, deltaY : Double) = {
+    maxX += deltaX
+    minX += deltaX
+    maxY += deltaX
+    minY += deltaX
   }
 
+  def zoomFactor(factor : Double) = {
+    /** factor > 1 : zoom in
+     *  factor < 1 : zoom out
+    */
+    val averageX = (minX + maxX) / 2
+    val averageY = (minY + maxY) / 2
+    maxX = averageX + factor * (maxX - averageX)
+    maxY = averageY + factor * (maxY - averageY)
+    minX = averageX + factor * (minX - averageX)
+    minY = averageY + factor * (minY - averageY)
+  }
 }
