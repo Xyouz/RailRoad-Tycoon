@@ -91,18 +91,6 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
           //   onAction = {ae => game.money = 10000000d}
           // }
           , new UpdatableButton(){
-            text = "in"
-            onAction = {handle(zoom.zoomFactor(0.9))}
-            layoutX = 400
-            layoutY = 25
-          }
-          , new UpdatableButton(){
-            text = "out"
-            onAction = {handle(zoom.zoomFactor(1.1))}
-            layoutX = 400
-            layoutY = 50
-          }
-          , new UpdatableButton(){
             text = "<"
             onAction = {handle(zoom.translate(-25,0))}
             layoutX = 500
@@ -134,6 +122,15 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     }
 
     scene = new Scene{
+      onScroll = (event: ScrollEvent) => {
+        if (event.eventType == ScrollEvent.Scroll) {
+          println(event.getDeltaY)
+          val delta = 1 -(event.getDeltaY / 400)
+
+      zoom.zoomFactor(delta)
+      }
+    }
+
       fill = LightGreen
 
       content = toBeDrawn
