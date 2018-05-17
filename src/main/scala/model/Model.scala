@@ -26,7 +26,7 @@ class Game(){
 
   val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11,1), new TrainEngine("Escargot", 5, 75, false,11,1.25))
 
-  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,175,11,1))
+  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,600,11,1),new PlaneEngine("Hélice à ressort", 10, 50,175,11,1))
 
   var townList = Seq[Town]()
   var roadList = Seq[Road]()
