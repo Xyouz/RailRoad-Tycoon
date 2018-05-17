@@ -11,9 +11,7 @@ import circTown._
 import infoPane._
 import infoWidget._
 import lineRoad._
-import circShowTrains._
 import wagon._
-import zoom._
 
 import scalafx.Includes._
 import updatable._
@@ -35,6 +33,7 @@ import scalafx.event._
 import scalafx.event.EventHandler
 import scalafx.scene.input.ScrollEvent
 import scalafx.scene.input.MouseEvent
+import zoom.Zoom
 
 /** Here is the function that handles the graphical user interface.
  * Through most of the functions we define, it actually draws all the interface,
@@ -46,12 +45,19 @@ import scalafx.scene.input.MouseEvent
 class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     stage =>
 
+    val zoom = new Zoom(width, height)
+    val (maxX, minX, maxY, minY) = game.bounds()
+    zoom.maxX = (maxX + 25)
+    zoom.minX = (minX - 25)
+    zoom.maxY = (maxY + 25)
+    zoom.minY = (minY - 25)
+
     def townToCircle(town : Town) : CircTown = {
-      new CircTown(stage, game, town)
+      new CircTown(town, zoom)
     }
 
     def roadToLine(road : Road) : LineRoad = {
-      new LineRoad(stage, road)
+      new LineRoad(stage, road, zoom)
     }
 
     val infoWidget = new InfoWidget(stage, game)
@@ -76,7 +82,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
 
 
 
-    var toBeDrawn = edgeRoads ++ nodeTowns ++ townsLabel ++
+    var toBeDrawn = edgeRoads ++ nodeTowns ++// townsLabel ++
       Seq(infoWidget//,
           // new UpdatableButton(){
           //   text = "MONEY"

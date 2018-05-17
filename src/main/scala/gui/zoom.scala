@@ -8,7 +8,7 @@ import scalafx.scene._
 import scalafx.scene.control._
 import scalafx.geometry._
 import scalafx.event._
-import scalafx.property.ReadOnlyDoubleProperty
+import scalafx.beans.property.ReadOnlyDoubleProperty
 
 
 /** This class is used to change transform coordinates depending on a zoom factor,
@@ -18,13 +18,13 @@ import scalafx.property.ReadOnlyDoubleProperty
 class Zoom(val stageWidth:ReadOnlyDoubleProperty, val stageHeight:ReadOnlyDoubleProperty) {
   val leftOffset = 300.0
   var maxX = 1000.0
-  var minX = 0.0
+  var minX = -250.0
   var maxY= 700.0
-  var minY = 0.0
+  var minY = -300.0
 
   def transform(x : Double, y : Double) = {
-    var resX = (x - minX) * (stageWidth - leftOffset) / (maxX - minX) + leftOffset
-    var resY = (y - minY) * ( - stageHeight ) / (maxY - minY)
+    var resX = (x - minX) * (stageWidth.value - leftOffset) / (maxX - minX) + leftOffset
+    var resY = (y - minY) * ( - stageHeight.value ) / (maxY - minY) + stageHeight.value
     (resX, resY)
   }
 

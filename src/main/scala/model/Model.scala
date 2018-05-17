@@ -118,4 +118,12 @@ class Game(){
 
   def towns() = {townList}
   def roads() = {roadList}
+
+  def bounds() = {
+    val resMaxX = townList.foldLeft(Double.NegativeInfinity)( (x,t) => (max(x,t.x)) )
+    val resMinX = townList.foldLeft(Double.PositiveInfinity)( (x,t) => (min(x,t.x)) )
+    val resMaxY = townList.foldLeft(Double.NegativeInfinity)( (y,t) => (max(y,t.y)) )
+    val resMinY = townList.foldLeft(Double.PositiveInfinity)( (y,t) => (min(y,t.y)) )
+    (resMaxX,resMinX,resMaxY,resMinY)
+  }
 }

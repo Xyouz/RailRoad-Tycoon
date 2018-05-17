@@ -12,22 +12,16 @@ import sendTrainDialog._
 import model._
 import town._
 import scalafx.scene.shape.StrokeType.Outside
-
+import zoom.Zoom
 /** This class represents the towns by points on the interface.
 */
 
 
-class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle with Updatable{
-  centerX = town.position().x_coord()
-  centerY = town.position().y_coord()
-  // effect = new Glow(50)
-  translateX = 500
-  translateY = 300
+class CircTown(val town : Town, val zoom : Zoom) extends Circle with Updatable{
   update()
   stroke = White opacity 1
   strokeWidth = 0
   strokeType = Outside
-  //onMouseClicked = handle {println(town)}
   fill = Orange
   if (town.hasAirport){
     fill = new LinearGradient(endX = 0,
@@ -35,7 +29,10 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   }
 
   override def update() = {
-    radius = 8//town.population() / 5
+    val (x,y) = zoom.transform(town.position().x_coord(),town.position().y_coord())
+    centerX = x
+    centerY = y
+    radius = 8
     if (town.isHub) {
       strokeWidth = 3
     }

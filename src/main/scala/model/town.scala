@@ -33,6 +33,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var isHub = false
   var cargosInTown = List[Cargo]()
 
+  val x = position.x
+  val y = position.y
+
   override def toString() = {name}
   def addFactory(plan : Factory) = {
     factories = plan +: factories
