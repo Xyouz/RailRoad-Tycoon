@@ -92,14 +92,38 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
           // }
           , new UpdatableButton(){
             text = "in"
-            onAction = {handle(zoom.zoomFactor(1.1))}
+            onAction = {handle(zoom.zoomFactor(0.9))}
             layoutX = 400
             layoutY = 25
           }
           , new UpdatableButton(){
             text = "out"
-            onAction = {handle(zoom.zoomFactor(0.9))}
+            onAction = {handle(zoom.zoomFactor(1.1))}
             layoutX = 400
+            layoutY = 50
+          }
+          , new UpdatableButton(){
+            text = "<"
+            onAction = {handle(zoom.translate(-25,0))}
+            layoutX = 500
+            layoutY = 25
+          }
+          , new UpdatableButton(){
+            text = ">"
+            onAction = {handle(zoom.translate(25,0))}
+            layoutX = 525
+            layoutY = 25
+          }
+          , new UpdatableButton(){
+            text = "/\\"
+            onAction = {handle(zoom.translate(0,25))}
+            layoutX = 512
+            layoutY = 0
+          }
+          , new UpdatableButton(){
+            text = "\\/"
+            onAction = {handle(zoom.translate(0,-25))}
+            layoutX = 512
             layoutY = 50
           }
         )
