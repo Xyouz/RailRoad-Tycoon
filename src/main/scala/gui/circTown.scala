@@ -13,11 +13,16 @@ import model._
 import town._
 import scalafx.scene.shape.StrokeType.Outside
 import zoom.Zoom
+import infoWidget._
+import cityPane._
+
+
 /** This class represents the towns by points on the interface.
 */
 
 
-class CircTown(val town : Town, val zoom : Zoom) extends Circle with Updatable{
+class CircTown(val town : Town, val zoom : Zoom, infoWidget : InfoWidget) extends Circle with Updatable{
+  val cityPane = infoWidget.cityPane
   update()
   stroke = White opacity 1
   strokeWidth = 0
@@ -38,6 +43,12 @@ class CircTown(val town : Town, val zoom : Zoom) extends Circle with Updatable{
     }
     else {
       strokeWidth = 0
+    }
+  }
+
+  onMouseClicked = {
+    ae => {
+      cityPane.changeTown(town)
     }
   }
 

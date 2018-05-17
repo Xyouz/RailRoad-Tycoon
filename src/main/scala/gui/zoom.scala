@@ -29,10 +29,10 @@ class Zoom(val stageWidth:ReadOnlyDoubleProperty, val stageHeight:ReadOnlyDouble
   }
 
   def translate(deltaX : Double, deltaY : Double) = {
-    maxX -= deltaX
-    minX -= deltaX
-    maxY -= deltaY
-    minY -= deltaY
+    maxX -= deltaX * (maxX - minX)
+    minX -= deltaX * (maxX - minX)
+    maxY -= deltaY * (maxY - minY)
+    minY -= deltaY * (maxY - minY)
   }
 
   def zoomFactor(factor : Double) = {

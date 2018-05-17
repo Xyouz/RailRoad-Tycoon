@@ -33,6 +33,7 @@ import scalafx.event._
 import scalafx.event.EventHandler
 import zoom.Zoom
 import scalafx.scene.input._
+import townLabel.TownLabel
 
 /** Here is the function that handles the graphical user interface.
  * Through most of the functions we define, it actually draws all the interface,
@@ -51,17 +52,19 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     zoom.maxY = (maxY + 25)
     zoom.minY = (minY - 25)
 
-    def townToCircle(town : Town) : CircTown = {
-      new CircTown(town, zoom)
-    }
-
     def roadToLine(road : Road) : LineRoad = {
       new LineRoad(stage, road, zoom)
     }
 
     val infoWidget = new InfoWidget(stage, game)
 
+    def townToCircle(town : Town) : CircTown = {
+      new CircTown(town, zoom, infoWidget)
+    }
 
+    def townToLabel(town : Town) = {
+      new TownLabel(town, zoom)
+    }
 
 
     title.value = "Roolraid Tycoan"
@@ -70,6 +73,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     //content = new Button("Hell World")
 
     val nodeTowns = game.towns().map(townToCircle(_))
+    val labelTowns = game.towns().map(townToLabel(_))
     val edgeRoads = game.roads().map(roadToLine(_))
     // val townsWithTrains = game.towns().map(showTrainCircle(_))
     val townsLabel = game.towns().map(
@@ -81,7 +85,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
 
 
 
-    var toBeDrawn = edgeRoads ++ nodeTowns ++// townsLabel ++
+    var toBeDrawn = edgeRoads ++ nodeTowns ++ labelTowns ++
       Seq(infoWidget//,
           // new UpdatableButton(){
           //   text = "MONEY"
@@ -109,10 +113,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
 
     onKeyPressed = (k: KeyEvent) =>
       k.code match {
-      case KeyCode.Z => zoom.translate(0,10)
-      case KeyCode.S => zoom.translate(0,-10)
-      case KeyCode.Q => zoom.translate(-10,0)
-      case KeyCode.D => zoom.translate(10,0)
+      case KeyCode.Z => zoom.translate(0,0.05)
+      case KeyCode.S => zoom.translate(0,-0.05)
+      case KeyCode.Q => zoom.translate(-0.05,0)
+      case KeyCode.D => zoom.translate(0.05,0)
       case _ =>
     }
 

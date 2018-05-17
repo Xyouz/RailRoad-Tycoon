@@ -57,4 +57,9 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
 
   content = grid
 
+  def changeTown(town : Town) = {
+    selectedTown = town
+    select.setValue(town)
+  }
+
 }
