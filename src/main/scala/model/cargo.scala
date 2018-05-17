@@ -10,6 +10,8 @@ case class EmptyCargo() extends Exception() {
 
 /** The class "Cargo" is useful to load and to unload some goods into a city, basically the destination of the train.
  * It is extended in the class "Wagon"
+ * Used typeOfLoad are : Liquid, Dry, Container
+ * Cargos are initially created in xmlParsing.scala
 */
 
 class Cargo (val typeOfLoad : String, val maxLoad : Double) {
@@ -17,6 +19,12 @@ class Cargo (val typeOfLoad : String, val maxLoad : Double) {
   def kindOfLoad() = {typeOfLoad}
   var content : Option[Stuff] = None
   var destination : Option[Town] = None
+  def hasContent() = {
+    content != None
+  }
+  def isEmpty() = {
+    content == None
+  }
   def load(toLoad : Stuff) = {
     content = Some(toLoad)
   }

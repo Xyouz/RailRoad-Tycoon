@@ -5,6 +5,7 @@ import scala.xml.{Elem, XML}
 import town._
 import road._
 import point._
+import cargo._
 import factoryBuilder._
 import stuffData._
 import java.io.File
@@ -39,6 +40,11 @@ class XMLParser(xmlFile : File) {
       newTown.stocks = filler.fill()
       if (airport.length != 0) {
         newTown.hasAirport = true
+      }
+      for (t<-List("Liquid","Container","Dry")){
+        for (i <- 1 to 10){
+          newTown.cargosInTown = (new Cargo(t,150)) +: newTown.cargosInTown
+        }
       }
       for {factory <- town \\ "Factory"}{
         var typeOfFactory = factory \@ "type"

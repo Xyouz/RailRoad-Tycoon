@@ -18,11 +18,13 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val nameLabel = new Label()
   val populationLabel = new Label()
   val factories = new Label()
+  val cargos = new Label()
 
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
+    cargos.text = s"Nombre de cargo : ${selectedTown.cargosInTown.length}"
   }
   update()
 
@@ -50,6 +52,7 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     add(populationLabel, 0, 2)
     add(factories,0,3)
     add(hub,0,4)
+    add(cargos,0,5)
   }
 
   content = grid

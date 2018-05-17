@@ -5,6 +5,7 @@ import updatable._
 import scalafx.Includes._
 import scalafx.application.{JFXApp}
 import scalafx.scene.shape.{Circle}
+import scalafx.scene.effect.Glow
 import scalafx.scene.paint.Color._
 import scalafx.scene.paint.{Stops, LinearGradient}
 import sendTrainDialog._
@@ -19,6 +20,7 @@ import scalafx.scene.shape.StrokeType.Outside
 class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town) extends Circle with Updatable{
   centerX = town.position().x_coord()
   centerY = town.position().y_coord()
+  // effect = new Glow(50)
   translateX = 500
   translateY = 300
   update()
@@ -33,7 +35,7 @@ class CircTown(val master : JFXApp.PrimaryStage,val game : Game, val town : Town
   }
 
   override def update() = {
-    radius = 6//town.population() / 5
+    radius = 8//town.population() / 5
     if (town.isHub) {
       strokeWidth = 3
     }
