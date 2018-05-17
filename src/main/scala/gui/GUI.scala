@@ -31,10 +31,8 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.geometry._
 import scalafx.event._
 import scalafx.event.EventHandler
-import scalafx.scene.input.ScrollEvent
-import scalafx.scene.input.MouseEvent
 import zoom.Zoom
-import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent}
+import scalafx.scene.input._
 
 /** Here is the function that handles the graphical user interface.
  * Through most of the functions we define, it actually draws all the interface,
@@ -102,11 +100,12 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
       onScroll = (event: ScrollEvent) => {
         if (event.eventType == ScrollEvent.Scroll) {
           val multiplier = if (event.isControlDown) 5 else 1
-          val delta = 1 -multiplier*(event.getDeltaY / 800)
+          val delta = 1 - multiplier*(event.getDeltaY / 800)
 
         zoom.zoomFactor(delta)
         }
       }
+
 
     onKeyPressed = (k: KeyEvent) =>
       k.code match {

@@ -15,10 +15,6 @@ trait giveValue {
 
 class ChartLine(val getValue : giveValue) extends LineChart(new NumberAxis(),new NumberAxis()){
 
-  // xAxis = new NumberAxis()
-  // this.xAxis.label = "Number of Month"
-  // yAxis = new NumberAxis()
-
   var frequencyUpd : Int  = 1
   val serie = new XYChart.Series[Number,Number](){
     name = "Value"
@@ -27,6 +23,7 @@ class ChartLine(val getValue : giveValue) extends LineChart(new NumberAxis(),new
   val derivedSerie = new XYChart.Series[Number, Number](){
     name = "Derived value"
   }
+
   var (xs, ys) = getValue.value()
 
 
