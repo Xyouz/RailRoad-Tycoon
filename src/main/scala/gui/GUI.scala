@@ -34,6 +34,7 @@ import scalafx.event.EventHandler
 import scalafx.scene.input.ScrollEvent
 import scalafx.scene.input.MouseEvent
 import zoom.Zoom
+import scalafx.scene.input.{KeyCode, KeyEvent, MouseEvent}
 
 /** Here is the function that handles the graphical user interface.
  * Through most of the functions we define, it actually draws all the interface,
@@ -90,30 +91,6 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
           //   layoutY = 25
           //   onAction = {ae => game.money = 10000000d}
           // }
-          , new UpdatableButton(){
-            text = "<"
-            onAction = {handle(zoom.translate(-25,0))}
-            layoutX = 500
-            layoutY = 25
-          }
-          , new UpdatableButton(){
-            text = ">"
-            onAction = {handle(zoom.translate(25,0))}
-            layoutX = 525
-            layoutY = 25
-          }
-          , new UpdatableButton(){
-            text = "/\\"
-            onAction = {handle(zoom.translate(0,25))}
-            layoutX = 512
-            layoutY = 0
-          }
-          , new UpdatableButton(){
-            text = "\\/"
-            onAction = {handle(zoom.translate(0,-25))}
-            layoutX = 512
-            layoutY = 50
-          }
         )
 
 
@@ -127,8 +104,17 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
           val multiplier = if (event.isControlDown) 5 else 1
           val delta = 1 -multiplier*(event.getDeltaY / 800)
 
-      zoom.zoomFactor(delta)
+        zoom.zoomFactor(delta)
+        }
       }
+
+    onKeyPressed = (k: KeyEvent) =>
+      k.code match {
+      case KeyCode.Z => zoom.translate(0,10)
+      case KeyCode.S => zoom.translate(0,-10)
+      case KeyCode.Q => zoom.translate(-10,0)
+      case KeyCode.D => zoom.translate(10,0)
+      case _ =>
     }
 
       fill = LightGreen
