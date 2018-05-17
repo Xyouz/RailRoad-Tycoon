@@ -34,7 +34,8 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
         try {
           var newPlane = master.game.addPlane(name, town, engine, hold)
           addTrainToComboBox(newPlane)
-          master.addToBeDrawn(new CircPlane(newPlane))
+          println("Changer planePane et trainPane pour ajouter un avion a dessiner")
+          master.addToBeDrawn(new CircPlane(newPlane,master.zoom))
           select.getSelectionModel().select(newPlane)
         }
         catch {

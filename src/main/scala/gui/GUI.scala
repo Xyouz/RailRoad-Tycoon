@@ -90,6 +90,18 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
           //   layoutY = 25
           //   onAction = {ae => game.money = 10000000d}
           // }
+          , new UpdatableButton(){
+            text = "in"
+            onAction = {handle(zoom.zoomFactor(1.1))}
+            layoutX = 400
+            layoutY = 25
+          }
+          , new UpdatableButton(){
+            text = "out"
+            onAction = {handle(zoom.zoomFactor(0.9))}
+            layoutX = 400
+            layoutY = 50
+          }
         )
 
 

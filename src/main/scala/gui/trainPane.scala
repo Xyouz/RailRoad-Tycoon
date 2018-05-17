@@ -33,7 +33,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         try {
           var newTrain = master.game.addTrain(name, town, engine, wagons)
           addTrainToComboBox(newTrain)
-          master.addToBeDrawn(new CircTrain(newTrain))
+          master.addToBeDrawn(new CircTrain(newTrain,master.zoom))
           select.getSelectionModel().select(newTrain)
         }
         catch {
