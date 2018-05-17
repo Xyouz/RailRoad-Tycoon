@@ -124,8 +124,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     scene = new Scene{
       onScroll = (event: ScrollEvent) => {
         if (event.eventType == ScrollEvent.Scroll) {
-          println(event.getDeltaY)
-          val delta = 1 -(event.getDeltaY / 400)
+          val multiplier = if (event.isControlDown) 5 else 1
+          val delta = 1 -multiplier*(event.getDeltaY / 800)
 
       zoom.zoomFactor(delta)
       }
