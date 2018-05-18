@@ -25,19 +25,17 @@ class Zoom(val stageWidth:ReadOnlyDoubleProperty, val stageHeight:ReadOnlyDouble
 
   def transform(x : Double, y : Double) = {
     if (orthonormal) {
-      if (maxX-minX > maxY-minY){
+      if ((stageWidth.value - leftOffset) < stageHeight.value){
         var deltaY = (maxX-minX)*(stageHeight.value)/(stageWidth.value - leftOffset)
         var ratio = deltaY/(maxY-minY)
-        var averageY = (maxY+minY)/2
-        maxY = averageY + ratio * (maxY - averageY)
-        minY = averageY + ratio * (minY - averageY)
+        maxY = ratio * maxY
+        minY = ratio * minY
       }
       else {
-        var deltaX = (maxX-minX)*(stageWidth.value - leftOffset)/(stageHeight.value)
+        var deltaX = (maxY-minY)*(stageWidth.value - leftOffset)/(stageHeight.value)
         var ratio = deltaX/(maxX-minX)
-        var averageX = (maxX+minX)/2
-        maxX = averageX + ratio * (maxX - averageX)
-        minX = averageX + ratio * (minX - averageX)
+        maxX = ratio * maxX
+        minX = ratio * minX
       }
     }
     var resX = (x - minX) * (stageWidth.value - leftOffset) / (maxX - minX) + leftOffset
