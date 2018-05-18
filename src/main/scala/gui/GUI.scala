@@ -101,7 +101,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
       toBeDrawn = toBeDrawn :+ new CircVehicle(newVehicle, zoom)
     }
 
-    
+
 
     scene = new Scene{
       onScroll = (event: ScrollEvent) => {
@@ -116,10 +116,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
 
     onKeyPressed = (k: KeyEvent) =>
       k.code match {
-      case KeyCode.Z => zoom.translate(0,0.05)
-      case KeyCode.S => zoom.translate(0,-0.05)
-      case KeyCode.Q => zoom.translate(-0.05,0)
-      case KeyCode.D => zoom.translate(0.05,0)
+      case KeyCode.Z => zoom.translate(0,-0.05)
+      case KeyCode.S => zoom.translate(0,0.05)
+      case KeyCode.Q => zoom.translate(0.05,0)
+      case KeyCode.D => zoom.translate(-0.05,0)
       case _ =>
     }
 
