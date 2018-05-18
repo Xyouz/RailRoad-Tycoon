@@ -4,7 +4,6 @@ import gui._
 import model._
 import train._
 import town._
-import dotTrain._
 import trainEngine._
 import scalafx.Includes._
 import scalafx.scene.layout._

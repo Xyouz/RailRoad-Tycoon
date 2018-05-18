@@ -4,7 +4,6 @@ import gui._
 import model._
 import plane._
 import town._
-import dotPlane._
 import planeEngine._
 import scalafx.Includes._
 import scalafx.scene.layout._
