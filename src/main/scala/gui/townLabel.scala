@@ -10,8 +10,11 @@ import scalafx.scene.paint.Color._
 class TownLabel(val town : Town,val zoom : Zoom) extends Label with Updatable {
   text = town.name
   textFill = DarkBlue
+  val visibilityThreshold = 150
   def visibilityTest() = {
-    (zoom.maxX-zoom.minX < 100) || (zoom.maxY-zoom.minY < 100) || (town.population > 800000)
+    (zoom.maxX-zoom.minX < visibilityThreshold) ||
+    (zoom.maxY-zoom.minY < visibilityThreshold) ||
+    (town.population > 750000)
   }
 
   override def update() = {
