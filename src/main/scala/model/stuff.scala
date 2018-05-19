@@ -49,6 +49,10 @@ class Stuff(val name : String, var quantity : Double, val maxPrice : Double, val
     res
   }
 
+  def findInList(list : Seq[Stuff]) = {
+    (list.filter(_ == this))(0)
+  }
+
   def transferTo(that : Stuff, quant : Stuff) = {
     if ((this == that) && (that == quant)) {
       if (this.quantity >= quant.quantity) {

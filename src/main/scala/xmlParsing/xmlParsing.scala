@@ -27,6 +27,7 @@ class XMLParser(xmlFile : File) {
   }
 
   def getGame() = {
+    val game = new Game()
     var towns = Seq[Town]()
     var rails = Seq[Road]()
     var id = 0
@@ -70,7 +71,6 @@ class XMLParser(xmlFile : File) {
                          unwrapOption(towns.find(_.name == endName))) +: rails
       }
     }
-    val game = new Game()
     game.loadMap(towns.reverse, rails)
     game
   }

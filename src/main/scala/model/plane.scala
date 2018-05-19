@@ -13,7 +13,7 @@ import point._
  * A plane can be launch only between cities that have an airport.
  * The speed depends on the weigth of what it carries.
  * A plane can trnsport passengers and only one kind of goods.
- * The player earn money when the plane arrive in a city. 
+ * The player earn money when the plane arrive in a city.
 */
 
 

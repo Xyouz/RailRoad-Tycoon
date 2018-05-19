@@ -11,7 +11,8 @@ import scala.math.{max,min}
 import stuffData._
 import model._
 import scala.util.Random
-
+import cargoDispatcher.CargoDispatcher
+import model.Game
 
 
 case class NoAirportException() extends Exception()
@@ -47,10 +48,35 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def deltaPopulation(delta : Int) = {pop += delta}
   def incrPop() = {pop = pop+50}
 
+  def isInput(stuff : Stuff) : Boolean = {
+    for (factory <- factories){
+      for (input <- factory.input){
+        if(stuff == input){
+          return true
+        }
+      }
+    }
+    false
+  }
+
+  def isOutput(stuff : Stuff) : Boolean = {
+    for (factory <- factories){
+      if(stuff == factory.output){
+        return true
+      }
+    }
+    false
+  }
+
   def priceOfStuff(stuff : Stuff):Double = {
     var i = stocks.find(_==stuff)
     i match {
-      case Some(s) => max(0,s.maxPrice - 0.1*(s.quantity))
+      case Some(s) => if (isInput(stuff)){
+        max(0,s.maxPrice - 0.05*(s.quantity))*2
+      }
+      else {
+        max(0,s.maxPrice - 0.05*(s.quantity))
+      }
       case None => throw new Exception
     }
   }
@@ -145,10 +171,15 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   }
 
   def hasTrains() : Boolean = { ! railwayStation.isEmpty}
+
   def goodbyeTrain(train : Train) : Boolean = {
     val n = railwayStation.length
     railwayStation = railwayStation.filter(_!=train)
     (n != railwayStation.length)
+  }
+
+  def takeStuff(stuff : Stuff) = {
+    (stuff.findInList(stocks)).subStuff(stuff)
   }
 
   def receiveStuff(unloaded : Stuff) = {
