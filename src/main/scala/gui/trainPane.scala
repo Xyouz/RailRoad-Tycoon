@@ -53,6 +53,18 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     wrapText = true
     editable = false
   }
+  val desiredLoad = new Slider(0,1,0){
+    onMouseReleased = {ae =>
+      selectedTrain match {
+        case None => ()
+        case Some(t) => t.desiredLoad = value.value
+      }
+    }
+  }
+
+  val feedbackSlider = new Label {
+    text <== desiredLoad.value.asString("Load : %02.1f")
+  }
 
   var selectedTrain = None : Option[Train]
 
@@ -95,6 +107,9 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         case Some(train) => train.color = DarkCyan
       }
       selectedTrain = Some(value.value)
+      desiredLoad.min = value.value.maxLoad*0.05
+      desiredLoad.max = value.value.maxLoad*0.9
+      desiredLoad.value = value.value.desiredLoad
       value.value.color = Cyan
       update()
     }
@@ -109,7 +124,9 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     add(nameLabel, 0, 2)
     add(engineLabel, 0, 3)
     add(circuitLabel, 0, 4)
-    add(routeButton, 0, 5)
+    add(feedbackSlider,0,5)
+    add(desiredLoad,0,6)
+    add(routeButton, 0,7)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -134,6 +151,8 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         circuitLabel.visible = false
         routeButton.visible = false
         select.visible = false
+        desiredLoad.visible = false
+        feedbackSlider.visible = false
       }
       case Some(train) => {
         nameLabel.text = s"  ${train.toString()}  "
@@ -144,6 +163,8 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         circuitLabel.visible = true
         routeButton.visible = true
         select.visible = true
+        desiredLoad.visible = true
+        feedbackSlider.visible = true
       }
     }
   }
