@@ -17,7 +17,7 @@ import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
-
+import scala.math._
 
 
 trait giveValue {
@@ -51,14 +51,14 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
       this.data.value(1).node.value.visible = indicator
       yAxis.autoRanging = false
       yAxis.upperBound = maxDerived*1.5
-      yAxis.lowerBound = minDerived*1.3
+      yAxis.lowerBound = minDerived - 0.05*math.abs(minDerived)
    }
    else {
      this.data.value(1).node.value.visible = indicator
      this.data.value(0).node.value.visible = ! indicator
      yAxis.autoRanging = false
      yAxis.upperBound = maxGraph*1.5
-     yAxis.lowerBound = minGraph*1.3
+     yAxis.lowerBound = minDerived - 0.05*math.abs(minDerived)
    }
     indicator = ! indicator
   }
