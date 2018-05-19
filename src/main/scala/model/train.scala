@@ -23,6 +23,9 @@ class Train(name : String, engine : TrainEngine, val game : Game ) extends Vehic
       if (wagon.destination == Some(t)) {
         t.receiveCargo(wagon)
       }
+      else if (wagon.outHub == Some(t)) {
+        t.receiveCargo(wagon)
+      }
       else {
         l = wagon +: l
       }

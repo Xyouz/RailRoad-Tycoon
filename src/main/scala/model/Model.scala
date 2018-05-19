@@ -14,7 +14,7 @@ import moneyAlert._
 import wagon._
 import plane._
 import cargo._
-
+import trainCargoRouter._
 
 /** The class "Game" enables the player to launch a new game.
  * The train stations and the airports are already implemented in the maps.
@@ -38,6 +38,8 @@ class Game(){
     roadList = roads
     railMap = new RailMap(townList, roadList)
     townList.map(t => t.setTownList(townList))
+    var router = new TrainCargoRouter(this)
+    townList.map(t => t.setTrainCargoRouter(router))
   }
 
   var nbOfTown = townList.length

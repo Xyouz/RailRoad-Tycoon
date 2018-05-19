@@ -12,6 +12,7 @@ import model._
 import scala.util.Random
 import cargoDispatcher.CargoDispatcher
 import model.Game
+import trainCargoRouter.TrainCargoRouter
 
 
 case class NoAirportException() extends Exception()
@@ -29,6 +30,11 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var hasAirport = false
   val rndGen = new Random()
   var cargoDispatcher = new CargoDispatcher(Seq[Town](),this)
+  var trainCargoRouter = new TrainCargoRouter(new Game())
+
+  def setTrainCargoRouter(router : TrainCargoRouter) = {
+    trainCargoRouter = router
+  }
 
   def setTownList(towns : Seq[Town]) = {
     cargoDispatcher = new CargoDispatcher(towns, this)
@@ -95,6 +101,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
                              new Rubber(1), new Steel(1), new Textiles(1),
                              new Tyres(1), new Vegetables(1), new Vehicles(1),
                              new Wine(1) )
+
   def cityConsumption() = {
     var i = 0
     var j = 0
@@ -120,6 +127,19 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def prepareCargo(cargo : Cargo) = {
     if (cargo.isEmpty) {
       cargoDispatcher.fillCargo(cargo)
+      if (cargo.hasDestination()){
+        trainCargoRouter.whichHubs(this,cargo.getDestination) match {
+          case None => {
+            cargo.inHub = None
+            cargo.outHub = None
+          }
+          case Some((t,tt)) => {
+            cargo.inHub = Some(t)
+            cargo.outHub = Some(tt)
+          }
+        }
+        cargo.from = Some(this)
+      }
     }
   }
 
@@ -136,9 +156,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       t = 0
       cityConsumption()
     }
-    cargosInTown.map(unloadCargo(_))
-    factories.map(_.update())
     cargosInTown.map(prepareCargo(_))
+    factories.map(_.update())
+    cargosInTown.map(unloadCargo(_))
   }
 
   def getAirport = {
@@ -182,6 +202,21 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           if (train.route.exists(_ == city)){
             train.listOfWagon = cargo +: train.listOfWagon
             cargosInTown = cargosInTown.filterNot(_ == cargo)
+          }
+          else {
+            cargo.inHub match {
+              case Some(city2) => {
+                // if (train.load + cargo.weight <= train.desired load)
+                if (id==0){
+                  println("prendre en compte le paramètre desiredLoa (cf town.loadTrain)")
+                }
+                if (train.route.exists(_ == city2)){
+                  train.listOfWagon = cargo +: train.listOfWagon
+                  cargosInTown = cargosInTown.filterNot(_ == cargo)
+                }
+              }
+              case None => ()
+            }
           }
         }
       }
