@@ -37,6 +37,7 @@ class Game(){
     townList = towns
     roadList = roads
     railMap = new RailMap(townList, roadList)
+    townList.map(t => t.setTownList(townList))
   }
 
   var nbOfTown = townList.length
@@ -44,14 +45,14 @@ class Game(){
   var trainList = Seq[Train]()
   var planeList = Seq[Plane]()
 
-  def addTrain(name : String, town : Town, engine : TrainEngine, wagons : List[Wagon]) = {
+  def addTrain(name : String, town : Town, engine : TrainEngine) = {
     if (money < engine.price){
       throw new NotEnoughMoneyException("train")
     }
-    val newTrain = new Train(name,engine, wagons, this)
+    val newTrain = new Train(name,engine, this)
     newTrain.setDestination(town)
     money -= engine.price
-    town.welcomeTrain(newTrain)
+    // town.welcomeTrain(newTrain)
     trainList = trainList :+ newTrain
     newTrain
   }

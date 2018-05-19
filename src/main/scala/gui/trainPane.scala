@@ -27,10 +27,10 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
     val res = dialog.showAndWait()
     res match {
-      case Some(NewTrainOk(name, town, engine, wagons)) => {
+      case Some(NewTrainOk(name, town, engine)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
-          var newTrain = master.game.addTrain(name, town, engine, wagons)
+          var newTrain = master.game.addTrain(name, town, engine)
           addTrainToComboBox(newTrain)
           master.addToBeDrawn(newTrain)
           select.getSelectionModel().select(newTrain)
@@ -49,6 +49,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
   val nameLabel = new Label()
   val engineLabel = new Label()
+  val cargoLabel = new Label()
   val circuitLabel = new TextArea(){
     wrapText = true
     editable = false
@@ -123,10 +124,11 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     add(select, 0, 1)
     add(nameLabel, 0, 2)
     add(engineLabel, 0, 3)
-    add(circuitLabel, 0, 4)
-    add(feedbackSlider,0,5)
-    add(desiredLoad,0,6)
-    add(routeButton, 0,7)
+    add(cargoLabel, 0, 4)
+    add(circuitLabel, 0, 5)
+    add(feedbackSlider,0,6)
+    add(desiredLoad,0,7)
+    add(routeButton, 0,8)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -153,10 +155,12 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         select.visible = false
         desiredLoad.visible = false
         feedbackSlider.visible = false
+        cargoLabel.visible = false
       }
       case Some(train) => {
         nameLabel.text = s"  ${train.toString()}  "
         engineLabel.text = s"Moteur : ${train.engine}"
+        cargoLabel.text = s"Nombre de wagons : ${train.listOfWagon.length}"
         circuitLabel.text = circuitToString(train.route)
         nameLabel.visible = true
         engineLabel.visible = true
@@ -165,6 +169,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         select.visible = true
         desiredLoad.visible = true
         feedbackSlider.visible = true
+        cargoLabel.visible = true
       }
     }
   }

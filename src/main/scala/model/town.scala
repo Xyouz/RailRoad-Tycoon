@@ -5,7 +5,6 @@ import train._
 import plane._
 import cargo._
 import stuff._
-import sendTrainDialog._
 import factory._
 import scala.math.{max,min}
 import stuffData._
@@ -24,12 +23,16 @@ case class NoAirportException() extends Exception()
 */
 
 class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
-  var railwayStation = List[Train]()
   var airport = List[Plane]()
   var factories = List[Factory]()
   var stocks = List[Stuff]()
   var hasAirport = false
   val rndGen = new Random()
+  var cargoDispatcher = new CargoDispatcher(Seq[Town](),this)
+
+  def setTownList(towns : Seq[Town]) = {
+    cargoDispatcher = new CargoDispatcher(towns, this)
+  }
 
   var isHub = false
   var cargosInTown = List[Cargo]()
@@ -114,13 +117,28 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
 
   var t = 0
 
+  def prepareCargo(cargo : Cargo) = {
+    if (cargo.isEmpty) {
+      cargoDispatcher.fillCargo(cargo)
+    }
+  }
+
+  def unloadCargo(cargo : Cargo) = {
+    if ((!cargo.isEmpty)&&(cargo.destination==Some(this))) {
+      cargo.destination = None
+      receiveStuff(cargo.unload)
+    }
+  }
+
   def update(){
     t = t + 1
     if (t==200) {
       t = 0
       cityConsumption()
     }
+    cargosInTown.map(unloadCargo(_))
     factories.map(_.update())
+    cargosInTown.map(prepareCargo(_))
   }
 
   def getAirport = {
@@ -133,9 +151,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   }
 
   var lpop = (pop/10).toInt
-  def welcomeTrain(train : Train) = {
-    railwayStation = train :: railwayStation
-  }
 
   def welcomePlane(plane : Plane) = {
     airport = plane +: airport
@@ -149,9 +164,32 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       pop -= lpop
       train.loading += lpop
     }
-    for (j <- train.wagons()){
-      loadCargo(j)
+    for (cargo <- cargosInTown.filter(! _.isEmpty())){
+      cargo.destination match {
+        case None => {
+          try {
+            receiveStuff(cargo.unload)
+          }
+          catch {
+            case EmptyCargo() => ()
+          }
+        }
+        case Some(city) => {
+          // if (train.load + cargo.weight <= train.desired load)
+          if (id==0){
+            println("prendre en compte le paramètre desiredLoa (cf town.loadTrain)")
+          }
+          if (train.route.exists(_ == city)){
+            train.listOfWagon = cargo +: train.listOfWagon
+            cargosInTown = cargosInTown.filterNot(_ == cargo)
+          }
+        }
+      }
     }
+  }
+
+  def receiveCargo(cargo : Cargo) = {
+    cargosInTown = cargo +: cargosInTown
   }
 
   def loadCargo(cargo : Cargo) = {
@@ -170,13 +208,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     priceOfStuff(toSend)
   }
 
-  def hasTrains() : Boolean = { ! railwayStation.isEmpty}
 
-  def goodbyeTrain(train : Train) : Boolean = {
-    val n = railwayStation.length
-    railwayStation = railwayStation.filter(_!=train)
-    (n != railwayStation.length)
-  }
 
   def takeStuff(stuff : Stuff) = {
     (stuff.findInList(stocks)).subStuff(stuff)
