@@ -7,6 +7,7 @@ import gui.MainGame
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.chart.{LineChart, NumberAxis, XYChart}
 import charts._
+import switchCharts._
 
 class InfoPane(val master : MainGame) extends TitledPane() {
   text = "Informations générales"
@@ -27,11 +28,13 @@ class InfoPane(val master : MainGame) extends TitledPane() {
     }
   }
 
-  val chartMoney = new ChartLine(getMoney)
 
-  chartMoney.frequencyUpd = frequency
+  // ch.freqUpd = frequency
+  //
+  // chartMoney.title = "Argent"
 
-  chartMoney.title = "Argent"
+  val ch = new SwitchCharts(getMoney)
+
 
 
   val exitButton = new Button(){
@@ -46,7 +49,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
 
     add(timeLabel, 0, 0)
     add(moneyLabel, 0, 1)
-    add(chartMoney,0, 2)
+    add(ch,0, 2)
     add(exitButton, 0, 3)
   }
 
@@ -57,6 +60,6 @@ class InfoPane(val master : MainGame) extends TitledPane() {
     timeCounter += 1
     moneyLabel.text = f"Argent : ${newMoney}%2.2f"
     timeLabel.text = s"Date : ${timeCounter}"
-    chartMoney.update()
+    ch.update()
   }
 }
