@@ -19,11 +19,7 @@ class SwitchCharts(val valueGiven : giveValue) extends GridPane() {
 
   val yAxis = new NumberAxis()
   val graph = new ChartLine(valueGiven, new NumberAxis(), yAxis)
-  var freqUpd = graph.frequencyUpd
 
-  // var evolution = graph.serie
-  // var derivedEvolution = graph.derivedSerie
-  var time = 0
   graph.data.value(0).node.value.visible = true
   graph.data.value(1).node.value.visible = false
 
@@ -41,7 +37,6 @@ class SwitchCharts(val valueGiven : giveValue) extends GridPane() {
   add(graph, 0, 1)
 
   def update() {
-    time += 1
     graph.update()
   }
 

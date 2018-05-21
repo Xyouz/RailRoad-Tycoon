@@ -21,12 +21,13 @@ import scala.math._
 
 
 trait giveValue {
-  def value() : (Double,Double)
+  def value() : Option[(Double,Double)]
+  def forceValue() : (Double, Double)
 }
 
 class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : NumberAxis) extends LineChart(xAxis, yAxis){
 
-  var indicator = true
+  var indicator = false
 
   var minGraph = Double.PositiveInfinity
   var maxGraph = 0.0
@@ -34,7 +35,8 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
   var minDerived = Double.PositiveInfinity
   var maxDerived = 0.0
 
-  var frequencyUpd : Int  = 30
+  var tickNumber = 5
+
   val serie = new XYChart.Series[Number,Number](){
     name = "Value"
   }
@@ -43,26 +45,27 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
     name = "Derived value"
   }
 
-  var (xs, ys) = getValue.value()
+  var (xs, ys) = getValue.forceValue()
+  yAxis.autoRanging = false
 
   def swapGraphs () = {
+    indicator = ! indicator
+    this.data.value(0).node.value.visible = ! indicator
+    this.data.value(1).node.value.visible = indicator
+    scale()
+  }
+
+  def scale() = {
     if (indicator) {
-      this.data.value(0).node.value.visible = ! indicator
-      this.data.value(1).node.value.visible = indicator
-      yAxis.autoRanging = false
-      yAxis.upperBound = maxDerived*1.5
+      yAxis.upperBound = maxDerived + 0.05*math.abs(maxDerived)
       yAxis.lowerBound = minDerived - 0.05*math.abs(minDerived)
    }
    else {
-     this.data.value(1).node.value.visible = indicator
-     this.data.value(0).node.value.visible = ! indicator
-     yAxis.autoRanging = false
-     yAxis.upperBound = maxGraph*1.5
-     yAxis.lowerBound = minDerived - 0.05*math.abs(minDerived)
+     yAxis.upperBound = maxGraph + 0.05*math.abs(maxGraph)
+     yAxis.lowerBound = minGraph - 0.05*math.abs(minGraph)
    }
-    indicator = ! indicator
-  }
-
+   yAxis.tickUnit = (yAxis.upperBound.value - yAxis.lowerBound.value)/ tickNumber
+ }
 
   this.getData.add(serie)
   this.getData.add(derivedSerie)
@@ -92,16 +95,18 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
 
 
   def update() {
-    time += 1
-    if (time%frequencyUpd == 0){
-      var (x,y) = getValue.value()
-      serie.getData().add(XYChart.Data(x,y))
-      derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
-      minValueD(y, ((ys-y) / (xs-x)) )
-      maxValueD(y, ((ys-y) / (xs-x)) )
-      xs = x
-      ys = y
+    var v = getValue.value()
+    v match {
+      case Some((x,y)) => time += 1
+        serie.getData().add(XYChart.Data(x,y))
+        derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
+        minValueD(y, ((ys-y) / (xs-x)) )
+        maxValueD(y, ((ys-y) / (xs-x)) )
+        xs = x
+        ys = y
+      case None => time += 1
     }
+    scale()
   }
 
 }
