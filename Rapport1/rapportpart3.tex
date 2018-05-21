@@ -49,7 +49,7 @@
 	\paragraph{Handling the charts} 
 	One of the required assignement was to make appear an information about the game in a chart. We decided to translate two things into charts: the money of the player and the evolution of the populations in the cities. We created two classes to deal with it : \textbf{Charts} and \textbf{SwitchCharts}. 
 	\begin{itemize}
-		\item \textbf{Charts }: It extends \textbf{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for populations' charts.
+		\item \textbf{Charts }: It extends \textbf{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for populations' charts, because the graphs are not the same for different cities.
 		\item \textbf{SwitchChart} : It enables the player to choose between a graph and the derivation. 
 	\end{itemize} 
 	\paragraph{Saving a game}
