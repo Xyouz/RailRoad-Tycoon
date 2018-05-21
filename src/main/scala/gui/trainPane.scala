@@ -12,8 +12,7 @@ import gui._
 import scalafx.Includes._
 import setRouteDialog._
 import scalafx.scene.paint.Color._
-import wagon._
-
+import cargo._
 /** This class handles the trains on the graphical interface (so the player can see them).
 */
 
@@ -47,9 +46,9 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
   }
 
 
+
   val nameLabel = new Label()
   val engineLabel = new Label()
-  val cargoLabel = new Label()
   val circuitLabel = new TextArea(){
     wrapText = true
     editable = false
@@ -100,6 +99,10 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     onAction = handle {newTrainWindow()}
   }
 
+  val wagonText = new TextArea(){
+    editable = false
+    wrapText = true
+  }
 
   val select : ComboBox[Train] = new ComboBox[Train](){
     onAction = {ae =>
@@ -126,11 +129,12 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     },0,0)
     add(nameLabel, 0, 1)
     add(engineLabel, 0, 2)
-    add(cargoLabel, 0, 3)
-    add(circuitLabel, 0, 4)
+    add(new Label("Wagons :"), 0, 3)
+    add(wagonText,0,4)
     add(feedbackSlider,0,5)
     add(desiredLoad,0,6)
     add(routeButton, 0,7)
+    add(circuitLabel, 0, 8)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -147,6 +151,19 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     str
   }
 
+  def wagonsToString(listOfWagon : List[Cargo]) = {
+    if (listOfWagon.length == 0){
+      ""
+    }
+    else{
+      var res = ""
+      for (w <- listOfWagon){
+        res = res + w.toString + " | "
+      }
+      res.substring(0,res.length - 2)
+    }
+  }
+
   override def update() = {
     selectedTrain match {
       case None => {
@@ -157,12 +174,11 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         select.visible = false
         desiredLoad.visible = false
         feedbackSlider.visible = false
-        cargoLabel.visible = false
       }
       case Some(train) => {
         nameLabel.text = s"  ${train.toString()}  "
         engineLabel.text = s"Moteur : ${train.engine}"
-        cargoLabel.text = s"Nombre de wagons : ${train.listOfWagon.length}"
+        wagonText.text = wagonsToString(train.listOfWagon)
         circuitLabel.text = circuitToString(train.route)
         nameLabel.visible = true
         engineLabel.visible = true
@@ -171,7 +187,6 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         select.visible = true
         desiredLoad.visible = true
         feedbackSlider.visible = true
-        cargoLabel.visible = true
       }
     }
   }

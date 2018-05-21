@@ -60,7 +60,7 @@ object SaveLoader {
       val planeData = JsonUtil.fromJson[PlaneData](planeString)
       val planeRoute = planeData.route.map(game.townList(_))
       println("change plane hold when loading a save")
-      val newPlane = new Plane(planeData.name,planeData.engine,new Cargo("Liquid",100),game)
+      val newPlane = new Plane(planeData.name,planeData.engine,game)
       newPlane.desiredLoad = planeData.desiredLoad
       newPlane.longHaul = planeData.longHaul
       val route = planeData.route.map(game.townList(_))

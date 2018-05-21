@@ -31,7 +31,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
       case Some(NewPlaneOk(name, town, engine, hold)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
-          var newPlane = master.game.addPlane(name, town, engine, hold)
+          var newPlane = master.game.addPlane(name, town, engine)
           addPlaneToComboBox(newPlane)
           master.addToBeDrawn(newPlane)
           select.getSelectionModel().select(newPlane)
@@ -162,7 +162,12 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
       case Some(plane) => {
         nameLabel.text = s"  ${plane.toString()}  "
         engineLabel.text = s"Moteur : ${plane.engine}"
-        cargoLabel.text = s"Cargo : ${plane.holdType}"
+        if (plane.hasLoad){
+          cargoLabel.text = s"Cargo : ${plane.getHold}"
+        }
+        else {
+          cargoLabel.text = s"Cargo : Vide"
+        }
         circuitLabel.text = circuitToString(plane.route)
         nameLabel.visible = true
         engineLabel.visible = true

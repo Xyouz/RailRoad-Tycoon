@@ -64,11 +64,11 @@ class Game(){
     newTrain
   }
 
-  def addPlane(name : String, town : Town, engine : PlaneEngine, hold : Cargo) = {
+  def addPlane(name : String, town : Town, engine : PlaneEngine) = {
     if (money < engine.price){
       throw new NotEnoughMoneyException("plane")
     }
-    val newPlane = new Plane(name,engine, hold, this)
+    val newPlane = new Plane(name,engine, this)
     newPlane.setDestination(town)
     newPlane.nextDest = town.getID
     money -= engine.price

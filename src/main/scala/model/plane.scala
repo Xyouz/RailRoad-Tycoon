@@ -19,11 +19,12 @@ import point._
 case class PlaneData(name : String, engine : PlaneEngine, route : Array[Int], desiredLoad : Double, longHaul : Boolean)
 
 
-class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Game) extends Vehicle(name, engine){
+class Plane(name : String, engine : PlaneEngine, val game : Game) extends Vehicle(name, engine){
   def toData = {
     new PlaneData(name, engine, route.map(_.getID), desiredLoad, longHaul)
   }
 
+  var hold : Option[Cargo] = None
   var flying = false
   var flightBriefing = Array[Town]()
   var begin : Town = new Town(42,"Test",42,new Point(42,42))
@@ -32,12 +33,25 @@ class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Gam
   var beginHop = new Town(42,"Test",42,new Point(42,42))
   var step = 0
   var nbStep = 42
-  def holdType = {hold.kindOfLoad()}
-  def maximalLoad() = {hold.maxLoad}
+  def maximalLoad() = {engine.maxLoad}
+
+  def hasLoad = {
+    hold != None
+  }
+
+  def getHold = {
+    hold match {
+      case None => throw new EmptyCargo()
+      case Some(c) => c
+    }
+
+  }
 
   override def weight() = {
-    println("weight plane")
-    hold.weight()
+    hold match {
+      case Some(c) => 0.5 + c.weight
+      case None => 0.5
+    }
   }
 
   def startFly(beginTown : Town, endTown : Town) = {
@@ -68,12 +82,25 @@ class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Gam
           distance = -1.0
           flying = false
           try {
-            game.deltaMoney(end.receiveStuff(hold.unload()))
+            if (hasLoad && (getHold.destination == Some(end)||
+                           (getHold.inHub == Some(end))||
+                           (getHold.outHub == Some(end)))){
+              getHold.from match{
+                case None => ()
+                case Some(t) => {
+                  game.deltaMoney(end.distanceTo(t))
+                }
+              }
+              end.cargosInTown = getHold +: end.cargosInTown
+              hold = None
+            }
+            if (! hasLoad) {
+              end.loadPlane(this)
+            }
           }
           catch {
             case EmptyCargo() => ()
           }
-          game.deltaMoney(-(end.loadCargo(hold)))
           nextDestination()
           startFly(getCurrentTown,game.townList(destination))
         }

@@ -41,7 +41,12 @@ class Cargo (val typeOfLoad : String, val maxLoad : Double) {
 
   }
 
-  override def toString() = {typeOfLoad }
+  override def toString() = {
+    content match{
+      case Some(s) => s.toString
+      case None => "Vide" 
+    }
+  }
   def kindOfLoad() = {typeOfLoad}
   var from : Option[Town] = None
   var content : Option[Stuff] = None

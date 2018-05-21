@@ -34,15 +34,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var isHub = false
   var cargosInTown = List[Cargo]()
 
-  // def this(cc : TownData) = {
-  //   this(cc.id , cc.name,cc.pop , cc.pos)
-  //   airport = cc.airport
-  //   factories = cc.factories
-  //   stocks = cc.stocks
-  //   hasAirport = cc.hasAirport
-  //   isHub = cc.isHub
-  //   cargosInTown = cc.cargosInTown
-  // }
+  def distanceTo(that  : Town) = {
+    pos.distance(that.pos)
+  }
 
   def toData = {
     new TownData(id, pop, stocks , isHub)
@@ -174,9 +168,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       t = 0
       cityConsumption()
     }
-    cargosInTown.map(prepareCargo(_))
     factories.map(_.update())
     cargosInTown.map(unloadCargo(_))
+    cargosInTown.map(prepareCargo(_))
   }
 
   def getAirport = {
@@ -197,6 +191,51 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
 
   var excedent = 1000.0
 
+  def loadPlane(plane : Plane) = {
+    if (plane.hold == None){
+      for (cargo <- cargosInTown.filter(! _.isEmpty())){
+        cargo.destination match {
+          case None => {
+            try {
+              receiveStuff(cargo.unload)
+            }
+            catch {
+              case EmptyCargo() => ()
+            }
+          }
+          case Some(city) => {
+            if (plane.route.exists(_ == city) && (cargo.weight()<=plane.desiredLoad)){
+              plane.hold = Some(cargo)
+              cargosInTown = cargosInTown.filterNot(_ == cargo)
+            }
+            else {
+              cargo.inHub match {
+                case Some(city2) => {
+                  if (plane.route.exists(_ == city2) && (cargo.weight()<=plane.desiredLoad)){
+                    plane.hold = Some(cargo)
+                    cargosInTown = cargosInTown.filterNot(_ == cargo)
+                  }
+                  else {
+                    cargo.outHub match {
+                      case Some(city3) => {
+                        if (plane.route.exists(_ == city3) && (cargo.weight()<=plane.desiredLoad)){
+                          plane.hold = Some(cargo)
+                          cargosInTown = cargosInTown.filterNot(_ == cargo)
+                        }
+                      }
+                      case None => ()
+                    }
+                  }
+                }
+                case None => ()
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   def loadTrain(train : Train) = {
     if (pop - lpop > 0){
       pop -= lpop
@@ -213,10 +252,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           }
         }
         case Some(city) => {
-          // if (train.load + cargo.weight <= train.desired load)
-          if (id==0){
-            println("prendre en compte le paramètre desiredLoa (cf town.loadTrain)")
-          }
           if (train.route.exists(_ == city) && (cargo.weight()+train.weight()<=train.desiredLoad)){
             train.listOfWagon = cargo +: train.listOfWagon
             cargosInTown = cargosInTown.filterNot(_ == cargo)
@@ -224,10 +259,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           else {
             cargo.inHub match {
               case Some(city2) => {
-                // if (train.load + cargo.weight <= train.desired load)
-                if (id==0){
-                  println("prendre en compte le paramètre desiredLoa (cf town.loadTrain)")
-                }
                 if (train.route.exists(_ == city2) && (cargo.weight()+train.weight()<=train.desiredLoad)){
                   train.listOfWagon = cargo +: train.listOfWagon
                   cargosInTown = cargosInTown.filterNot(_ == cargo)
