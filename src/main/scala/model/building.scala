@@ -28,6 +28,9 @@ abstract class Building(val input : List[Stuff], val output : Stuff, val city : 
         stocks(i).subStuff(input(i))
       }
       bufferOut.addStuff(output)
+      if (city.priceOfStuff(output) <= 0.5){
+        city.message += s"On déborde de $output : on solde!!!\n"
+      }
     }
     else {
     }
