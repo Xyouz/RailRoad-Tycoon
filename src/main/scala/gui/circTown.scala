@@ -8,7 +8,6 @@ import scalafx.scene.shape.{Circle}
 import scalafx.scene.effect.Glow
 import scalafx.scene.paint.Color._
 import scalafx.scene.paint.{Stops, LinearGradient}
-import sendTrainDialog._
 import model._
 import town._
 import scalafx.scene.shape.StrokeType.Outside

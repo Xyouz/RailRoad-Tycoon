@@ -18,15 +18,26 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road]){
   val matrixLength = Array.fill[Double](nt, nt)(inf)
   val matrixRoads = Array.fill[Road](nt, nt)(allRoads(0))
 
+  val neighboorMatrix = Array.fill[Boolean](nt,nt)(false)
+
+  def initializeNeighboorMatrix() = {
+    for (r <- allRoads) {
+      val j = r.getEnd.getID()
+      val k = r.getStart.getID()
+      neighboorMatrix(j)(k) = true
+      neighboorMatrix(k)(j) = true
+    }
+  }
+
   def shortestPath() = {
     for (i <- 0 until nt) {
       matrixLength(i)(i) = 0
     }
 
     for (r <- allRoads) {
-      var j = r.getEnd.getID()
-      var k = r.getStart.getID()
-      var l = r.length
+      val j = r.getEnd.getID()
+      val k = r.getStart.getID()
+      val l = r.length
       matrixLength(j)(k) = l
       matrixLength(k)(j) = l
       matrixRoads(j)(k) = r
@@ -51,6 +62,7 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road]){
   }
 
   shortestPath()
+  initializeNeighboorMatrix()
 
   def connectedComponent(town : Town) = {
     var res = Seq[Town]()
@@ -71,5 +83,8 @@ class RailMap(val allTowns : Seq[Town], val allRoads : Seq[Road]){
     matrixLength(beginID)(endID)
   }
 
+  def neighboor(t1 : Town, t2 : Town)={
+    neighboorMatrix(t1.getID())(t2.getID())
+  }
 
 }

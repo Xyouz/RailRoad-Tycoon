@@ -27,6 +27,7 @@ class XMLParser(xmlFile : File) {
   }
 
   def getGame() = {
+    val game = new Game()
     var towns = Seq[Town]()
     var rails = Seq[Road]()
     var id = 0
@@ -43,7 +44,7 @@ class XMLParser(xmlFile : File) {
       }
       for (t<-List("Liquid","Container","Dry")){
         for (i <- 1 to 10){
-          newTown.cargosInTown = (new Cargo(t,100)) +: newTown.cargosInTown
+          newTown.cargosInTown = (new Cargo(t,50)) +: newTown.cargosInTown
         }
       }
       for {factory <- town \\ "Factory"}{
@@ -69,9 +70,17 @@ class XMLParser(xmlFile : File) {
         rails = new Road(unwrapOption(towns.find(_.name == beginName)),
                          unwrapOption(towns.find(_.name == endName))) +: rails
       }
+      else {
+        var road = connection \ "Road"
+
+        if (road.length != 0){
+          rails = new Road(unwrapOption(towns.find(_.name == beginName)),
+                           unwrapOption(towns.find(_.name == endName))) +: rails
+        }
+      }
     }
-    val game = new Game()
     game.loadMap(towns.reverse, rails)
+    game.mapName = xmlFile.getAbsolutePath()
     game
   }
 }

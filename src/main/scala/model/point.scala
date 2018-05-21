@@ -1,12 +1,19 @@
 package point
 
 import scala.math.{pow, sqrt}
-
 /** Since we are dealing with maps in 2D;
  * this class descibes several methods to handle the relations between the towns (the points) with eah other (the distance between two towns for example).
 */
 
+case class PointData(x : Double, y : Double)
+
 class Point(var x : Double,var y : Double){
+  def toData = {
+    new PointData(x,y)
+  }
+  def this(cc : PointData) = {
+    this(cc.x,cc.y)
+  }
   def x_coord():Double = {x}
   def y_coord():Double = {y}
   override def toString() = s"x : $x ; y : $y"

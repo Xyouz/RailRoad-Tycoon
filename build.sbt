@@ -12,6 +12,8 @@ scalacOptions ++= Seq("-unchecked", "-deprecation", "-Xcheckinit", "-encoding", 
 
 libraryDependencies += "org.scalafx" %% "scalafx" % "8.0.102-R11"
 libraryDependencies += "org.scala-lang.modules" % "scala-xml_2.12" % "1.0.5"
+libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.5"
+libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.5"
 
 // Fork a new JVM for 'run' and 'test:run', to avoid JavaFX double initialization problems
 fork := true

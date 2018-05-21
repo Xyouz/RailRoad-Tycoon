@@ -1,6 +1,6 @@
 package updatable
 
-import scalafx.scene.control.{Button, Label, ComboBox, Accordion}
+import scalafx.scene.control.{Button, Label, ComboBox, Accordion, MenuBar}
 
 /** trait used in order to add a method update to somme scalafx objects so that
  *the type system is happy
@@ -17,3 +17,5 @@ class UpdatableLabel extends Label with Updatable {}
 class UpdatableComboBox[T](items : Seq[T]) extends ComboBox(items) with Updatable {}
 
 class UpdatableAccordion extends Accordion with Updatable {}
+
+class UpdatableMenuBar extends MenuBar with Updatable {}

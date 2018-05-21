@@ -22,6 +22,9 @@ class Factory(input : List[Stuff], output : Stuff, ticks : Int, city : Town) ext
           city.stocks(j).transferTo(stocks(i),input(i))
           funds -= city.priceOfStuff(input(i))
         }
+        else {
+          city.message += s"Les usines n'ont pas de quoi fonctionner, on manque notamment de ${input(i)}.\n"
+        }
         i += 1
         j += 1
       }

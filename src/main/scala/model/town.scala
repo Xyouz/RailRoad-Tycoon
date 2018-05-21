@@ -5,33 +5,51 @@ import train._
 import plane._
 import cargo._
 import stuff._
-import sendTrainDialog._
 import factory._
 import scala.math.{max,min}
 import stuffData._
 import model._
 import scala.util.Random
-
-
+import cargoDispatcher.CargoDispatcher
+import model.Game
+import trainCargoRouter.TrainCargoRouter
+import saveUtils._
 
 case class NoAirportException() extends Exception()
-
 
 /** This class implements the towns of the graphs with information on the name,
  the population, their wealth and methods to update them when a train or a plane come over.
  * There is also a method that handles the stocks of the goods in the town.
 */
+case class TownData(id : Int, pop : Int, stocks : List[Stuff], isHub : Boolean)
 
 class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
-  var railwayStation = List[Train]()
   var airport = List[Plane]()
   var factories = List[Factory]()
   var stocks = List[Stuff]()
   var hasAirport = false
   val rndGen = new Random()
-
+  var cargoDispatcher = new CargoDispatcher(Seq[Town](),this)
+  var trainCargoRouter = new TrainCargoRouter(new Game())
   var isHub = false
   var cargosInTown = List[Cargo]()
+  var message = ""
+
+  def distanceTo(that  : Town) = {
+    pos.distance(that.pos)
+  }
+
+  def toData = {
+    new TownData(id, pop, stocks , isHub)
+  }
+
+  def setTrainCargoRouter(router : TrainCargoRouter) = {
+    trainCargoRouter = router
+  }
+
+  def setTownList(towns : Seq[Town]) = {
+    cargoDispatcher = new CargoDispatcher(towns, this)
+  }
 
   val x = position.x
   val y = position.y
@@ -47,10 +65,35 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def deltaPopulation(delta : Int) = {pop += delta}
   def incrPop() = {pop = pop+50}
 
+  def isInput(stuff : Stuff) : Boolean = {
+    for (factory <- factories){
+      for (input <- factory.input){
+        if(stuff == input){
+          return true
+        }
+      }
+    }
+    false
+  }
+
+  def isOutput(stuff : Stuff) : Boolean = {
+    for (factory <- factories){
+      if(stuff == factory.output){
+        return true
+      }
+    }
+    false
+  }
+
   def priceOfStuff(stuff : Stuff):Double = {
     var i = stocks.find(_==stuff)
     i match {
-      case Some(s) => max(0,s.maxPrice - 0.1*(s.quantity))
+      case Some(s) => if (isInput(stuff)){
+        max(0,s.maxPrice - 0.05*(s.quantity))*2
+      }
+      else {
+        max(0,s.maxPrice - 0.05*(s.quantity))
+      }
       case None => throw new Exception
     }
   }
@@ -66,6 +109,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
                              new Rubber(1), new Steel(1), new Textiles(1),
                              new Tyres(1), new Vegetables(1), new Vehicles(1),
                              new Wine(1) )
+
   def cityConsumption() = {
     var i = 0
     var j = 0
@@ -75,7 +119,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           stocks(j).subStuff(consuptionStuff(i).scale(0.001* population))
         }
         catch {
-          case NotEnoughQuantityException() => ()//println("pas assez de bouffe")
+          case NotEnoughQuantityException() => (message += s"Il manque quelques'uns des produits indispensables à la survie de la ville, par exemple on a plus assez de ${stocks(j)}.\n")
         }
         i = i + 1
         j = j + 1
@@ -88,13 +132,46 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
 
   var t = 0
 
+  def prepareCargo(cargo : Cargo) = {
+    if (cargo.isEmpty) {
+      cargoDispatcher.fillCargo(cargo)
+      if (cargo.hasDestination()){
+        try{
+        trainCargoRouter.whichHubs(this,cargo.getDestination) match {
+          case None => {
+            cargo.inHub = None
+            cargo.outHub = None
+          }
+          case Some((t,tt)) => {
+            cargo.inHub = Some(t)
+            cargo.outHub = Some(tt)
+          }
+        }
+      cargo.from = Some(this)
+      }
+      catch {
+        case _ :Exception =>println(s"Error router in $this")
+      }
+      }
+    }
+  }
+
+  def unloadCargo(cargo : Cargo) = {
+    if ((!cargo.isEmpty)&&(cargo.destination==Some(this))) {
+      cargo.destination = None
+      receiveStuff(cargo.unload)
+    }
+  }
+
   def update(){
     t = t + 1
-    if (t==200) {
-      t = 0
+    if (t%200 == 0) {
+      message = ""
       cityConsumption()
     }
     factories.map(_.update())
+    cargosInTown.map(unloadCargo(_))
+    cargosInTown.map(prepareCargo(_))
   }
 
   def getAirport = {
@@ -107,9 +184,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   }
 
   var lpop = (pop/10).toInt
-  def welcomeTrain(train : Train) = {
-    railwayStation = train :: railwayStation
-  }
 
   def welcomePlane(plane : Plane) = {
     airport = plane +: airport
@@ -118,14 +192,89 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
 
   var excedent = 1000.0
 
+  def loadPlane(plane : Plane) = {
+    if (plane.hold == None){
+      for (cargo <- cargosInTown.filter(! _.isEmpty())){
+        cargo.destination match {
+          case None => {
+            try {
+              receiveStuff(cargo.unload)
+            }
+            catch {
+              case EmptyCargo() => ()
+            }
+          }
+          case Some(city) => {
+            if (plane.route.exists(_ == city) && (cargo.weight()<=plane.desiredLoad)){
+              plane.hold = Some(cargo)
+              cargosInTown = cargosInTown.filterNot(_ == cargo)
+            }
+            else {
+              cargo.inHub match {
+                case Some(city2) => {
+                  if (plane.route.exists(_ == city2) && (cargo.weight()<=plane.desiredLoad)){
+                    plane.hold = Some(cargo)
+                    cargosInTown = cargosInTown.filterNot(_ == cargo)
+                  }
+                  else {
+                    cargo.outHub match {
+                      case Some(city3) => {
+                        if (plane.route.exists(_ == city3) && (cargo.weight()<=plane.desiredLoad)){
+                          plane.hold = Some(cargo)
+                          cargosInTown = cargosInTown.filterNot(_ == cargo)
+                        }
+                      }
+                      case None => ()
+                    }
+                  }
+                }
+                case None => ()
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   def loadTrain(train : Train) = {
     if (pop - lpop > 0){
       pop -= lpop
       train.loading += lpop
     }
-    for (j <- train.wagons()){
-      loadCargo(j)
+    for (cargo <- cargosInTown.filter(! _.isEmpty())){
+      cargo.destination match {
+        case None => {
+          try {
+            receiveStuff(cargo.unload)
+          }
+          catch {
+            case EmptyCargo() => ()
+          }
+        }
+        case Some(city) => {
+          if (train.route.exists(_ == city) && (cargo.weight()+train.weight()<=train.desiredLoad)){
+            train.listOfWagon = cargo +: train.listOfWagon
+            cargosInTown = cargosInTown.filterNot(_ == cargo)
+          }
+          else {
+            cargo.inHub match {
+              case Some(city2) => {
+                if (train.route.exists(_ == city2) && (cargo.weight()+train.weight()<=train.desiredLoad)){
+                  train.listOfWagon = cargo +: train.listOfWagon
+                  cargosInTown = cargosInTown.filterNot(_ == cargo)
+                }
+              }
+              case None => ()
+            }
+          }
+        }
+      }
     }
+  }
+
+  def receiveCargo(cargo : Cargo) = {
+    cargosInTown = cargo +: cargosInTown
   }
 
   def loadCargo(cargo : Cargo) = {
@@ -144,11 +293,10 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     priceOfStuff(toSend)
   }
 
-  def hasTrains() : Boolean = { ! railwayStation.isEmpty}
-  def goodbyeTrain(train : Train) : Boolean = {
-    val n = railwayStation.length
-    railwayStation = railwayStation.filter(_!=train)
-    (n != railwayStation.length)
+
+
+  def takeStuff(stuff : Stuff) = {
+    (stuff.findInList(stocks)).subStuff(stuff)
   }
 
   def receiveStuff(unloaded : Stuff) = {

@@ -11,7 +11,6 @@ import circTown._
 import infoPane._
 import infoWidget._
 import lineRoad._
-import wagon._
 
 import scalafx.Includes._
 import updatable._
@@ -71,12 +70,10 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
     title.value = "Roolraid Tycoan"
     width = 1000
     height = 700
-    //content = new Button("Hell World")
 
     val nodeTowns = game.towns().map(townToCircle(_))
     val labelTowns = game.towns().map(townToLabel(_))
     val edgeRoads = game.roads().map(roadToLine(_))
-    // val townsWithTrains = game.towns().map(showTrainCircle(_))
     val townsLabel = game.towns().map(
       t => new UpdatableLabel(){
         text = t.toString()
@@ -84,17 +81,8 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
         layoutY = t.position().y_coord() + 300
       })
 
-
-
     var toBeDrawn = edgeRoads ++ nodeTowns ++ labelTowns ++
-      Seq(infoWidget//,
-          // new UpdatableButton(){
-          //   text = "MONEY"
-          //   layoutX <== stage.width-width
-          //   layoutY = 25
-          //   onAction = {ae => game.money = 10000000d}
-          // }
-        )
+      Seq(infoWidget)
 
 
     def addToBeDrawn(newVehicle : Vehicle) = {

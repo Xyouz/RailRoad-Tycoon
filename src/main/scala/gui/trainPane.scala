@@ -12,8 +12,7 @@ import gui._
 import scalafx.Includes._
 import setRouteDialog._
 import scalafx.scene.paint.Color._
-import wagon._
-
+import cargo._
 /** This class handles the trains on the graphical interface (so the player can see them).
 */
 
@@ -27,10 +26,10 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
     val res = dialog.showAndWait()
     res match {
-      case Some(NewTrainOk(name, town, engine, wagons)) => {
+      case Some(NewTrainOk(name, town, engine)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
-          var newTrain = master.game.addTrain(name, town, engine, wagons)
+          var newTrain = master.game.addTrain(name, town, engine)
           addTrainToComboBox(newTrain)
           master.addToBeDrawn(newTrain)
           select.getSelectionModel().select(newTrain)
@@ -47,11 +46,24 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
   }
 
 
+
   val nameLabel = new Label()
   val engineLabel = new Label()
   val circuitLabel = new TextArea(){
     wrapText = true
     editable = false
+  }
+  val desiredLoad = new Slider(0,1,0){
+    onMouseReleased = {ae =>
+      selectedTrain match {
+        case None => ()
+        case Some(t) => t.desiredLoad = value.value
+      }
+    }
+  }
+
+  val feedbackSlider = new Label {
+    text <== desiredLoad.value.asString("Targeted load : %02.1f")
   }
 
   var selectedTrain = None : Option[Train]
@@ -87,6 +99,10 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     onAction = handle {newTrainWindow()}
   }
 
+  val wagonText = new TextArea(){
+    editable = false
+    wrapText = true
+  }
 
   val select : ComboBox[Train] = new ComboBox[Train](){
     onAction = {ae =>
@@ -95,6 +111,9 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         case Some(train) => train.color = DarkCyan
       }
       selectedTrain = Some(value.value)
+      desiredLoad.min = value.value.maxLoad*0.05
+      desiredLoad.max = value.value.maxLoad*0.9
+      desiredLoad.value = value.value.desiredLoad
       value.value.color = Cyan
       update()
     }
@@ -104,14 +123,20 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
   val grid = new GridPane(){
     vgap = 10
-    //padding = Insets(20,100,10,10)
 
-    add(newTrainButton, 0, 0)
-    add(select, 0, 1)
-    add(nameLabel, 0, 2)
-    add(engineLabel, 0, 3)
-    add(circuitLabel, 0, 4)
-    add(routeButton, 0, 5)
+    add(new GridPane(){
+      hgap = 10
+      add(newTrainButton,0,0)
+      add(select,1,0)
+    },0,0)
+    add(nameLabel, 0, 1)
+    add(engineLabel, 0, 2)
+    add(new Label("Wagons :"), 0, 3)
+    add(wagonText,0,4)
+    add(feedbackSlider,0,5)
+    add(desiredLoad,0,6)
+    add(routeButton, 0,7)
+    add(circuitLabel, 0, 8)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -128,6 +153,19 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     str
   }
 
+  def wagonsToString(listOfWagon : List[Cargo]) = {
+    if (listOfWagon.length == 0){
+      ""
+    }
+    else{
+      var res = ""
+      for (w <- listOfWagon){
+        res = res + w.toString + " | "
+      }
+      res.substring(0,res.length - 2)
+    }
+  }
+
   override def update() = {
     selectedTrain match {
       case None => {
@@ -136,21 +174,26 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         circuitLabel.visible = false
         routeButton.visible = false
         select.visible = false
+        desiredLoad.visible = false
+        feedbackSlider.visible = false
       }
       case Some(train) => {
         nameLabel.text = s"  ${train.toString()}  "
         engineLabel.text = s"Moteur : ${train.engine}"
+        wagonText.text = wagonsToString(train.listOfWagon)
         circuitLabel.text = circuitToString(train.route)
         nameLabel.visible = true
         engineLabel.visible = true
         circuitLabel.visible = true
         routeButton.visible = true
         select.visible = true
+        desiredLoad.visible = true
+        feedbackSlider.visible = true
       }
     }
   }
 
-  private def addTrainToComboBox( t : Train) = {
+  def addTrainToComboBox( t : Train) = {
     select += t
   }
 

@@ -13,9 +13,8 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
-import wagon._
 
-case class NewTrainOk(name : String, town : Town, engine : TrainEngine, wagons : List[Wagon])
+case class NewTrainOk(name : String, town : Town, engine : TrainEngine)
 
 /** use to create an interactive window in order to create new trains
 */
@@ -42,30 +41,6 @@ class newTrainDialog(val master : MainGame)
     promptText = "Name"
   }
 
-  var kindOfWagons = List[Wagon]()
-
-  def listOfCars() = {
-    var st = ""
-    for (t <- kindOfWagons){
-      st = st + " + " + t.toString()
-    }
-    st
-  }
-
-  val feedbackText = new TextArea(){
-    wrapText = true
-    editable = false
-  }
-
-  val carsOfTrain = new ListView(List(new Wagon("Liquid", 500),new Wagon("Dry", 500),new Wagon("Container", 500),new Wagon("Individual", 500))){
-    maxHeight = 100
-    selectionModel().selectedItem.onChange {
-      (_, _ , newValue ) => {
-        kindOfWagons = kindOfWagons :+ newValue
-        feedbackText.text = listOfCars()
-      }
-    }
-  }
 
 
   val townToStart = new ComboBox(townList)
@@ -82,10 +57,6 @@ class newTrainDialog(val master : MainGame)
     add(engine, 1, 1)
     add(new Label("Launch town:"),0,2)
     add(townToStart, 1, 2)
-    add(new Label("Cars"),0, 3)
-    add(carsOfTrain, 1, 3)
-    add(new Label("List of wagons:"),4,2)
-    add(feedbackText, 4,3)
   }
 
   val createButton = this.dialogPane().lookupButton(createButtonType)
@@ -102,7 +73,7 @@ class newTrainDialog(val master : MainGame)
   this.resultConverter = {
     dialogButton =>
       if (dialogButton == createButtonType) {
-        NewTrainOk(trainName.text(), townToStart.value.value, engine.value.value, kindOfWagons)
+        NewTrainOk(trainName.text(), townToStart.value.value, engine.value.value)
       }
       else {
         null

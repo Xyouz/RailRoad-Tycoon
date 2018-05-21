@@ -20,14 +20,20 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val nameLabel = new Label()
   val populationLabel = new Label()
   val factories = new Label()
-  val cargos = new Label()
+  val cargosAvailable = new Label()
+  val cargosWaiting = new Label()
+  val cityMessage = new TextArea(){
+    wrapText = true
+    editable = false
+  }
 
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
     populationLabel.text = s"Population : ${selectedTown.population()}"
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
-    cargos.text = s"Nombre de cargo : ${selectedTown.cargosInTown.length}"
-    chartPeople.update()
+    cargosAvailable.text = s"Nombre de cargos disponibles : ${selectedTown.cargosInTown.filter(_.isEmpty).length}"
+    cargosWaiting.text = s"Nombres de cargos au départ : ${selectedTown.cargosInTown.filterNot(_.isEmpty).length}"
+    cityMessage.text = selectedTown.message
   }
 
   val hub = new RadioButton("Hub?"){
@@ -76,8 +82,10 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     add(populationLabel, 0, 2)
     add(factories,0,3)
     add(hub,0,4)
-    add(cargos,0,5)
-    add(chartPeople, 0, 6)
+    add(cargosAvailable,0,5)
+    add(cargosWaiting,0,6)
+    add(new Label("informations :"),0,7)
+    add(cityMessage, 0, 8)
   }
 
   content = grid

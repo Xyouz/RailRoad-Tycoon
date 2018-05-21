@@ -11,56 +11,63 @@ import scala.math._
 import railMap._
 import airportNetwork._
 import moneyAlert._
-import wagon._
 import plane._
 import cargo._
-
+import trainCargoRouter._
 
 /** The class "Game" enables the player to launch a new game.
  * The train stations and the airports are already implemented in the maps.
  * The player can launch planes and trains by giving them an itenerary, and collect money.
  * We update the game and the positions of the vehicles at each tick.
 */
+case class GameData(mapName : String, money : Double)
 
 class Game(){
+  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 300, true, 11,1), new TrainEngine("Escargot", 5, 250, false,11,1.25))
 
-  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11,1), new TrainEngine("Escargot", 5, 75, false,11,1.25))
-
-  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,600,11,1),new PlaneEngine("Hélice à ressort", 10, 50,175,11,1))
+  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 125,600,11,1),new PlaneEngine("Hélice à ressort", 10, 50,175,11,1))
 
   var townList = Seq[Town]()
   var roadList = Seq[Road]()
   var railMap = new RailMap(townList, roadList)
   val airports = new AirportNetwork(this)
 
+  def toData = {
+    new GameData(mapName, money)
+  }
+
   def loadMap(towns : Seq[Town], roads : Seq[Road]) = {
     townList = towns
     roadList = roads
     railMap = new RailMap(townList, roadList)
+    townList.map(t => t.setTownList(townList))
+    var router = new TrainCargoRouter(this)
+    townList.map(t => t.setTrainCargoRouter(router))
   }
 
   var nbOfTown = townList.length
 
+  var mapName = ""
+
   var trainList = Seq[Train]()
   var planeList = Seq[Plane]()
 
-  def addTrain(name : String, town : Town, engine : TrainEngine, wagons : List[Wagon]) = {
+  def addTrain(name : String, town : Town, engine : TrainEngine) = {
     if (money < engine.price){
       throw new NotEnoughMoneyException("train")
     }
-    val newTrain = new Train(name,engine, wagons, this)
+    val newTrain = new Train(name,engine, this)
     newTrain.setDestination(town)
     money -= engine.price
-    town.welcomeTrain(newTrain)
     trainList = trainList :+ newTrain
     newTrain
   }
 
-  def addPlane(name : String, town : Town, engine : PlaneEngine, hold : Cargo) = {
+  def addPlane(name : String, town : Town, engine : PlaneEngine) = {
     if (money < engine.price){
       throw new NotEnoughMoneyException("plane")
     }
-    val newPlane = new Plane(name,engine, hold, this)
+    val newPlane = new Plane(name,engine, this)
     newPlane.setDestination(town)
     newPlane.nextDest = town.getID
     money -= engine.price
