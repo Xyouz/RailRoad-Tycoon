@@ -100,6 +100,8 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     }
   }
 
+
+
   val grid = new GridPane(){
     vgap = 10
     //padding = Insets(20,100,10,10)

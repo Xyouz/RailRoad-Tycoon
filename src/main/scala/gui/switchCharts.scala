@@ -40,6 +40,10 @@ class SwitchCharts(val valueGiven : giveValue) extends GridPane() {
     graph.update()
   }
 
+  def reeinitialize() = {
+    graph.reeinitialize()
+  }
+
   def title(name : String) = {
     graph.title = name
   }
