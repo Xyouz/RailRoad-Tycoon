@@ -38,12 +38,9 @@ class InfoPane(val master : MainGame) extends TitledPane() {
   }
 
 
-  // ch.freqUpd = frequency
-  //
-  // chartMoney.title = "Argent"
 
   val ch = new SwitchCharts(getMoney)
-
+  ch.title("Money owned by the player")
 
 
   val exitButton = new Button(){
