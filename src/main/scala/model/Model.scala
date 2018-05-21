@@ -11,7 +11,6 @@ import scala.math._
 import railMap._
 import airportNetwork._
 import moneyAlert._
-import wagon._
 import plane._
 import cargo._
 import trainCargoRouter._

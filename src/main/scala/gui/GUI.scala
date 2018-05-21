@@ -11,7 +11,6 @@ import circTown._
 import infoPane._
 import infoWidget._
 import lineRoad._
-import wagon._
 
 import scalafx.Includes._
 import updatable._

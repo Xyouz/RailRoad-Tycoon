@@ -13,7 +13,6 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
-import wagon._
 
 case class NewTrainOk(name : String, town : Town, engine : TrainEngine)
 
