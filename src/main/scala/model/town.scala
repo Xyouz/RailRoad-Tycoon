@@ -21,9 +21,8 @@ case class NoAirportException() extends Exception()
  the population, their wealth and methods to update them when a train or a plane come over.
  * There is also a method that handles the stocks of the goods in the town.
 */
-case class TownData(id : Int, pop : Int, airport : List[Plane],
-   stocks : List[Stuff], isHub : Boolean,
-  cargosInTown : List[Cargo])
+case class TownData(id : Int, pop : Int,hasAirport : Boolean,
+   stocks : List[Stuff], isHub : Boolean)//,cargosInTown : List[Cargo])
 
 class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var airport = List[Plane]()
@@ -33,7 +32,9 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   val rndGen = new Random()
   var cargoDispatcher = new CargoDispatcher(Seq[Town](),this)
   var trainCargoRouter = new TrainCargoRouter(new Game())
-
+  var isHub = false
+  var cargosInTown = List[Cargo]()
+  
   // def this(cc : TownData) = {
   //   this(cc.id , cc.name,cc.pop , cc.pos)
   //   airport = cc.airport
@@ -45,7 +46,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   // }
 
   def toData = {
-    new TownData(id, pop, airport, stocks , isHub, cargosInTown)
+    new TownData(id, pop, hasAirport, stocks , isHub)//, cargosInTown)
   }
 
   def setTrainCargoRouter(router : TrainCargoRouter) = {
@@ -55,9 +56,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def setTownList(towns : Seq[Town]) = {
     cargoDispatcher = new CargoDispatcher(towns, this)
   }
-
-  var isHub = false
-  var cargosInTown = List[Cargo]()
 
   val x = position.x
   val y = position.y

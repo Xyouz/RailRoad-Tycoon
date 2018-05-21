@@ -21,9 +21,9 @@ import trainCargoRouter._
  * The player can launch planes and trains by giving them an itenerary, and collect money.
  * We update the game and the positions of the vehicles at each tick.
 */
+case class GameData(mapName : String, money : Double)
 
 class Game(){
-
   val trainEngineList = List(new TrainEngine("Electric 2000", 15, 150, true, 11,1), new TrainEngine("Escargot", 5, 75, false,11,1.25))
 
   val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 50,600,11,1),new PlaneEngine("Hélice à ressort", 10, 50,175,11,1))
@@ -32,6 +32,10 @@ class Game(){
   var roadList = Seq[Road]()
   var railMap = new RailMap(townList, roadList)
   val airports = new AirportNetwork(this)
+
+  def toData = {
+    new GameData(mapName, money)
+  }
 
   def loadMap(towns : Seq[Town], roads : Seq[Road]) = {
     townList = towns
@@ -43,6 +47,8 @@ class Game(){
   }
 
   var nbOfTown = townList.length
+
+  var mapName = ""
 
   var trainList = Seq[Train]()
   var planeList = Seq[Plane]()

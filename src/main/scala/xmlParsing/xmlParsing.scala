@@ -80,6 +80,7 @@ class XMLParser(xmlFile : File) {
       }
     }
     game.loadMap(towns.reverse, rails)
+    game.mapName = xmlFile.getAbsolutePath()
     game
   }
 }

@@ -13,6 +13,8 @@ import saveUtils._
 import town._
 import point._
 import train._
+import model._
+import java.io.PrintWriter
 
 class InfoPane(val master : MainGame) extends TitledPane() {
   text = "Informations générales"
@@ -41,11 +43,23 @@ class InfoPane(val master : MainGame) extends TitledPane() {
 
   val saveButton = new Button("Save"){
     onAction = { ae =>
-      val stuff = master.game.trainList(0)
-      val save = JsonUtil.toJson(stuff)
-    //  val stuff2 = JsonUtil.fromJson[Option[Int]](save)
-      println(save)
-      // println(stuff == stuff2)
+      SaveUtil.saveGame(master.game, "saves")
+      SaveUtil.saveTowns(master.game.townList, "saves")
+      SaveUtil.saveTrains(master.game.trainList, "saves")
+      SaveUtil.savePlanes(master.game.planeList, "saves")
+      // val townsSave = JsonUtil.toJson(master.game.townList)
+      // new PrintWriter("saves/towns.json") { write(townsSave); close }
+      // val planeSave = JsonUtil.toJson(master.game.planeList)
+      // new PrintWriter("saves/planes.json") { write(planeSave); close }
+      // val trainSave = JsonUtil.toJson(master.game.trainList(0))
+      // new PrintWriter("saves/trains.json") { write(trainSave); close }
+
+      // val stuff2 = JsonUtil.fromJson[TrainData](save)
+      // println(stuff.toData)
+
+      // println(stuff2)
+      // stuff2.route.foreach(i => print(s"$i  "))
+      // println(stuff.toData.route == stuff2.route)
     }
   }
 

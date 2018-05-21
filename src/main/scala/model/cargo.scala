@@ -14,23 +14,31 @@ case class NoDestinationError() extends Exception() {}
  * Cargos are initially created in xmlParsing.scala
 */
 
-case class CargoData(typeOfLoad : String, maxLoad : Double, from : Option[Town],
-    destination : Option[Town], inHub : Option[Town], outHub : Option[Town],
+case class CargoData(typeOfLoad : String, maxLoad : Double, from : Option[Int],
+    destination : Option[Int], inHub : Option[Int], outHub : Option[Int],
     content : Option[Stuff])
 
 class Cargo (val typeOfLoad : String, val maxLoad : Double) {
 
-  def this(cc : CargoData) = {
-    this(cc.typeOfLoad,cc.maxLoad)
-    from = cc.from
-    content = cc.content
-    destination = cc.destination
-    inHub = cc.inHub
-    outHub = cc.outHub
-  }
+  // def this(cc : CargoData) = {
+  //   this(cc.typeOfLoad,cc.maxLoad)
+  //   from = cc.from
+  //   content = cc.content
+  //   destination = cc.destination
+  //   inHub = cc.inHub
+  //   outHub = cc.outHub
+  // }
 
   def toData = {
-    new CargoData(typeOfLoad, maxLoad, from, destination, inHub, outHub, content)
+    new CargoData(typeOfLoad, maxLoad, optionTownToInt(from), optionTownToInt(destination), optionTownToInt(inHub), optionTownToInt(outHub), content)
+  }
+
+  def optionTownToInt(t : Option[Town]) = {
+    t match {
+      case Some(tt) => Some(tt.getID)
+      case None => None
+    }
+
   }
 
   override def toString() = {typeOfLoad }

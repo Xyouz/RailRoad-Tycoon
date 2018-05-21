@@ -13,6 +13,65 @@ import cargo._
 import factory._
 import train._
 import plane._
+import model._
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
+
+object  Writer {
+  def write(msg : String, fileName : String) = {
+    val file = new File(fileName)
+    try {
+      // file.mkdirs()
+      // file.createNewFile()
+    } catch {
+      case e1 : IOException => e1.printStackTrace()
+    }
+    try {
+      val pw = new PrintWriter(file)
+      pw.write(msg)
+      pw.close()
+    } catch {
+      case e : FileNotFoundException => e.printStackTrace()
+    }
+  }
+}
+
+object SaveUtil {
+    def saveGame(game : Game, path : String) = {
+      val gameSave = JsonUtil.toJson(game)
+      Writer.write(gameSave,s"${path}/game.json")
+    }
+
+    def saveTrains(trainList : Seq[Train], path : String) = {
+      var c = 0
+      for (train <- trainList){
+        val trainSave = JsonUtil.toJson(train)
+        Writer.write(trainSave,s"${path}/trains/train${c}.json")
+        c += 1
+      }
+    }
+
+    def savePlanes(planeList : Seq[Plane], path : String) = {
+      var c = 0
+      for (plane <- planeList){
+        val planeSave = JsonUtil.toJson(plane)
+        Writer.write(planeSave,s"${path}/planes/plane${c}.json")
+        c += 1
+      }
+    }
+
+    def saveTowns(townList : Seq[Town], path : String) = {
+      var c = 0
+      for (town <- townList){
+        val townSave = JsonUtil.toJson(town)
+        Writer.write(townSave,s"${path}/towns/town${c}.json")
+        c += 1
+      }
+    }
+  }
 
 object JsonUtil {
   val mapper = new ObjectMapper() with ScalaObjectMapper
@@ -24,11 +83,37 @@ object JsonUtil {
   }
 
 
-  def toJson(value : NoAirportException) : String = {
-    ""
+  def toJson(value : Town) : String = {
+    toJson(value.toData)
   }
 
-  def toJson(value : Town) : String = {
+  def toJson(value : List[Any]) : String = {
+    if (value.length == 0){
+      "[]"
+    }
+    else{
+      var res = "["
+      for (item <- value) {
+        res = res + toJson(item) +","
+      }
+      res.substring(0,res.length-1) + "]"
+    }
+  }
+
+  def toJson(value : Seq[Any]) : String = {
+    if (value.length == 0){
+      "[]"
+    }
+    else{
+      var res = "["
+      for (item <- value) {
+        res = res + toJson(item) +","
+      }
+      res.substring(0,res.length-1) + "]"
+    }
+  }
+
+  def toJson(value : Game) : String = {
     toJson(value.toData)
   }
 
