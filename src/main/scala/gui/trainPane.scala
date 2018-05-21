@@ -119,6 +119,8 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     }
   }
 
+
+
   val grid = new GridPane(){
     vgap = 10
 

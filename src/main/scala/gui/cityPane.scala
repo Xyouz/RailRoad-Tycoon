@@ -1,6 +1,8 @@
 package cityPane
 
 import town._
+import charts._
+import switchCharts._
 import scalafx.scene.control._
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Insets
@@ -33,7 +35,6 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     cargosWaiting.text = s"Nombres de cargos au départ : ${selectedTown.cargosInTown.filterNot(_.isEmpty).length}"
     cityMessage.text = selectedTown.message
   }
-  update()
 
   val hub = new RadioButton("Hub?"){
     onAction = {
@@ -47,9 +48,31 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     onAction = {ae =>
       selectedTown = value.value
       hub.selected.value = selectedTown.isHub
+      chartPeople.reeinitialize()
       update()
     }
   }
+
+  object getPopulation extends giveValue {
+    var time = 0
+    val frequency = 50
+    def value= {
+      time = time + 1
+      if (time % frequency == 0){
+        Some((time, selectedTown.population()))
+      }
+      else {
+        None
+      }
+    }
+    def forceValue = {
+      time += 1
+      (time, selectedTown.population())
+    }
+  }
+
+  val chartPeople = new SwitchCharts(getPopulation)
+  update()
 
   val grid = new GridPane(){
     vgap = 10

@@ -8,24 +8,71 @@ import gui.MainGame
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.chart.{LineChart, NumberAxis, XYChart}
 import infoPane._
+import scalafx.scene.paint.Color._
+import scalafx.beans.property._
+import scalafx.Includes._
+import scalafx.scene.layout._
+import scalafx.application.{JFXApp, Platform}
+import scalafx.scene.control.ButtonBar.ButtonData
+import scalafx.scene.image.{Image, ImageView}
+import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.control.Alert.AlertType
+import scala.math._
+
+
+
+/** This class enables us to draw the charts and their derived charts. It is used in switchCharts,
+ *  and in infoPane and cityPane, because it is where we use charts.
+
+*/
+
 
 trait giveValue {
-  def value() : (Double,Double)
+  def value() : Option[(Double,Double)]
+  def forceValue() : (Double, Double)
 }
 
-class ChartLine(val getValue : giveValue) extends LineChart(new NumberAxis(),new NumberAxis()){
+class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : NumberAxis) extends LineChart(xAxis, yAxis){
 
-  var frequencyUpd : Int  = 1
-  val serie = new XYChart.Series[Number,Number](){
+  var indicator = false
+
+  var minGraph = Double.PositiveInfinity
+  var maxGraph = 0.0
+
+  var minDerived = Double.PositiveInfinity
+  var maxDerived = 0.0
+
+  var tickNumber = 5
+
+  var serie = new XYChart.Series[Number,Number](){
     name = "Value"
   }
   var time = 0
-  val derivedSerie = new XYChart.Series[Number, Number](){
+  var derivedSerie = new XYChart.Series[Number, Number](){
     name = "Derived value"
   }
 
-  var (xs, ys) = getValue.value()
+  var (xs, ys) = getValue.forceValue()
+  yAxis.autoRanging = false
 
+  def swapGraphs () = {
+    indicator = ! indicator
+    this.data.value(0).node.value.visible = ! indicator
+    this.data.value(1).node.value.visible = indicator
+    scale()
+  }
+
+  def scale() = {
+    if (indicator) {
+      yAxis.upperBound = maxDerived + 0.05*math.abs(maxDerived)
+      yAxis.lowerBound = minDerived - 0.05*math.abs(minDerived)
+   }
+   else {
+     yAxis.upperBound = maxGraph + 0.05*math.abs(maxGraph)
+     yAxis.lowerBound = minGraph - 0.05*math.abs(minGraph)
+   }
+   yAxis.tickUnit = (yAxis.upperBound.value - yAxis.lowerBound.value)/ tickNumber
+ }
 
   this.getData.add(serie)
   this.getData.add(derivedSerie)
@@ -35,15 +82,60 @@ class ChartLine(val getValue : giveValue) extends LineChart(new NumberAxis(),new
   minWidth = 300
 
 
-  def update() {
-    time += 1
-    if (time%frequencyUpd == 0){
-      var (x,y) = getValue.value()
-      serie.getData().add(XYChart.Data(x,y))
-      derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
-      xs = x
-      ys = y
+  def maxValueD (valueAdded: Double, derivedValueAdded: Double) {
+    if (valueAdded > maxGraph) {
+      maxGraph = valueAdded
     }
+    if (derivedValueAdded > maxDerived) {
+      maxDerived = derivedValueAdded
+    }
+  }
+
+  def minValueD (valueAdded: Double, derivedValueAdded: Double) {
+    if (valueAdded < minGraph) {
+      minGraph = valueAdded
+    }
+    if (derivedValueAdded < minDerived) {
+      minDerived = derivedValueAdded
+    }
+  }
+
+  def reeinitialize(){
+    forceUpdate()
+    serie.getData().remove(0,serie.getData().size())
+    derivedSerie.getData().remove(0,derivedSerie.getData().size())
+    minGraph = Double.PositiveInfinity
+    maxGraph = 0.0
+    minDerived = Double.PositiveInfinity
+    maxDerived = 0.0
+  }
+
+  def update() {
+    var v = getValue.value()
+    v match {
+      case Some((x,y)) => time += 1
+        serie.getData().add(XYChart.Data(x,y))
+        derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
+        minValueD(y, ((ys-y) / (xs-x)) )
+        maxValueD(y, ((ys-y) / (xs-x)) )
+        xs = x
+        ys = y
+      case None => time += 1
+    }
+    scale()
+  }
+
+
+  private def forceUpdate() {
+    var (x,y) = getValue.forceValue()
+    time += 1
+    serie.getData().add(XYChart.Data(x,y))
+    derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
+    minValueD(y, ((ys-y) / (xs-x)) )
+    maxValueD(y, ((ys-y) / (xs-x)) )
+    xs = x
+    ys = y
+    scale()
   }
 
 }

@@ -16,6 +16,8 @@ import point._
 import train._
 import model._
 import java.io.File
+import switchCharts._
+
 
 class InfoPane(val master : MainGame) extends TitledPane() {
   text = "Informations générales"
@@ -31,16 +33,24 @@ class InfoPane(val master : MainGame) extends TitledPane() {
   object getMoney extends giveValue {
     var time = 0
     def value= {
-      time = time + frequency
+      time = time + 1
+      if (time % frequency == 0){
+        Some((time, master.game.money))
+      }
+      else {
+        None
+      }
+    }
+    def forceValue = {
+      time += 1
       (time, master.game.money)
     }
   }
 
-  val chartMoney = new ChartLine(getMoney)
 
-  chartMoney.frequencyUpd = frequency
 
-  chartMoney.title = "Argent"
+  val ch = new SwitchCharts(getMoney)
+  ch.title("Money owned by the player")
 
   val saveButton = new Button("Save"){
     onAction = { ae =>
@@ -74,7 +84,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
 
     add(timeLabel, 0, 0)
     add(moneyLabel, 0, 1)
-    add(chartMoney,0, 2)
+    add(ch,0, 2)
     add(new GridPane(){
       hgap = 10
       add(exitButton,0,0)
@@ -88,6 +98,6 @@ class InfoPane(val master : MainGame) extends TitledPane() {
     timeCounter += 1
     moneyLabel.text = f"Argent : ${newMoney}%2.2f"
     timeLabel.text = s"Date : ${timeCounter}"
-    chartMoney.update()
+    ch.update()
   }
 }
