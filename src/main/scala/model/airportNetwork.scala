@@ -24,6 +24,7 @@ class AirportNetwork(val game : Game) {
   }
 
   def initialize(startTownID : Int, endTownID : Int) = {
+    nt = game.townList.length
     distances = Array.fill[Double](nt)(Double.PositiveInfinity)
     prec = Array.fill[Int](nt)(-1)
     visited = Array.fill(nt)(false)

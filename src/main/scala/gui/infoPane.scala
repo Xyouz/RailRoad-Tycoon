@@ -6,6 +6,7 @@ import scalafx.geometry.Insets
 import gui.MainGame
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.chart.{LineChart, NumberAxis, XYChart}
+import scalafx.stage.DirectoryChooser
 import charts._
 import stuff._
 import cargo._
@@ -14,7 +15,7 @@ import town._
 import point._
 import train._
 import model._
-import java.io.PrintWriter
+import java.io.File
 
 class InfoPane(val master : MainGame) extends TitledPane() {
   text = "Informations générales"
@@ -43,23 +44,21 @@ class InfoPane(val master : MainGame) extends TitledPane() {
 
   val saveButton = new Button("Save"){
     onAction = { ae =>
-      SaveUtil.saveGame(master.game, "saves")
-      SaveUtil.saveTowns(master.game.townList, "saves")
-      SaveUtil.saveTrains(master.game.trainList, "saves")
-      SaveUtil.savePlanes(master.game.planeList, "saves")
-      // val townsSave = JsonUtil.toJson(master.game.townList)
-      // new PrintWriter("saves/towns.json") { write(townsSave); close }
-      // val planeSave = JsonUtil.toJson(master.game.planeList)
-      // new PrintWriter("saves/planes.json") { write(planeSave); close }
-      // val trainSave = JsonUtil.toJson(master.game.trainList(0))
-      // new PrintWriter("saves/trains.json") { write(trainSave); close }
-
-      // val stuff2 = JsonUtil.fromJson[TrainData](save)
-      // println(stuff.toData)
-
-      // println(stuff2)
-      // stuff2.route.foreach(i => print(s"$i  "))
-      // println(stuff.toData.route == stuff2.route)
+      val dirChooser = new DirectoryChooser(){
+        initialDirectory = new File("saves/")
+        title = "Emplacement de la sauvegarde"
+      }
+      val mapFile = dirChooser.showDialog(master)
+      mapFile match {
+        case null => ()
+        case file : File => {
+          val path = file.getAbsolutePath
+          SaveUtil.saveGame(master.game, path)
+          SaveUtil.saveTowns(master.game.townList, path)
+          SaveUtil.saveTrains(master.game.trainList, path)
+          SaveUtil.savePlanes(master.game.planeList, path)
+        }
+      }
     }
   }
 
@@ -76,8 +75,10 @@ class InfoPane(val master : MainGame) extends TitledPane() {
     add(timeLabel, 0, 0)
     add(moneyLabel, 0, 1)
     add(chartMoney,0, 2)
-    add(exitButton, 0, 3)
-    add(saveButton, 1, 3)
+    add(new GridPane(){
+      hgap = 10
+      add(exitButton,0,0)
+      add(saveButton,1,0)},0,3)
   }
 
   content = grid

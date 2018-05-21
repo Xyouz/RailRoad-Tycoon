@@ -4,7 +4,6 @@ import vehicle.Vehicle
 import trainEngine.TrainEngine
 import town._
 import cargo._
-import infoPane._
 import model._
 
 

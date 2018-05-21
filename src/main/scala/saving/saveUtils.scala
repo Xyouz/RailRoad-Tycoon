@@ -15,29 +15,7 @@ import train._
 import plane._
 import model._
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.File;
-
-object  Writer {
-  def write(msg : String, fileName : String) = {
-    val file = new File(fileName)
-    try {
-      // file.mkdirs()
-      // file.createNewFile()
-    } catch {
-      case e1 : IOException => e1.printStackTrace()
-    }
-    try {
-      val pw = new PrintWriter(file)
-      pw.write(msg)
-      pw.close()
-    } catch {
-      case e : FileNotFoundException => e.printStackTrace()
-    }
-  }
-}
+import fileWriter._
 
 object SaveUtil {
     def saveGame(game : Game, path : String) = {
@@ -47,6 +25,7 @@ object SaveUtil {
 
     def saveTrains(trainList : Seq[Train], path : String) = {
       var c = 0
+      Writer.createFolder(s"${path}/trains")
       for (train <- trainList){
         val trainSave = JsonUtil.toJson(train)
         Writer.write(trainSave,s"${path}/trains/train${c}.json")
@@ -56,6 +35,7 @@ object SaveUtil {
 
     def savePlanes(planeList : Seq[Plane], path : String) = {
       var c = 0
+      Writer.createFolder(s"${path}/planes")
       for (plane <- planeList){
         val planeSave = JsonUtil.toJson(plane)
         Writer.write(planeSave,s"${path}/planes/plane${c}.json")
@@ -65,6 +45,7 @@ object SaveUtil {
 
     def saveTowns(townList : Seq[Town], path : String) = {
       var c = 0
+      Writer.createFolder(s"${path}/towns")
       for (town <- townList){
         val townSave = JsonUtil.toJson(town)
         Writer.write(townSave,s"${path}/towns/town${c}.json")

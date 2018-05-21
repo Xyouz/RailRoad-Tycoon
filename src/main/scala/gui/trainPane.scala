@@ -118,17 +118,19 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
   val grid = new GridPane(){
     vgap = 10
-    //padding = Insets(20,100,10,10)
 
-    add(newTrainButton, 0, 0)
-    add(select, 0, 1)
-    add(nameLabel, 0, 2)
-    add(engineLabel, 0, 3)
-    add(cargoLabel, 0, 4)
-    add(circuitLabel, 0, 5)
-    add(feedbackSlider,0,6)
-    add(desiredLoad,0,7)
-    add(routeButton, 0,8)
+    add(new GridPane(){
+      hgap = 10
+      add(newTrainButton,0,0)
+      add(select,1,0)
+    },0,0)
+    add(nameLabel, 0, 1)
+    add(engineLabel, 0, 2)
+    add(cargoLabel, 0, 3)
+    add(circuitLabel, 0, 4)
+    add(feedbackSlider,0,5)
+    add(desiredLoad,0,6)
+    add(routeButton, 0,7)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -174,7 +176,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     }
   }
 
-  private def addTrainToComboBox( t : Train) = {
+  def addTrainToComboBox( t : Train) = {
     select += t
   }
 

@@ -32,7 +32,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
         // create a new train and update the ComboBox used to selectTrain
         try {
           var newPlane = master.game.addPlane(name, town, engine, hold)
-          addTrainToComboBox(newPlane)
+          addPlaneToComboBox(newPlane)
           master.addToBeDrawn(newPlane)
           select.getSelectionModel().select(newPlane)
         }
@@ -53,6 +53,17 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
   val circuitLabel = new TextArea(){
     wrapText = true
     editable = false
+  }
+  val desiredLoad = new Slider(0,1,0){
+    onMouseReleased = {ae =>
+      selectedPlane match {
+        case None => ()
+        case Some(p) => p.desiredLoad = value.value
+      }
+    }
+  }
+  val feedbackSlider = new Label {
+    text <== desiredLoad.value.asString("Targeted load : %02.1f")
   }
 
   var selectedPlane = None : Option[Plane]
@@ -83,7 +94,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     }
   }
 
-  val newTrainButton = new Button(){
+  val newPlaneButton = new Button(){
     text = "New Plane"
     onAction = handle {newPlaneWindow()}
   }
@@ -96,6 +107,9 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
         case Some(plane) => plane.color = Aquamarine
       }
       selectedPlane = Some(value.value)
+      desiredLoad.min = value.value.maxLoad*0.05
+      desiredLoad.max = value.value.maxLoad*0.9
+      desiredLoad.value = value.value.desiredLoad
       value.value.color = Aqua
       update()
     }
@@ -103,15 +117,19 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
 
   val grid = new GridPane(){
     vgap = 10
-    //padding = Insets(20,100,10,10)
 
-    add(newTrainButton, 0, 0)
-    add(select, 0, 1)
-    add(nameLabel, 0, 2)
-    add(engineLabel, 0, 3)
-    add(cargoLabel,0,4)
-    add(circuitLabel, 0, 5)
-    add(routeButton, 0, 6)
+    add(new GridPane(){
+      hgap = 10
+      add(newPlaneButton,0,0)
+      add(select,1,0)
+    },0,0)
+    add(nameLabel, 0, 1)
+    add(engineLabel, 0, 2)
+    add(cargoLabel, 0, 3)
+    add(circuitLabel, 0, 4)
+    add(feedbackSlider,0,5)
+    add(desiredLoad,0,6)
+    add(routeButton, 0,7)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -137,7 +155,10 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
         circuitLabel.visible = false
         routeButton.visible = false
         select.visible = false
-      }
+        feedbackSlider.visible = false
+        cargoLabel.visible = false
+        desiredLoad.visible = false
+    }
       case Some(plane) => {
         nameLabel.text = s"  ${plane.toString()}  "
         engineLabel.text = s"Moteur : ${plane.engine}"
@@ -148,12 +169,14 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
         circuitLabel.visible = true
         routeButton.visible = true
         select.visible = true
+        desiredLoad.visible = true
+        feedbackSlider.visible = true
         cargoLabel.visible = true
       }
     }
   }
 
-  private def addTrainToComboBox( t : Plane) = {
+  def addPlaneToComboBox( t : Plane) = {
     select += t
   }
 
