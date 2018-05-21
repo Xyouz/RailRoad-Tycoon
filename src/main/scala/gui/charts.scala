@@ -20,6 +20,13 @@ import scalafx.scene.control.Alert.AlertType
 import scala.math._
 
 
+
+/** This class enables us to draw the charts and their derived charts. It is used in switchCharts,
+ *  and in infoPane and cityPane, because it is where we use charts.
+
+*/
+
+
 trait giveValue {
   def value() : Option[(Double,Double)]
   def forceValue() : (Double, Double)

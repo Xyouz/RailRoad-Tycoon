@@ -11,7 +11,9 @@ import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 import scalafx.scene.chart.{LineChart, NumberAxis, XYChart}
 
-
+/** This class enables the player to choose between the graph and its derived graph, by using a "radioButton".
+ *  It mainly uses yhe class "Charts".
+*/
 
 class SwitchCharts(val valueGiven : giveValue) extends GridPane() {
 
