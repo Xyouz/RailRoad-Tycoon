@@ -33,6 +33,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var trainCargoRouter = new TrainCargoRouter(new Game())
   var isHub = false
   var cargosInTown = List[Cargo]()
+  var message = ""
 
   def distanceTo(that  : Town) = {
     pos.distance(that.pos)
@@ -118,7 +119,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           stocks(j).subStuff(consuptionStuff(i).scale(0.001* population))
         }
         catch {
-          case NotEnoughQuantityException() => ()//println("pas assez de bouffe")
+          case NotEnoughQuantityException() => (message += s"Il manque quelques'uns des produits indispensables à la survie de la ville, par exemple on a plus assez de ${stocks(j)}.\n")
         }
         i = i + 1
         j = j + 1
@@ -164,8 +165,8 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
 
   def update(){
     t = t + 1
-    if (t==200) {
-      t = 0
+    if (t%200 == 0) {
+      message = ""
       cityConsumption()
     }
     factories.map(_.update())

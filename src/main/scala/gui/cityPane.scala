@@ -20,6 +20,10 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   val factories = new Label()
   val cargosAvailable = new Label()
   val cargosWaiting = new Label()
+  val cityMessage = new TextArea(){
+    wrapText = true
+    editable = false
+  }
 
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
@@ -27,6 +31,7 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
     cargosAvailable.text = s"Nombre de cargos disponibles : ${selectedTown.cargosInTown.filter(_.isEmpty).length}"
     cargosWaiting.text = s"Nombres de cargos au départ : ${selectedTown.cargosInTown.filterNot(_.isEmpty).length}"
+    cityMessage.text = selectedTown.message
   }
   update()
 
@@ -56,6 +61,8 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     add(hub,0,4)
     add(cargosAvailable,0,5)
     add(cargosWaiting,0,6)
+    add(new Label("informations :"),0,7)
+    add(cityMessage, 0, 8)
   }
 
   content = grid
