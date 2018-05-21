@@ -16,8 +16,14 @@ import point._
  * The player earn money when the plane arrive in a city.
 */
 
+case class PlaneData(name : String, engine : PlaneEngine, route : Array[Int], desiredLoad : Double, longHaul : Boolean)
+
 
 class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Game) extends Vehicle(name, engine){
+  def toData = {
+    new PlaneData(name, engine, route.map(_.getID), desiredLoad, longHaul)
+  }
+
   var flying = false
   var flightBriefing = Array[Town]()
   var begin : Town = new Town(42,"Test",42,new Point(42,42))
@@ -28,6 +34,11 @@ class Plane(name : String, engine : PlaneEngine,val hold : Cargo, val game : Gam
   var nbStep = 42
   def holdType = {hold.kindOfLoad()}
   def maximalLoad() = {hold.maxLoad}
+
+  override def weight() = {
+    println("weight plane")
+    hold.weight()
+  }
 
   def startFly(beginTown : Town, endTown : Town) = {
     flying = true

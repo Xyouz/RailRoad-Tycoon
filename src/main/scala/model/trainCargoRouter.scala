@@ -9,6 +9,7 @@ import math.max
 /** This class find the best way to carry cargo on the rail network,
   * promoting the use of hub when long distances are to be travelled.
  */
+case class NotRailConnectedError() extends Exception()
 
 class TrainCargoRouter(val game : Game) {
   var nt = game.townList.length
@@ -75,6 +76,9 @@ class TrainCargoRouter(val game : Game) {
     var currentTown = end.getID
     while (currentTown != start.getID) {
       currentTown = prec(currentTown)
+      if (currentTown == -1){
+        throw new NotRailConnectedError()
+      }
       briefing = currentTown +: briefing
     }
   }
@@ -82,7 +86,11 @@ class TrainCargoRouter(val game : Game) {
   def whichHubs(start : Town, end : Town) = {
     initialize(start.getID, end.getID)
     explore(start, end)
-    makeBriefing(start, end)
+    try {
+      makeBriefing(start, end)
+    } catch {
+      case NotRailConnectedError() => None
+    }
     val fullbriefing = briefing.map(intToTown(_)).filter(_.isHub)
     if (fullbriefing.length >= 2){
       Some((fullbriefing(0),fullbriefing(fullbriefing.length-1)))

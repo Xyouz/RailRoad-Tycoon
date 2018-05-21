@@ -2,6 +2,7 @@ package stuff
 
 import cargo._
 import factory._
+import saveUtils._
 
 case class UnmatchedStuffException() extends Exception()
 case class NotEnoughQuantityException() extends Exception()
@@ -13,7 +14,18 @@ case class NotEnoughQuantityException() extends Exception()
  * This class is quite useful to load or unload the goods in or out of the vehicles
 */
 
+case class StuffData( name : String, quantity : Double, maxPrice : Double, category : String)
+
 class Stuff(val name : String, var quantity : Double, val maxPrice : Double, val category : String){
+
+  def toData = {
+    new StuffData(name, quantity, maxPrice, category)
+  }
+
+  def this(cc : StuffData) = {
+    this(cc.name , cc.quantity , cc.maxPrice , cc.category)
+  }
+
   def stuffCategory() = {category}
   def getName() : String = {name}
   def getQuantity() : Double = {quantity}

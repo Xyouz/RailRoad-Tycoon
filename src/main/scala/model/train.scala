@@ -11,10 +11,20 @@ import model._
 /**This class represents the trains, it extends the class "Vehicle", except here, we must also deal
  * with the different loadings and the different wagons.
 */
+case class TrainData(name : String, engine : TrainEngine, route : Array[Int], desiredLoad : Double, longHaul : Boolean)
 
 class Train(name : String, engine : TrainEngine, val game : Game ) extends Vehicle(name, engine){
   var listOfWagon = List[Cargo]()
   def wagons() = {listOfWagon}
+
+  def toData = {
+    new TrainData(name, engine, route.map(_.getID), desiredLoad, longHaul)
+  }
+
+  override def weight() = {
+    listOfWagon.foldLeft(0.0)((w,w2) => w + w2.weight())
+  }
+
   override def unload(t : Town) = {
     t.pop = t.pop + loading
     loading = 0

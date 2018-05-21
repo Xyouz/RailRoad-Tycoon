@@ -64,7 +64,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
   }
 
   val feedbackSlider = new Label {
-    text <== desiredLoad.value.asString("Load : %02.1f")
+    text <== desiredLoad.value.asString("Targeted load : %02.1f")
   }
 
   var selectedTrain = None : Option[Train]

@@ -2,6 +2,10 @@ import gui.MainGame
 import model.Game
 import xmlParsing._
 
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.scene.Scene

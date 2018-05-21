@@ -16,7 +16,7 @@ class CargoDispatcher(val townList : Seq[Town], val town : Town) {
       throw new CargoDispatcherError()
     }
     var maxi = Double.NegativeInfinity
-    var argMax = outputs(0)
+    var argMax = town.stocks(0)
     var townMax = townList(0)
     for (stuff <- outputs){
       if (stuff.category == cargo.typeOfLoad){

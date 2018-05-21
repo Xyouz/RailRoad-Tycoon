@@ -3,6 +3,7 @@ package cargo
 import stuff._
 import town._
 
+import saveUtils._
 
 case class EmptyCargo() extends Exception() {}
 case class NoDestinationError() extends Exception() {}
@@ -13,7 +14,25 @@ case class NoDestinationError() extends Exception() {}
  * Cargos are initially created in xmlParsing.scala
 */
 
+case class CargoData(typeOfLoad : String, maxLoad : Double, from : Option[Town],
+    destination : Option[Town], inHub : Option[Town], outHub : Option[Town],
+    content : Option[Stuff])
+
 class Cargo (val typeOfLoad : String, val maxLoad : Double) {
+
+  def this(cc : CargoData) = {
+    this(cc.typeOfLoad,cc.maxLoad)
+    from = cc.from
+    content = cc.content
+    destination = cc.destination
+    inHub = cc.inHub
+    outHub = cc.outHub
+  }
+
+  def toData = {
+    new CargoData(typeOfLoad, maxLoad, from, destination, inHub, outHub, content)
+  }
+
   override def toString() = {typeOfLoad }
   def kindOfLoad() = {typeOfLoad}
   var from : Option[Town] = None
@@ -21,6 +40,14 @@ class Cargo (val typeOfLoad : String, val maxLoad : Double) {
   var destination : Option[Town] = None
   var inHub : Option[Town] = None
   var outHub : Option[Town] = None
+
+  def weight() = {
+    content match {
+      case None => 1.0
+      case Some(s) => 1.0 + 0.1 * s.quantity
+    }
+  }
+
   def getFrom()={
     from match {
       case Some(t) => t

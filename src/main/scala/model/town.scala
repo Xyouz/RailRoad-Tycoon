@@ -13,15 +13,17 @@ import scala.util.Random
 import cargoDispatcher.CargoDispatcher
 import model.Game
 import trainCargoRouter.TrainCargoRouter
-
+import saveUtils._
 
 case class NoAirportException() extends Exception()
-
 
 /** This class implements the towns of the graphs with information on the name,
  the population, their wealth and methods to update them when a train or a plane come over.
  * There is also a method that handles the stocks of the goods in the town.
 */
+case class TownData(id : Int, pop : Int, airport : List[Plane],
+   stocks : List[Stuff], isHub : Boolean,
+  cargosInTown : List[Cargo])
 
 class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var airport = List[Plane]()
@@ -31,6 +33,20 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   val rndGen = new Random()
   var cargoDispatcher = new CargoDispatcher(Seq[Town](),this)
   var trainCargoRouter = new TrainCargoRouter(new Game())
+
+  // def this(cc : TownData) = {
+  //   this(cc.id , cc.name,cc.pop , cc.pos)
+  //   airport = cc.airport
+  //   factories = cc.factories
+  //   stocks = cc.stocks
+  //   hasAirport = cc.hasAirport
+  //   isHub = cc.isHub
+  //   cargosInTown = cc.cargosInTown
+  // }
+
+  def toData = {
+    new TownData(id, pop, airport, stocks , isHub, cargosInTown)
+  }
 
   def setTrainCargoRouter(router : TrainCargoRouter) = {
     trainCargoRouter = router
@@ -128,6 +144,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     if (cargo.isEmpty) {
       cargoDispatcher.fillCargo(cargo)
       if (cargo.hasDestination()){
+        try{
         trainCargoRouter.whichHubs(this,cargo.getDestination) match {
           case None => {
             cargo.inHub = None
@@ -138,7 +155,11 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
             cargo.outHub = Some(tt)
           }
         }
-        cargo.from = Some(this)
+      cargo.from = Some(this)
+      }
+      catch {
+        case _ :Exception =>println(s"Error router in $this")
+      }
       }
     }
   }
@@ -199,7 +220,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           if (id==0){
             println("prendre en compte le paramètre desiredLoa (cf town.loadTrain)")
           }
-          if (train.route.exists(_ == city)){
+          if (train.route.exists(_ == city) && (cargo.weight()+train.weight()<=train.desiredLoad)){
             train.listOfWagon = cargo +: train.listOfWagon
             cargosInTown = cargosInTown.filterNot(_ == cargo)
           }
@@ -210,7 +231,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
                 if (id==0){
                   println("prendre en compte le paramètre desiredLoa (cf town.loadTrain)")
                 }
-                if (train.route.exists(_ == city2)){
+                if (train.route.exists(_ == city2) && (cargo.weight()+train.weight()<=train.desiredLoad)){
                   train.listOfWagon = cargo +: train.listOfWagon
                   cargosInTown = cargosInTown.filterNot(_ == cargo)
                 }

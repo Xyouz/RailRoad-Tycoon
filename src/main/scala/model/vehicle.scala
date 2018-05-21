@@ -15,6 +15,9 @@ case class NotInTownException() extends Exception()
 
 abstract class Vehicle( val name : String, val engine : Engine){
   override def toString() = {name}
+
+  def weight() : Double
+
   val maxLoad = engine.maxLoad
   var desiredLoad = 0.45 * maxLoad
   var position = new Point(-10000, 10000)
@@ -45,7 +48,7 @@ abstract class Vehicle( val name : String, val engine : Engine){
   }
 
   def update() = {
-    distance += engine.getSpeed(load)/2
+    distance += speed()/2
     distance
   }
   def resetDistance() = {distance = 0}
@@ -69,4 +72,8 @@ abstract class Vehicle( val name : String, val engine : Engine){
   var loading =  0 // number of passengers in the train.
   var load = 0 // the weight to carry
   def setLoading( l : Int ) = { loading = l;  load = l}
+  def speed() = {
+    engine.getSpeed(weight())
+  }
+
 }
