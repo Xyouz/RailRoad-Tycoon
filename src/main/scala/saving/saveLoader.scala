@@ -54,6 +54,9 @@ object SaveLoader {
       stage.addToBeDrawn(newTrain)
       stage.infoWidget.trainPane.addTrainToComboBox(newTrain)
       stage.infoWidget.trainPane.selectedTrain = Some(newTrain)
+      stage.infoWidget.trainPane.desiredLoad.min = trainData.engine.maxLoad*0.05
+      stage.infoWidget.trainPane.desiredLoad.max = trainData.engine.maxLoad*0.9
+      stage.infoWidget.trainPane.desiredLoad.value = trainData.desiredLoad
     }
     for (planeFile <- (new File(path + "/planes")).listFiles) {
       val planeString = Reader.read(planeFile)
@@ -68,6 +71,10 @@ object SaveLoader {
       stage.addToBeDrawn(newPlane)
       stage.infoWidget.planePane.addPlaneToComboBox(newPlane)
       stage.infoWidget.planePane.selectedPlane = Some(newPlane)
+      stage.infoWidget.planePane.desiredLoad.min = planeData.engine.maxLoad*0.05
+      stage.infoWidget.planePane.desiredLoad.max = planeData.engine.maxLoad*0.9
+      stage.infoWidget.planePane.desiredLoad.value = planeData.desiredLoad
+
       if (planeRoute.length == 0){
         val town = game.townList.filter(_.hasAirport)(0)
         newPlane.setDestination(town)
