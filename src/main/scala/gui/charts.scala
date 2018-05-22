@@ -37,10 +37,10 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
   var indicator = false
 
   var minGraph = Double.PositiveInfinity
-  var maxGraph = 0.0
+  var maxGraph = Double.NegativeInfinity
 
   var minDerived = Double.PositiveInfinity
-  var maxDerived = 0.0
+  var maxDerived = Double.NegativeInfinity
 
   var tickNumber = 5
 
@@ -105,9 +105,9 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
     serie.getData().remove(0,serie.getData().size())
     derivedSerie.getData().remove(0,derivedSerie.getData().size())
     minGraph = Double.PositiveInfinity
-    maxGraph = 0.0
+    maxGraph = Double.NegativeInfinity
     minDerived = Double.PositiveInfinity
-    maxDerived = 0.0
+    maxDerived = Double.NegativeInfinity
   }
 
   def update() {

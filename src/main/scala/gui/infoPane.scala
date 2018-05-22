@@ -32,7 +32,7 @@ class InfoPane(val master : MainGame) extends TitledPane() {
 
   object getMoney extends giveValue {
     var time = 0
-    def value= {
+    def value = {
       time = time + 1
       if (time % frequency == 0){
         Some((time, master.game.money))

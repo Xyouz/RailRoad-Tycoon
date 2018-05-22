@@ -14,6 +14,8 @@ import setRouteDialog._
 import scalafx.scene.paint.Color._
 import cargo._
 import scalafx.scene.control.ScrollPane.ScrollBarPolicy
+import charts._
+import switchCharts._
 
 /** This class handles the trains on the graphical interface (so the player can see them).
 */
@@ -22,6 +24,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
   text = "Trains"
   maxWidth = 250
 
+  var selectedTrain = None : Option[Train]
 
   def newTrainWindow(): Unit = {
     val dialog = new newTrainDialog(master)
@@ -35,6 +38,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
           addTrainToComboBox(newTrain)
           master.addToBeDrawn(newTrain)
           select.getSelectionModel().select(newTrain)
+          chart.reeinitialize()
         }
         catch {
           case NotEnoughMoneyException(msg) => {
@@ -47,6 +51,44 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     }
   }
 
+  var time = 0
+  object getLoad extends giveValue {
+    val freq = 50
+    var average = 0.0
+    def initialize = {
+      average = 0.0
+    }
+    def value = {
+      time += 1
+      selectedTrain match {
+        case Some(train) => {
+          if (time % freq == 0){
+            val res = (average + train.weight)/freq
+            average = 0
+            Some((time - freq / 2, res))
+          }
+          else {
+            average += train.weight
+            None
+          }
+        }
+        case None => None
+      }
+    }
+    def forceValue = {
+      time += 1
+      selectedTrain match {
+        case Some(train) => {
+          average = train.weight * (time % freq)
+          (time , train.weight)
+        }
+        case None => (0,0)
+      }
+    }
+  }
+
+  val chart = new SwitchCharts(getLoad)
+  chart.title("Poids du train")
 
 
   val nameLabel = new Label()
@@ -68,7 +110,6 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     text <== desiredLoad.value.asString("Targeted load : %02.1f")
   }
 
-  var selectedTrain = None : Option[Train]
 
   val routeButton = new Button(){
     text = "Itinéraire"
@@ -117,6 +158,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
       desiredLoad.max = value.value.maxLoad*0.9
       desiredLoad.value = value.value.desiredLoad
       value.value.color = Cyan
+      chart.reeinitialize()
       update()
     }
   }
@@ -139,8 +181,9 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     add(wagonText,1,4)
     add(feedbackSlider,1,5)
     add(desiredLoad,1,6)
-    add(routeButton, 1,7)
-    add(circuitLabel, 1, 8)
+    add(chart,1,7)
+    add(routeButton, 1,8)
+    add(circuitLabel, 1, 9)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -180,6 +223,7 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         select.visible = false
         desiredLoad.visible = false
         feedbackSlider.visible = false
+        chart.visible = false
       }
       case Some(train) => {
         nameLabel.text = s"  ${train.toString()}  "
@@ -193,6 +237,8 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
         select.visible = true
         desiredLoad.visible = true
         feedbackSlider.visible = true
+        chart.visible = true
+        chart.update()
       }
     }
   }
