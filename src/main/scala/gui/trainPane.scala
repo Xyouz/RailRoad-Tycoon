@@ -13,6 +13,8 @@ import scalafx.Includes._
 import setRouteDialog._
 import scalafx.scene.paint.Color._
 import cargo._
+import scalafx.scene.control.ScrollPane.ScrollBarPolicy
+
 /** This class handles the trains on the graphical interface (so the player can see them).
 */
 
@@ -122,21 +124,23 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
 
 
   val grid = new GridPane(){
+    maxWidth = 300
     vgap = 10
-
+    hgap = 10
+    add(new Label(""),0,0)
     add(new GridPane(){
       hgap = 10
       add(newTrainButton,0,0)
       add(select,1,0)
-    },0,0)
-    add(nameLabel, 0, 1)
-    add(engineLabel, 0, 2)
-    add(new Label("Wagons :"), 0, 3)
-    add(wagonText,0,4)
-    add(feedbackSlider,0,5)
-    add(desiredLoad,0,6)
-    add(routeButton, 0,7)
-    add(circuitLabel, 0, 8)
+    },1,0)
+    add(nameLabel, 1, 1)
+    add(engineLabel, 1, 2)
+    add(new Label("Wagons :"), 1, 3)
+    add(wagonText,1,4)
+    add(feedbackSlider,1,5)
+    add(desiredLoad,1,6)
+    add(routeButton, 1,7)
+    add(circuitLabel, 1, 8)
   }
 
   def circuitToString(circuit : Array[Town]) = {
@@ -197,6 +201,13 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     select += t
   }
 
-  content = grid
+  content = new ScrollPane(){
+    maxWidth = 325
+    hbarPolicy = ScrollBarPolicy.Never
+    vbarPolicy = ScrollBarPolicy.Always
+    maxHeight = 500
+    content = grid
+  }
+
 
 }
