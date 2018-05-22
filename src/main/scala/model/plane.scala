@@ -72,9 +72,17 @@ class Plane(name : String, engine : PlaneEngine, val game : Game) extends Vehicl
     currentTown = None
   }
 
+  def someTownInRoute(t : Option[Town]) = {
+    t match{
+      case None => false
+      case Some(t) => route.exists(_ == t)
+    }
+  }
+
   override def update() = {
     if (flying) {
       distance += engine.getSpeed(load)/2
+      game.deltaMoney(-distance * engine.priceByKm / 5)
       position = beginHop.pos + (endHop.pos - beginHop.pos).normalize().scale(distance)
       if (distance >= (endHop.pos - beginHop.pos).norm()){
         if (step >= nbStep-1){
@@ -82,24 +90,31 @@ class Plane(name : String, engine : PlaneEngine, val game : Game) extends Vehicl
           distance = -1.0
           flying = false
           try {
-            if (hasLoad && (getHold.destination == Some(end)||
-                           (getHold.inHub == Some(end))||
-                           (getHold.outHub == Some(end)))){
+            val bd = getHold.destination == Some(end)
+            val bi = getHold.inHub == Some(end)
+            val bo = getHold.outHub == Some(end)
+            if (hasLoad && (bd || ((bi || bo)&& !someTownInRoute(getHold.destination)))){
               getHold.from match{
                 case None => ()
                 case Some(t) => {
-                  game.deltaMoney(end.distanceTo(t))
+                  if (bd){
+                    game.deltaMoney(end.distanceTo(t)*50)
+                  }
                 }
               }
               end.cargosInTown = getHold +: end.cargosInTown
               hold = None
             }
-            if (! hasLoad) {
-              end.loadPlane(this)
-            }
+            end.loadPlane(this)
           }
           catch {
-            case EmptyCargo() => ()
+            case EmptyCargo() => {
+              if (hasLoad){
+                end.cargosInTown = getHold +: end.cargosInTown
+              }
+              hold = None
+              end.loadPlane(this)
+            }
           }
           nextDestination()
           startFly(getCurrentTown,game.townList(destination))
@@ -109,7 +124,6 @@ class Plane(name : String, engine : PlaneEngine, val game : Game) extends Vehicl
           distance = 0
           beginHop = endHop
           endHop = flightBriefing(step)
-          game.deltaMoney(-(endHop.pos-beginHop.pos).norm() * engine.priceByKm)
         }
       }
     }

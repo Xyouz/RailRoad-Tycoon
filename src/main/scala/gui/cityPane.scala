@@ -16,6 +16,7 @@ import scalafx.scene.chart.PieChart
 class CityPane(val townsList : Seq[Town]) extends TitledPane() {
   text = "Villes"
   maxWidth = 250
+  maxHeight = 500
   var selectedTown = townsList(0)
   val nameLabel = new Label()
   val populationLabel = new Label()
@@ -26,6 +27,8 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     wrapText = true
     editable = false
   }
+  var time = 0
+  val frequency = 100
 
   def update() = {
     nameLabel.text = s"  ${selectedTown.toString()}  "
@@ -33,7 +36,11 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     factories.text = s"Nombre d'usines : ${selectedTown.factories.length}"
     cargosAvailable.text = s"Nombre de cargos disponibles : ${selectedTown.cargosInTown.filter(_.isEmpty).length}"
     cargosWaiting.text = s"Nombres de cargos au départ : ${selectedTown.cargosInTown.filterNot(_.isEmpty).length}"
-    cityMessage.text = selectedTown.message
+    if (time%frequency == 0){
+      cityMessage.text = selectedTown.message
+      selectedTown.message = ""
+    }
+    time+=1
   }
 
   val hub = new RadioButton("Hub?"){
@@ -48,6 +55,7 @@ class CityPane(val townsList : Seq[Town]) extends TitledPane() {
     onAction = {ae =>
       selectedTown = value.value
       hub.selected.value = selectedTown.isHub
+      cityMessage.text = selectedTown.message
       chartPeople.reeinitialize()
       update()
     }

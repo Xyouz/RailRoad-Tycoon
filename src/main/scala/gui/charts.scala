@@ -47,7 +47,7 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
   var serie = new XYChart.Series[Number,Number](){
     name = "Value"
   }
-  var time = 0
+
   var derivedSerie = new XYChart.Series[Number, Number](){
     name = "Derived value"
   }
@@ -113,14 +113,15 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
   def update() {
     var v = getValue.value()
     v match {
-      case Some((x,y)) => time += 1
+      case Some((x,y)) => {
         serie.getData().add(XYChart.Data(x,y))
         derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
         minValueD(y, ((ys-y) / (xs-x)) )
         maxValueD(y, ((ys-y) / (xs-x)) )
         xs = x
         ys = y
-      case None => time += 1
+      }
+      case None => ()
     }
     scale()
   }
@@ -128,7 +129,7 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
 
   private def forceUpdate() {
     var (x,y) = getValue.forceValue()
-    time += 1
+    xAxis.lowerBound = x
     serie.getData().add(XYChart.Data(x,y))
     derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
     minValueD(y, ((ys-y) / (xs-x)) )

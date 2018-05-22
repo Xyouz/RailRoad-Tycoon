@@ -22,7 +22,15 @@ import cityPane._
 
 class CircTown(val town : Town, val zoom : Zoom, infoWidget : InfoWidget) extends Circle with Updatable{
   val cityPane = infoWidget.cityPane
+
+  val visibilityThreshold = 150
+  def visibilityTest() = {
+    (zoom.maxX-zoom.minX < visibilityThreshold) ||
+    (zoom.maxY-zoom.minY < visibilityThreshold) ||
+    (town.population > 750000)
+  }
   update()
+  radius = 5
   stroke = White opacity 1
   strokeWidth = 0
   strokeType = Outside
@@ -32,13 +40,21 @@ class CircTown(val town : Town, val zoom : Zoom, infoWidget : InfoWidget) extend
               stops = Stops(Orange, MidnightBlue))
   }
 
+
+
+
   override def update() = {
     val (x,y) = zoom.transform(town.position().x_coord(),town.position().y_coord())
     centerX = x
     centerY = y
-    radius = 8
+    if (visibilityTest()){
+      radius = 8
+    }
+    else {
+      radius = 5
+    }
     if (town.isHub) {
-      strokeWidth = 3
+      strokeWidth = 2
     }
     else {
       strokeWidth = 0

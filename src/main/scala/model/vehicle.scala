@@ -20,17 +20,20 @@ abstract class Vehicle( val name : String, val engine : Engine){
 
   val maxLoad = engine.maxLoad
   var desiredLoad = 0.45 * maxLoad
+
   var position = new Point(-10000, 10000)
   var nstep = 0
   var stepCount = 0
   var distance = -1.0
   var destination = {-1} // the destination's ID
   var nextDest = {-1}
+
   var route = Array[Town]()
   var color = DarkCyan
 
   var longHaul = false  /* Define whether or not the vehicle is to be used to
                            carry cargo between different hubs */
+
 
   var currentTown : Option[Town] = None
   def getCurrentTown = {
@@ -47,12 +50,16 @@ abstract class Vehicle( val name : String, val engine : Engine){
     currentTown = town
   }
 
+
   def update() = {
     distance += speed()/2
     distance
   }
+
   def resetDistance() = {distance = 0}
   def getDestination() = {destination}
+
+
   def setRoute(newRoute : Array[Town]) = {
     route = newRoute
     nstep = newRoute.length
@@ -61,12 +68,18 @@ abstract class Vehicle( val name : String, val engine : Engine){
     }
     stepCount = 0
   }
+
+
   def unload(t: Town) : Unit
+
+
   def nextDestination() = {
     destination = nextDest
     nextDest = route((stepCount + 1) % nstep).getID()
     stepCount += 1
   }
+
+
   def setDestination(town : Town) = {destination = town.getID()}
   def setPosition(p : Point) = {position = p}
   var loading =  0 // number of passengers in the train.
