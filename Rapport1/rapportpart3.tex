@@ -42,25 +42,43 @@
 	\thispagestyle{fancy}
 	\section{Corrections}
 	
-	First of all, we tried to correct the mistakes during the second part of the project. We added a little description at the beginning of each function, in order to precise what the class is supposed to do, where it is used, which classes it uses...
+	First of all, we tried to correct the mistakes during the second part of the project. We added a little descriptions at the beginning of each function, in order to precise what the class is supposed to do, where it is used, which classes it uses... As you suggested, the information about the engines is now in XML files (one file for each type of engine).
 	
 	\section{Modifications of the game}
 	
 	\paragraph{Handling the charts} 
-	One of the required assignement was to make appear an information about the game in a chart. We decided to translate two things into charts: the money of the player and the evolution of the populations in the cities. We created two classes to deal with it : \textbf{Charts} and \textbf{SwitchCharts}. 
+	One of the required assignement was to make appear an information about the game in a chart. We decided to translate two pieces of information into charts: the money of the player and the evolution of the weight of the cargos in trains. We created two classes to deal with it : \textit{Charts} and \textit{SwitchCharts}. 
 	\begin{itemize}
-		\item \textbf{Charts }: It extends \textbf{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for populations' charts, because the graphs are not the same for different cities.
-		\item \textbf{SwitchChart} : It enables the player to choose between a graph and the derivation. 
+		\item \textbf{Charts }: It extends \textit{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for weights' charts, because the graphs are not the same for different cargos.
+		\item \textbf{SwitchChart} : It enables the player to choose between a graph and the derivation. It is actually the effective class we use for drawing the charts.
 	\end{itemize} 
-	\paragraph{Saving a game}
+	
+
+	\paragraph{Saving a game} 
+	Wa also had to find a way to save a game. We created 4 classes and objects that enables us to do so: \textit{fileReader}, \textit{fileWriter}, \textit{saveLoader} and \textit{saveUtils}.
+	\begin{itemize}
+		\item \textit{fileReader} read a file that hes been created, and \textit{fileWriter} allows the creation of a new file, which contains the information that matters about the game, like the destinations of the trains, the map or the populations of the cities when the player save the game.
+		\item \textit{saveLoader} basically enables us to reload the game that was saved, by reading the corresponding file (using \textit{fileReader}).
+		\item  \textit{saveUtils} is used for saving the game effectively, by writing all the relevant information into a file (via \textit{fileWriter})
+	\end{itemize}
+	If you want to save a game, first you have to launch one, then, when you want to quit, you must click on "Save" (which is in "Informations générales"). You will have to create a new file, and then save the game in it.
+	As soon as you want to continue it, you have to launch a game, but you must choose "Charger une sauvegarde" and open the game you want.
+
 	\paragraph{Additional feature: Cargo destinations}
+	A train can now change its loading when it passes through the cities. Actually, the cargo are dispatched in different towns with the class \textit{CargoDispatcher}. When a train arrives into a city, it can loads new cargos in order to send them in another town. This class is mainly used in \textit{Model}, because this class deals with all the moves of the trains. The player is also able to choose what is the maximum weight a train can carry, and can change it as they want to, it can be useful especially if the weight is too important so the train is too slow, since the speed of the train are related to the weight they carry.
 	
 	\section{Known bugs}
-	
+	There remains some of the bugs of the previous part, but we were not able to properly correct them.
 	\section{Additional features}
 	\paragraph{Zooming in and out}
-	h
+	Now, the player can zoom in a map with the mouse, and move it with "Q" for left, "D" for write,"Z" for up and "S" for down. We created a new class \textit{zoom} that we use in the class \textit{gui}. This class enable us to resize the map, according to what the player demands. The map is no longer "static" and is now adaptable, which is something you pointed us out.
+	\paragraph{Hubs}
+	The player can also define a city as a hub with a \textit{radioButton}. For example, since hubs are more significant cities, the player can launch trains only between the hubs. These cities are represented with a white circle around their points.
+	\paragraph{More information}
+	If something is lacking in a city or a plant, a message about what is lacking, appears on a pane.
 	
-	
+	\section{Hints of improvements}
+	The last additional feature we made does not work properly.
+	When just the pane is not big enough, the first messages that popped are no longer easily accessible and readable. 
 	
 \end{document}
