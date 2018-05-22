@@ -1,0 +1,1 @@
+{"name":"sbfsb","engine":{"name":"Electric 2000","maxSpeed":12.0,"maxLoad":300.0,"electric":true,"price":1000.0,"priceByKm":2.0,"maxRange":"Infinity"},"route":[10,9,8,7,6,5,4,3,2,1,0],"desiredLoad":102.09507042253522,"longHaul":false}

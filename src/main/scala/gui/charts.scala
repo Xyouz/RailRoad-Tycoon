@@ -42,7 +42,8 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
   var minDerived = Double.PositiveInfinity
   var maxDerived = Double.NegativeInfinity
 
-  var tickNumber = 5
+  var yTickNumber = 5
+  var xTickNumber = 8
 
   var serie = new XYChart.Series[Number,Number](){
     name = "Value"
@@ -54,6 +55,7 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
 
   var (xs, ys) = getValue.forceValue()
   yAxis.autoRanging = false
+  xAxis.autoRanging = false
 
   def swapGraphs () = {
     indicator = ! indicator
@@ -64,15 +66,15 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
 
   def scale() = {
     if (indicator) {
-      yAxis.upperBound = maxDerived + 0.05*math.abs(maxDerived)
-      yAxis.lowerBound = minDerived - 0.05*math.abs(minDerived)
-   }
-   else {
-     yAxis.upperBound = maxGraph + 0.05*math.abs(maxGraph)
-     yAxis.lowerBound = minGraph - 0.05*math.abs(minGraph)
-   }
-   yAxis.tickUnit = (yAxis.upperBound.value - yAxis.lowerBound.value)/ tickNumber
- }
+      yAxis.upperBound = maxDerived + 0.1*(maxDerived - minDerived)
+      yAxis.lowerBound = minDerived - 0.1*(maxDerived - minDerived)
+    }
+    else {
+      yAxis.upperBound = maxGraph + 0.1*(maxGraph - minGraph)
+      yAxis.lowerBound = minGraph - 0.1*(maxGraph - minGraph)
+    }
+    yAxis.tickUnit = (yAxis.upperBound.value - yAxis.lowerBound.value)/ yTickNumber
+  }
 
   this.getData.add(serie)
   this.getData.add(derivedSerie)
@@ -108,18 +110,21 @@ class ChartLine(val getValue : giveValue, val xAxis : NumberAxis, val yAxis : Nu
     maxGraph = Double.NegativeInfinity
     minDerived = Double.PositiveInfinity
     maxDerived = Double.NegativeInfinity
+    xAxis.tickUnit = (xAxis.upperBound.value - xAxis.lowerBound.value)/ xTickNumber
   }
 
   def update() {
     var v = getValue.value()
     v match {
       case Some((x,y)) => {
+        xAxis.upperBound = x + 0.1*math.abs(x)
         serie.getData().add(XYChart.Data(x,y))
         derivedSerie.getData().add(XYChart.Data(((x+xs)/2), ( (ys-y) / (xs-x)) ) )
         minValueD(y, ((ys-y) / (xs-x)) )
         maxValueD(y, ((ys-y) / (xs-x)) )
         xs = x
         ys = y
+        xAxis.tickUnit = (xAxis.upperBound.value - xAxis.lowerBound.value)/ xTickNumber
       }
       case None => ()
     }

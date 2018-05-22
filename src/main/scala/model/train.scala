@@ -5,6 +5,7 @@ import trainEngine.TrainEngine
 import town._
 import cargo._
 import model._
+import scalafx.scene.paint.Color._
 
 
 /**This class represents the trains, it extends the class "Vehicle", except here, we must also deal
@@ -15,7 +16,8 @@ case class TrainData(name : String, engine : TrainEngine, route : Array[Int], de
 class Train(name : String, engine : TrainEngine, val game : Game ) extends Vehicle(name, engine){
   var listOfWagon = List[Cargo]()
   def wagons() = {listOfWagon}
-
+  color = Salmon
+  
   def toData = {
     new TrainData(name, engine, route.map(_.getID), desiredLoad, longHaul)
   }

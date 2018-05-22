@@ -151,13 +151,13 @@ class TrainPane(master : MainGame) extends TitledPane() with Updatable() {
     onAction = {ae =>
       selectedTrain match {
         case None => ()
-        case Some(train) => train.color = DarkCyan
+        case Some(train) => train.color = Red
       }
       selectedTrain = Some(value.value)
       desiredLoad.min = value.value.maxLoad*0.05
       desiredLoad.max = value.value.maxLoad*0.9
       desiredLoad.value = value.value.desiredLoad
-      value.value.color = Cyan
+      value.value.color = Salmon
       chart.reeinitialize()
       update()
     }
