@@ -47,40 +47,42 @@
 	\section{Modifications of the game}
 	
 	\paragraph{Handling the charts} 
-	One of the required assignement was to make appear an information about the game in a chart. We decided to translate two pieces of information into charts: the money of the player and the evolution of the weight of the cargos in trains. We created two classes to deal with it : \textit{Charts} and \textit{SwitchCharts}. 
+	One of the required assignement was to make appear an information about the game in a chart. We decided to translate two pieces of information into charts: the money of the player and the evolution of the weight of the cargos in trains. We created two classes to deal with it : \texttt{Charts} and \texttt{SwitchCharts}. 
 	\begin{itemize}
-		\item \textbf{Charts }: It extends \textit{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for weights' charts, because the graphs are not the same for different cargos.The upper and lower bounds are calculated with the maximal and minimal value, in order to see the whole evolution and to make the charts dynamic. 
-		\item \textbf{SwitchChart} : It enables the player to choose between a graph and the derivation. It is actually the effective class we use for drawing the charts.
+		\item \textbf{Charts }: It extends \texttt{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for weights' charts, because the graphs are not the same for different cargos. The upper and lower bounds are calculated with the maximal and minimal value, in order to see the whole evolution and to make the charts dynamic. 
+		\item \textbf{SwitchChart} : It enables the player to choose between a graph and the derivation. It is actually the effective class we use for drawing the charts and which was designed so that it would be easy to add other graphs.
 	\end{itemize} 
-	The chart about the money is in \textit{infoPane} and the one about the weight is in \textit{trainPane}. We thought it was not relevant to update the chart at each tick, so it is updated every 50 ticks.
+	The chart about the money is in \texttt{infoPane} and the one about the weight is in \texttt{trainPane}. We thought it was not relevant to update the chart at each tick, so it is updated every 50 ticks.
 
 	\paragraph{Saving a game} 
-	Wa also had to find a way to save a game. We created 4 classes and objects that enables us to do so: \textit{fileReader}, \textit{fileWriter}, \textit{saveLoader} and \textit{saveUtils}.
+	Wa also had to find a way to save a game. We created 4 classes and objects that enables us to do so: \texttt{fileReader}, \texttt{fileWriter}, \texttt{saveLoader} and \texttt{saveUtils}.
 	\begin{itemize}
-		\item \textit{fileReader} read a file that hes been created, and \textit{fileWriter} allows the creation of a new file, which contains the information that matters about the game, like the destinations of the trains, the map or the populations of the cities when the player save the game.
-		\item \textit{saveLoader} basically enables us to reload the game that was saved, by reading the corresponding file (using \textit{fileReader}).
-		\item  \textit{saveUtils} is used for saving the game effectively, by writing all the relevant information into a file (via \textit{fileWriter})
+		\item \texttt{fileReader} read a file that hes been created, and \texttt{fileWriter} allows the creation of a new file, which contains the information that matters about the game, like the destinations of the trains, the map or the populations of the cities when the player save the game.
+		\item \texttt{saveLoader} basically enables us to reload the game that was saved, by reading the corresponding file (using \texttt{fileReader}).
+		\item  \texttt{saveUtils} is used for saving the game effectively, by writing all the relevant information into a file (via \texttt{fileWriter})
 	\end{itemize}
-	We also had to add a "case class" for the trains and the planes in order to remember their name, their route, what they carry...
+	Data is stored in multiple JSON files. We also had to add a "case class" to represent different instances of class and be able to store them without too much problems.
 	
-	If you want to save a game, first you have to launch one, then, when you want to quit, you must click on "Save" (which is in "Informations générales"). You will have to create a new file, and then save the game in it.
-	As soon as you want to continue it, you have to launch a game, but you must choose "Charger une sauvegarde" and open the game you want.
+	If you want to save a game, first you have to launch one, then, when you want to quit, you must click on "Save" (which is in "Informations générales"). You will have to create a new folder, and then save the game in it.
+	As soon as you want to continue it, you have to launch a game, but you must choose "Charger une sauvegarde" and open the folder which contains all the data about the save.
 
 	\paragraph{Additional feature: Cargo destinations}
-	A train can now change its loading when it passes through the cities. Actually, the cargo are dispatched in different towns with the class \textit{CargoDispatcher}. When a train arrives into a city, it can loads new cargos in order to send them in another town. This class is mainly used in \textit{Model}, because this class deals with all the moves of the trains. The player is also able to choose what is the maximum weight a train can carry, and can change it as they want to, it can be useful especially if the weight is too important so the train is too slow, since the speed of the train are related to the weight they carry.\\ Eventually, the cargos can travel with the class \textit{trainCargoRouter}: it determines the path the cargo is going to follow to arrive into its destination, furthering the hubs (see below about the hubs) when the route is long.
+	A train can now change its loading when it passes through the cities. Actually, the cargo are dispatched in different towns with the class \texttt{CargoDispatcher}. When a train arrives into a city, it can loads new cargos in order to send them in another town. This class is mainly used in \texttt{Model}, because this class deals with all the moves of the trains. The player is also able to choose what is the maximum weight a train can carry, and can change it as they want to, it can be useful especially if the weight is too important so the train is too slow, since the speed of the train are related to the weight they carry.\\ Eventually, the cargos can travel with the class \texttt{trainCargoRouter}: it determines the path the cargo is going to follow to arrive into its destination, furthering the hubs (see below about the hubs) when the route is long.
 	
 	\section{Known bugs}
 	There remains some of the bugs of the previous part, but we were not able to properly correct them.
 	\section{Additional features}
 	\paragraph{Zooming in and out}
-	Now, the player can zoom in a map with the mouse, and move it with "Q" for left, "D" for write,"Z" for up and "S" for down. We created a new class \textit{zoom} that we use in the class \textit{gui}. This class enable us to resize the map, according to what the player demands. The map is no longer "static" and is now adaptable, which is something you pointed us out.
+	Now, the player can zoom in a map with the mouse, and move it with "Q" for left, "D" for write,"Z" for up and "S" for down. We created a new class \texttt{zoom} that we use in the class \texttt{gui}. This class enable us to resize the map, according to what the player demands. The map is no longer "static" and is now adaptable, which is something you pointed us out.
 	\paragraph{Hubs}
-	The player can also define a city as a hub with a \textit{radioButton}. For example, since hubs are more significant cities, the player can launch trains only between the hubs. These cities are represented with a white circle around their points.
+	The player can also define a city as a hub with a \texttt{radioButton}. For example, since hubs are more significant cities, the player can launch trains only between the hubs. These cities are represented with a white circle around their points. On top of that, one can select whether or not a train is to travel solely between hubs or not, thus changing its behavior.
 	\paragraph{More information}
 	If something is lacking in a city or a plant, a message about what is lacking, appears on a pane.
 	
 	\section{Hints of improvements}
-	The last additional feature we made does not work properly.
-	When just the pane is not big enough, the first messages that popped are no longer easily accessible and readable. Also, those message give an indication about what a city needs, the player must resolve it by sending a train or plane by themselves: it is not done automatically. This could be improved by allowing the cities to communicate with other and sending the surplus in the town in need.
+	The save system does not save the whole state of the game but only the information about the money earned by the player, its vehicles and their routes. Had we had more time it would have been great to store the actual position of cargos. Moreover having multiple files is not the most convenient way to manage saves, we could have fixed this by copying the content of each one into a larger XML file which have the same tree structure as the folders we are currently using. 
 	
+	Also, those message give an indication about what a city needs, the player must resolve it by sending a train or plane by themselves: it is not done automatically. This could be improved by allowing the cities to communicate with other and sending the surplus in the town in need.
+	
+	Another minor improvement would have been to give the ability to zoom into graphs so that the player could have a more precise access to the data they are showing.
 \end{document}
