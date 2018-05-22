@@ -78,8 +78,9 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
 
           val res = dialog.showAndWait()
           res match {
-            case Some(OkRoute(circuit)) => {
+            case Some(OkRoute(circuit,longHaul)) => {
               plane.setRoute(circuit)
+              plane.longHaul = longHaul
               if (plane.distance <= 0){
                 var briefing = master.game.airports.getBriefing(plane.getCurrentTown,circuit(0),plane.engine.maxRange)
                 if (briefing.length > 1 && (briefing(0).pos-briefing(1).pos).norm()*plane.engine.priceByKm <= master.game.money) {

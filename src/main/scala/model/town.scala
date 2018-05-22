@@ -63,7 +63,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def position() : Point={pos}
   def population() : Int={pop}
   def deltaPopulation(delta : Int) = {pop += delta}
-  def incrPop() = {pop = pop+50}
 
   def isInput(stuff : Stuff) : Boolean = {
     for (factory <- factories){
@@ -113,13 +112,18 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def cityConsumption() = {
     var i = 0
     var j = 0
+    var msgLength = 0
     while ((i < consuptionStuff.length) && (j < stocks.length)){
       if (consuptionStuff(i) == stocks(j)) {
         try {
-          stocks(j).subStuff(consuptionStuff(i).scale(0.001* population))
+          stocks(j).subStuff(consuptionStuff(i).scale(0.0002* population))
         }
         catch {
-          case NotEnoughQuantityException() => (message += s"Il manque quelques'uns des produits indispensables à la survie de la ville, par exemple on a plus assez de ${stocks(j)}.\n")
+          case NotEnoughQuantityException() => {
+            if (msgLength < 4){
+              message += s"Il manque quelques'uns des produits indispensables à la survie de la ville, par exemple on a plus assez de ${stocks(j)}.\n\n"
+            }
+          }
         }
         i = i + 1
         j = j + 1
@@ -166,7 +170,6 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   def update(){
     t = t + 1
     if (t%200 == 0) {
-      message = ""
       cityConsumption()
     }
     factories.map(_.update())
@@ -219,7 +222,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
                   else {
                     cargo.outHub match {
                       case Some(city3) => {
-                        if (plane.route.exists(_ == city3) && (cargo.weight()<=plane.desiredLoad)){
+                        if (plane.route.exists(_ == city3) && (cargo.weight()<=plane.desiredLoad) && plane.longHaul){
                           plane.hold = Some(cargo)
                           cargosInTown = cargosInTown.filterNot(_ == cargo)
                         }
@@ -260,7 +263,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
           else {
             cargo.inHub match {
               case Some(city2) => {
-                if (train.route.exists(_ == city2) && (cargo.weight()+train.weight()<=train.desiredLoad)){
+                if (train.route.exists(_ == city2) && (cargo.weight()+train.weight()<=train.desiredLoad) && train.longHaul){
                   train.listOfWagon = cargo +: train.listOfWagon
                   cargosInTown = cargosInTown.filterNot(_ == cargo)
                 }
@@ -305,7 +308,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       if (i==unloaded){
         val res = priceOfStuff(i)*unloaded.quantity
         i.addStuff(unloaded)
-        sum = res
+        sum += res
       }
     }
     sum

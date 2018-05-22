@@ -6,7 +6,7 @@
   </TrainEngine>
   <TrainEngine name = "Electric 2000"  maxSpeed = "12" maxLoad = "300" electric = "true" price = "1000" priceByKm = "2">
   </TrainEngine>
-  
+
   <PlaneEngine name = "Hélice à ressort"  maxSpeed = "10" maxLoad = "55" maxRange = "175" price = "600" priceByKm = "2">
   </PlaneEngine>
   <PlaneEngine name = "TurboJet 42"  maxSpeed = "17" maxLoad = "125" maxRange = "600" price = "1100" priceByKm = "3">

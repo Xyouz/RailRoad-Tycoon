@@ -58,7 +58,7 @@ class Game(){
     }
     val newTrain = new Train(name,engine, this)
     newTrain.setDestination(town)
-    money -= engine.price
+    deltaMoney(-engine.price)
     trainList = trainList :+ newTrain
     newTrain
   }
@@ -70,7 +70,7 @@ class Game(){
     val newPlane = new Plane(name,engine, this)
     newPlane.setDestination(town)
     newPlane.nextDest = town.getID
-    money -= engine.price
+    deltaMoney( -engine.price)
     town.welcomePlane(newPlane)
     planeList = planeList :+ newPlane
     newPlane
@@ -100,7 +100,7 @@ class Game(){
     var distance = railMap.distanceFromTo(townID, train.getDestination())
     if (distance * train.engine.priceByKm <= money) {
       road.launchTrain(train, townList(townID))
-      money -= distance * train.engine.priceByKm
+      deltaMoney(distance * (0.5 * train.listOfWagon.length - train.engine.priceByKm ))
     }
     else {
       trainsToBeOnTransit = (train, townID) +: trainsToBeOnTransit

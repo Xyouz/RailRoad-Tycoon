@@ -5,11 +5,20 @@ import cargo.Cargo
 import stuff._
 import model.Game
 import math.{max,min}
+import scala.util._
 
 case class CargoDispatcherError() extends Exception()
 
 class CargoDispatcher(val townList : Seq[Town], val town : Town) {
   val outputs = town.factories.map(_.output)
+  val rand = new Random()
+
+  def rBool () = {
+    rand.nextBoolean()
+  }
+  def rDouble () = {
+    rand.nextDouble()
+  }
 
   def fillCargo(cargo : Cargo) = {
     if (!cargo.isEmpty()){
@@ -21,7 +30,7 @@ class CargoDispatcher(val townList : Seq[Town], val town : Town) {
     for (stuff <- outputs){
       if (stuff.category == cargo.typeOfLoad){
         for (city <- townList){
-          if ((maxi < (city.priceOfStuff(stuff)-town.priceOfStuff(stuff)))
+          if (((0.9 + 0.1 * rDouble())*maxi < (city.priceOfStuff(stuff)-town.priceOfStuff(stuff)))
               && city != town){
             maxi = city.priceOfStuff(stuff)-town.priceOfStuff(stuff)
             townMax = city
