@@ -29,7 +29,7 @@ abstract class Vehicle( val name : String, val engine : Engine){
   var nextDest = {-1}
 
   var route = Array[Town]()
-  var color = DarkCyan
+  var color = Aquamarine
 
   var longHaul = false  /* Define whether or not the vehicle is to be used to
                            carry cargo between different hubs */

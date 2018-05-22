@@ -1,0 +1,1 @@
+{"name":"xbxbfn","engine":{"name":"TurboJet 42","maxSpeed":17.0,"maxLoad":125.0,"maxRange":600.0,"price":1100.0,"priceByKm":3.0,"minSpeed":10},"route":[1,2,3,2,1,0],"desiredLoad":56.25,"longHaul":false}

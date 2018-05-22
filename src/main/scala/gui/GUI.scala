@@ -112,7 +112,7 @@ class MainGame(val game: Game) extends JFXApp.PrimaryStage {
       case _ =>
     }
 
-      fill = LightGreen
+      fill = DarkGreen
 
       content = toBeDrawn
 

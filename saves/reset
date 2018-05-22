@@ -1,8 +1,0 @@
-cd towns
-rm *
-cd ../planes
-rm *
-cd ../trains
-rm *
-cd ..
-rm game.json

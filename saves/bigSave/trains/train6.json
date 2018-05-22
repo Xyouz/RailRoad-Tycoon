@@ -1,0 +1,1 @@
+{"name":"wvwdb","engine":{"name":"Electric 2000","maxSpeed":12.0,"maxLoad":300.0,"electric":true,"price":1000.0,"priceByKm":2.0,"maxRange":"Infinity"},"route":[3,4,5,6,7,8,9,10,12],"desiredLoad":135.0,"longHaul":false}

@@ -16,7 +16,7 @@ import zoom.Zoom
 class LineRoad(val master : JFXApp.PrimaryStage, val road : Road, val zoom : Zoom) extends Line with Updatable {
 
   update()
-  strokeWidth = 4
+  strokeWidth = 3
 
   onMouseClicked = {
     ae =>

@@ -105,13 +105,13 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
     onAction = {ae =>
       selectedPlane match {
         case None => ()
-        case Some(plane) => plane.color = Aquamarine
+        case Some(plane) => plane.color = LightCyan
       }
       selectedPlane = Some(value.value)
       desiredLoad.min = value.value.maxLoad*0.05
       desiredLoad.max = value.value.maxLoad*0.9
       desiredLoad.value = value.value.desiredLoad
-      value.value.color = Aqua
+      value.value.color = Aquamarine
       update()
     }
   }

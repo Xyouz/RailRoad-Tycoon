@@ -35,7 +35,19 @@ class SwitchCharts(val valueGiven : giveValue) extends GridPane() {
     }
   }
 
-  add(change, 0,0)
+  val resetButton = new Button("Reset"){
+    onAction = {
+      ae => {
+        graph.reeinitialize()
+      }
+    }
+  }
+
+  add(new GridPane(){
+    add(change, 0,0)
+    add(resetButton,1, 0)
+    hgap = 10
+  },0,0)
   add(graph, 0, 1)
 
   def update() {
