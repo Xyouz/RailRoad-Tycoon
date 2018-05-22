@@ -52,7 +52,7 @@
 		\item \textbf{Charts }: It extends \textit{LineChart}, its main goal is to draw the chart of the value and the derivation of it (in order to see the variations of the values), to update the charts, and to handle the bounds properly. There is also a method that can reinitialize the charts, it is used for weights' charts, because the graphs are not the same for different cargos.The upper and lower bounds are calculated with the maximal and minimal value, in order to see the whole evolution and to make the charts dynamic. 
 		\item \textbf{SwitchChart} : It enables the player to choose between a graph and the derivation. It is actually the effective class we use for drawing the charts.
 	\end{itemize} 
-	The chart about the money is in \textit{infoPane}. We thought it was not relevant to update the chart at each tick, so it is updated every 50 ticks.
+	The chart about the money is in \textit{infoPane} and the one about the weight is in \textit{trainPane}. We thought it was not relevant to update the chart at each tick, so it is updated every 50 ticks.
 
 	\paragraph{Saving a game} 
 	Wa also had to find a way to save a game. We created 4 classes and objects that enables us to do so: \textit{fileReader}, \textit{fileWriter}, \textit{saveLoader} and \textit{saveUtils}.
