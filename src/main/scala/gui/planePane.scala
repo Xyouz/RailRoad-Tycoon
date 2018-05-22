@@ -28,7 +28,7 @@ class PlanePane(master : MainGame) extends TitledPane() with Updatable() {
 
     val res = dialog.showAndWait()
     res match {
-      case Some(NewPlaneOk(name, town, engine, hold)) => {
+      case Some(NewPlaneOk(name, town, engine)) => {
         // create a new train and update the ComboBox used to selectTrain
         try {
           var newPlane = master.game.addPlane(name, town, engine)

@@ -23,9 +23,9 @@ import trainCargoRouter._
 case class GameData(mapName : String, money : Double)
 
 class Game(){
-  val trainEngineList = List(new TrainEngine("Electric 2000", 15, 300, true, 11,1), new TrainEngine("Escargot", 5, 250, false,11,1.25))
+  var trainEngineList = List[TrainEngine]()
 
-  val planeEngineList = List(new PlaneEngine("TurboJet 42", 10, 125,600,11,1),new PlaneEngine("Hélice à ressort", 10, 50,175,11,1))
+  var planeEngineList = List[PlaneEngine]()
 
   var townList = Seq[Town]()
   var roadList = Seq[Road]()

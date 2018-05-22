@@ -9,6 +9,8 @@ import cargo._
 import factoryBuilder._
 import stuffData._
 import java.io.File
+import trainEngine.TrainEngine
+import planeEngine.PlaneEngine
 
 case class XMLError(msg : String) extends Exception(msg) {
 
@@ -16,8 +18,10 @@ case class XMLError(msg : String) extends Exception(msg) {
 
 class XMLParser(xmlFile : File) {
   val doc = XML.loadFile(xmlFile)
+  val engineDoc = XML.loadFile(new File("src/main/resources/engines/engines.xml"))
   val builder = new FactoryBuilder()
   val filler = new StockFiller(1000)
+  val game = new Game()
   def unwrapOption( townOp : Option[Town] ) = {
     townOp match {
       case Some(t) => t
@@ -26,8 +30,29 @@ class XMLParser(xmlFile : File) {
 
   }
 
+  def getEngines() = {
+    for (engine <- engineDoc \\ "TrainEngine"){
+      val name = engine \@ "name"
+      val maxSpeed = (engine \@ "maxSpeed").toDouble
+      val maxLoad = (engine \@ "maxLoad").toDouble
+      val electric = (engine \@ "electric").toBoolean
+      val price = (engine \@ "price").toDouble
+      val priceByKm = (engine \@ "priceByKm").toDouble
+      game.trainEngineList = new TrainEngine(name, maxSpeed, maxLoad, electric, price, priceByKm) +: game.trainEngineList
+    }
+    for (engine <- engineDoc \\ "PlaneEngine"){
+      val name = engine \@ "name"
+      val maxSpeed = (engine \@ "maxSpeed").toDouble
+      val maxLoad = (engine \@ "maxLoad").toDouble
+      val maxRange = (engine \@ "maxRange").toDouble
+      val price = (engine \@ "price").toDouble
+      val priceByKm = (engine \@ "priceByKm").toDouble
+      game.planeEngineList = new PlaneEngine(name, maxSpeed, maxLoad, maxRange, price, priceByKm) +: game.planeEngineList
+    }
+  }
+
   def getGame() = {
-    val game = new Game()
+    getEngines()
     var towns = Seq[Town]()
     var rails = Seq[Road]()
     var id = 0
