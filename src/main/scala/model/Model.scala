@@ -94,7 +94,6 @@ class Game(){
       townList(townID).loadTrain(train)
       train.nextDestination()
       }
-
     train.resetDistance()
     var road = railMap.nextRoad(townID, train.getDestination())
     var distance = railMap.distanceFromTo(townID, train.getDestination())

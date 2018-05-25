@@ -4,7 +4,7 @@
   </TrainEngine>
   <TrainEngine name = "Machine à vapeur"  maxSpeed = "2.5" maxLoad = "100" electric = "false" price = "250" priceByKm = "2">
   </TrainEngine>
-  <TrainEngine name = "Electric 2000"  maxSpeed = "12" maxLoad = "300" electric = "true" price = "1000" priceByKm = "2">
+  <TrainEngine name = "Electric 2000"  maxSpeed = "20" maxLoad = "300" electric = "true" price = "1000" priceByKm = "2">
   </TrainEngine>
 
   <PlaneEngine name = "Hélice à ressort"  maxSpeed = "10" maxLoad = "55" maxRange = "175" price = "600" priceByKm = "2">

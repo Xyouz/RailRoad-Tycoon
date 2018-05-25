@@ -68,8 +68,8 @@ class XMLParser(xmlFile : File) {
         newTown.hasAirport = true
       }
       for (t<-List("Liquid","Container","Dry")){
-        for (i <- 1 to 10){
-          newTown.cargosInTown = (new Cargo(t,50)) +: newTown.cargosInTown
+        for (i <- 1 to 250){
+          newTown.cargosInTown = (new Cargo(t,150)) +: newTown.cargosInTown
         }
       }
       for {factory <- town \\ "Factory"}{

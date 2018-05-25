@@ -33,6 +33,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   var trainCargoRouter = new TrainCargoRouter(new Game())
   var isHub = false
   var cargosInTown = List[Cargo]()
+  var cargosJustArrived = List[Cargo]()
   var message = ""
 
   def distanceTo(that  : Town) = {
@@ -164,6 +165,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
     if ((!cargo.isEmpty)&&(cargo.destination==Some(this))) {
       cargo.destination = None
       receiveStuff(cargo.unload)
+      cargo.content = None
     }
   }
 
@@ -173,6 +175,8 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
       cityConsumption()
     }
     factories.map(_.update())
+    cargosInTown = cargosJustArrived ++ cargosInTown
+    cargosJustArrived = List[Cargo]()
     cargosInTown.map(unloadCargo(_))
     cargosInTown.map(prepareCargo(_))
   }
@@ -277,7 +281,7 @@ class Town(val id : Int, val name: String, var pop : Int, var pos : Point){
   }
 
   def receiveCargo(cargo : Cargo) = {
-    cargosInTown = cargo +: cargosInTown
+    cargosJustArrived = cargo +: cargosJustArrived
   }
 
   def loadCargo(cargo : Cargo) = {
